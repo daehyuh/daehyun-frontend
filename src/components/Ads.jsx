@@ -51,6 +51,7 @@ function Ads() {
                             style={{ width: "100%", height: "auto", display: "flex", 
                             justifyContent: "center", 
                             alignItems: "center", }}
+                            
                     />
           }</div>
       </div>

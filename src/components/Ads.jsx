@@ -45,13 +45,13 @@ function Ads() {
     <>
       <div className={styles.adContainer}>
         <div className={styles.ad}>{
-          // img 태그를 사용하여 광고 이미지를 불러오세요.
                 <img
                             src={`../ad/${ads[currentIndex]}`}
                             alt="광고"
-                            style={{ width: "100%", height: "auto"}}
+                            style={{ width: "100%", height: "auto", display: "flex", 
+                            justifyContent: "center", 
+                            alignItems: "center", }}
                     />
-          
           }</div>
       </div>
       {/* <div className={styles.adContainer}>

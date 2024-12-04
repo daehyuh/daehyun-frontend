@@ -4,7 +4,16 @@ import styles from "./styles/ColorRank.module.css";
 function ColorRank() {
     // Loading 상태 변수 추가
     const [loading, setLoading] = useState(true);
-    
+    // 이스터에그 리스트 추가
+    let easterEgg = {
+
+        "주히": "f7cbcb",
+        "대현": "FF0000"
+    }
+
+
+
+
     // API 호출을 통해 데이터를 가져오는 함수
     const fetchData = async () => {
         try {
@@ -92,7 +101,11 @@ function ColorRank() {
                         <tbody>
                             {filteredItems.map((item, index) => (
                                 <tr key={index + 1} data-name={item.nickname}>
-                                    <td style={item.nickname === "주히" ? {backgroundColor :`#f7cbcb`} : null}>{item.rank}위</td>
+                                        {/* 주히 데이터일때 색변경 */}
+                                    
+                                    <td style={easterEgg[item.nickname] ? { backgroundColor: `#${easterEgg[item.nickname]}` } : null}>{item.rank}위</td>
+                                    
+                                    
                                     <td>{item.nickname}</td>
                                     <td className={styles.inputflex}>
                                         <div

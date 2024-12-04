@@ -1,22 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        body {
-            font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-            font-size: 22px;
-            color: white;
-            background-color: #242426;
-            margin: 0;
-            padding: 0;
-        }
-    </style>
-</head>
-<body>
-    <pre>
+import React, { useState, useEffect } from "react";
+import styles from "./styles/Privacy.module.css";
+
+function Privacy() {
+   
+    return (
+        <>
+        <div className={styles.container}>
+            
+    <pre style={{whiteSpace:"pre-wrap"}}>
 개인정보처리방침
 
 
@@ -250,9 +241,9 @@
 
 웹브라우저 옵션 설정을 통해 쿠키 허용, 쿠키 차단 등의 설정을 할 수 있습니다.
 
-Edge : 웹브라우저 우측 상단의 설정 메뉴 > 쿠키 및 사이트 권한 > 쿠키 및 사이트 데이터 관리 및 삭제
-Chrome : 웹브라우저 우측 상단의 설정 메뉴 > 개인정보 및 보안 > 쿠키 및 기타 사이트 데이터
-Whale : 웹브라우저 우측 상단의 설정 메뉴 > 개인정보 보호 > 쿠키 및 기타 사이트 데이터
+Edge : 웹브라우저 우측 상단의 설정 메뉴, 쿠키 및 사이트 권한, 쿠키 및 사이트 데이터 관리 및 삭제
+Chrome : 웹브라우저 우측 상단의 설정 메뉴, 개인정보 및 보안, 쿠키 및 기타 사이트 데이터
+Whale : 웹브라우저 우측 상단의 설정 메뉴, 개인정보 보호, 쿠키 및 기타 사이트 데이터
 
 제35조(회사의 개인정보 보호 책임자 지정)
 
@@ -278,5 +269,11 @@ Whale : 웹브라우저 우측 상단의 설정 메뉴 > 개인정보 보호 > �
 
 제1조 본 방침은 2024.11.20.부터 시행됩니다.
 </pre>
-</body>
-</html>
+
+</div>
+        </>
+
+    );
+}
+
+export default Privacy;

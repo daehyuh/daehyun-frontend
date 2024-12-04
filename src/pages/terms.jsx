@@ -1,22 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        body {
-            font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-            font-size: 22px;
-            color: white;
-            background-color: #242426;
-            margin: 0;
-            padding: 0;
-        }
-    </style>
-</head>
-<body>
-    <pre>
+import React, { useState, useEffect } from "react";
+import styles from "./styles/Terms.module.css";
+
+function Terms() {
+   
+    return (
+        <>
+        <pre className={styles.pre}>
         서비스 이용약관
 
 
@@ -193,5 +182,9 @@
         
         본 약관은 2024.11.20.부터 시행됩니다. 
     </pre>
-</body>
-</html>
+        </>
+
+    );
+}
+
+export default Terms;

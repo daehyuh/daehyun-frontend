@@ -11,8 +11,10 @@ function Footer() {
                 <p>contact@collecti.me · 010-7712-2413</p>
             </div>
             <div>
-                <a href="privacy.html">이용약관</a> <br></br>
-                <a href="terms.html">개인정보 처리방침</a>
+
+                <a href="이용약관">이용약관</a> <br></br>
+                <a href="개인정보처리방침">개인정보 처리방침</a>
+
             </div>
         </div>
     );

@@ -41,7 +41,18 @@ function LimitCheck() {
         <>
             <div className={styles.container}>
                 <p className={styles.title}>획초 체크</p>
-
+                <div>
+                    <h2>최후의 반론서 댓글을 달면, 랭킹에 자동으로 추가됩니다.</h2>
+                    <h3>최근 갱신일 {time}</h3>
+                    <div className={styles.lastAtag}>
+                    <a style={{color:"red"}} href="https://mafia42.com/#/community/lastDiscussion/lastShow/1007550">최후의 반론 링크</a>
+                    </div>
+                    {/* <img
+                            src={`../image/comment.PNG`}
+                            alt="comment"
+                            style={{ width: "100%", height: "auto", margin: "0 0 10px 0" }}
+                    /> */}
+                </div>
 
                 <div style={{margin:"10px 0 20px 0"}} className={styles.inputflex}>
                 
@@ -71,19 +82,6 @@ function LimitCheck() {
                         }
                         <p>랭크게임 구분은 되어있지 않습니다.</p>
                     </div>
-                </div>
-                
-                <div>
-                    <h2>최후의 반론서 댓글을 달면, 랭킹에 자동으로 추가됩니다.</h2>
-                    <h3>최근 갱신일 {time}</h3>
-                    <div className={styles.lastAtag}>
-                    <a style={{color:"red"}} href="https://mafia42.com/#/community/lastDiscussion/lastShow/1007550">최후의 반론 링크</a>
-                    </div>
-                    <img
-                            src={`../image/comment.PNG`}
-                            alt="comment"
-                            style={{ width: "100%", height: "auto", margin: "0 0 10px 0" }}
-                    />
                 </div>
             </div>
         </>

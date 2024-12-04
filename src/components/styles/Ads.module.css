@@ -40,3 +40,21 @@
     justify-Content:center;
     background-color: #1e1e1e;
 }
+
+.lastAtag{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 20px;
+
+  background-color: #1e1e1e;
+  /* a태그 색 */
+  color: #EAEAEA;
+  text-decoration: none;
+  text-Align:center; 
+
+  font-weight: bold;
+  display:flex;
+  justify-Content:center;
+  background-color: #1e1e1e;
+
+}

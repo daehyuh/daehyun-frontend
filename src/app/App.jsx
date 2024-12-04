@@ -16,6 +16,8 @@ import ColorRank from "../pages/ColorRank.jsx";
 import LimitCheck from "../pages/LimitCheck.jsx";
 import Header from "../components/Header.jsx";
 import Ads from "../components/Ads.jsx";
+import Terms from "../pages/terms.jsx";
+import Privacy from "../pages/privacy.jsx";
 
 function App() {
     const location = useLocation(); // 현재 경로 정보를 가져옴
@@ -47,6 +49,8 @@ function App() {
          
                 <Route path="/유저게시판"  element={<Board />} />
                 <Route path="/유저게시판/:id" element={<BoardDetail />} />
+                <Route path="/이용약관" element={<Terms />} />
+                <Route path="/개인정보처리방침" element={<Privacy />} />
             </Routes>
             <Footer />
             <></>

@@ -16,7 +16,7 @@ function Ads() {
                 console.log(data);
                 setAds(data.ad);
             });
-
+            
             fetch("https://hufsnc.com/api/ad2")
             .then((res) => res.json())
             .then((data) => {
@@ -44,7 +44,15 @@ function Ads() {
   return (
     <>
       <div className={styles.adContainer}>
-        <div className={styles.ad}>{ads[currentIndex]}</div>
+        <div className={styles.ad}>{
+          // img 태그를 사용하여 광고 이미지를 불러오세요.
+                <img
+                            src={`../ad/${ads[currentIndex]}`}
+                            alt="광고"
+                            style={{ width: "100%", height: "auto"}}
+                    />
+          
+          }</div>
       </div>
       {/* <div className={styles.adContainer}>
         <div className={styles.ad}>{ads2[currentIndex2]}</div>

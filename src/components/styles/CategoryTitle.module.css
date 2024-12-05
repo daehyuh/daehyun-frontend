@@ -1,0 +1,8 @@
+.CategoryTitle {
+    font-size: 36px;
+    font-weight: bold;
+    color: #EAEAEA;
+    margin-bottom: 1rem;
+    border-left: 4px solid;
+    padding-left: 10px;
+}

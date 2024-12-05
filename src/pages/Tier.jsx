@@ -1,212 +1,174 @@
 import React from 'react';
 import styles from './styles/Tier.module.css';
-import { useState } from 'react';
+import {useState} from 'react';
+import Select from "../components/base/Select.jsx";
+import CategoryTitle from "../components/CategoryTitle.jsx";
+import Input from "../components/base/Input.jsx";
+import CheckBox from "../components/base/CheckBox.jsx";
+import Container from "../components/base/Container.jsx";
+import Layout from "../components/base/Layout.jsx";
+import ContentBox from "../components/base/ContentBox.jsx";
+import Divider from "../components/base/Divider.jsx";
+import TitleItem from "../components/TitleItem.jsx";
+import ResultContainer from "../components/ResultContainer.jsx";
 
+function Tier() {
+    const SELECT_TIERS = [{title: '6티어', value: 6}, {title: '5티어', value: 5}]
 
-function Tier(){
-    const [tier3, setTier3] = useState(0);
-    const [tier4, setTier4] = useState(0);
-    const [tier5, setTier5] = useState(0);
-    const [tierToggled, setTierToggled] = useState(true);
-    const [sale, setSale] = useState(false);
-
-    const [needcard, setNeedcard] = useState(120);
-    const [threeup, setThreeup] = useState(3000000);
-    const [fourup, setFourup] = useState(3000000);
-
-    function updateTier(){
-        // 티어 값 가져오기
-        const newTier3 = Number(document.querySelector('.input-tier3').value);
-        const newTier4 = Number(document.querySelector('.input-tier4').value);
-        let newTier5 = tier5;
-
-        if (tierToggled) {
-            newTier5 = Number(document.querySelector('.input-tier5').value);
-        }
-
-        // 티어 값 업데이트
-        setTier3(newTier3);
-        setTier4(newTier4);
-        setTier5(newTier5);
+    const initialTierStateValue = {
+        selectedTier: 6,
+        sale: false,
+        tier3: 0,
+        tier4: 0,
+        tier5: 0
     }
+    const [tier, setTier] = useState(initialTierStateValue);
 
-    const onReset = () => {
-        setTier3(0);
-        setTier4(0);
-        setTier5(0);
-        setNeedcard(120);
-        setThreeup(3000000);
-        setFourup(3000000);
-
+    const initialCostStateValue = {
+        needCard: 120,
+        costOf3To4: 3000000,
+        costOf4To5: 3000000,
+        totalCost: 7000000
     }
+    const [cost, setCost] = useState(initialCostStateValue);
 
-
-    const onClick = () => {
-        updateTier();
-
+    const calcCost = () => {
         // 필요한 3티어 카드 수 계산
-        let calculatedNeedcard = tierToggled
-            ? Math.max(120 - tier3 - (tier4 * 4) - (tier5 * 20), 0)
-            : Math.max(20 - tier3 - (tier4 * 4), 0);
+        let calculatedNeedCard = 20 - tier.tier3 - (tier.tier4 * 4)
+        if (tier.selectedTier === 6) {
+            calculatedNeedCard += 100 - (tier.tier5 * 20)
+        }
+        calculatedNeedCard = Math.max(calculatedNeedCard, 0);
 
-        console.log(tierToggled);
-        
-        calculatedNeedcard = Number(calculatedNeedcard);
-        console.log(calculatedNeedcard);
-        console.log(calculatedNeedcard+tier3);
+
+        const sale = tier.sale ? 0.9 : 1;
         // 3티어 → 4티어 강화비용 계산
-        let calculatedThreeup = (calculatedNeedcard+tier3) / 4 * 100000;
-
-
+        const calculated3To4 = (calculatedNeedCard + tier.tier3) / 4 * 100000 * sale;
         // 4티어 → 5티어 강화비용 계산
-        let calculatedFourup = (((calculatedNeedcard) / 4) + tier4) / 5 * 500000;
-        
+        const calculated4To5 = (((calculatedNeedCard) / 4) + tier.tier4) / 5 * 500000 * sale;
 
-        // 상태 업데이트
-        setNeedcard(calculatedNeedcard);
-        setThreeup(calculatedThreeup);
-        setFourup(calculatedFourup);
-        
-        console.log(needcard);
-        console.log(threeup);
-        console.log(fourup);
+        const defaultCost = (tier.selectedTier === 6 ? 1000000 : 500000) * sale;
+        const calculatedTotalCost = calculated3To4 + calculated4To5 + defaultCost;
 
-        console.log("필요 카드:", calculatedNeedcard);
-        console.log("3티어 강화 비용:", calculatedThreeup);
-        console.log("4티어 강화 비용:", calculatedFourup);
-    };
-    
-
-
-
-    const handleTierToggle = (con) => {
-        setTierToggled(con);
+        setCost({
+            needCard: calculatedNeedCard,
+            costOf3To4: calculated3To4,
+            costOf4To5: calculated4To5,
+            totalCost: calculatedTotalCost
+        })
     }
 
+    const reset = () => {
+        setTier(initialTierStateValue);
+        setCost(initialCostStateValue);
+    }
 
+    // MARK: - Event Handlers
+    const setTierValue = (tier, value) => {
+        const v = Number(value)
+        const newTierValue = isNaN(v) ? 0 : v;
+        setTier((prevState) => ({
+            selectedTier: prevState.selectedTier,
+            sale: prevState.sale,
+            tier3: tier === 3 ? newTierValue : prevState.tier3,
+            tier4: tier === 4 ? newTierValue : prevState.tier4,
+            tier5: tier === 5 ? newTierValue : prevState.tier5
+        }));
+    }
+
+    const selectChangeHandler = (value) => {
+        setTier({selectedTier: Number(value), ...initialTierStateValue});
+    }
+
+    const onSaleCheckBoxCheckHandler = (checked) => {
+        setTier({sale: checked, ...tier});
+    }
+
+    const onCalcButtonClickHandler = () => {
+        calcCost();
+    }
+
+    const onResetButtonClickHandler = () => {
+        reset();
+    }
 
     return (
-        <>
-        <div className={styles.container}>
-            <p className={styles.title}>
-                티어 계산기
-            </p>
-        
-            <select
-            className={styles.tierselect}
-            onChange={(e) => {
-                const value = e.target.value;
-                handleTierToggle(value === "6tier");
-            }}
-            >
-            <option value="6tier">6티어</option>
-            <option value="5tier">5티어</option>
-            </select>
-            
-        <div className={styles.inputflex}>
-        <p>소지 중인 3티어 카드 수</p> <input value={tier3} type="text" className={`${styles.input} input-tier3`}
-        
-        onChange={(e) => setTier3(Number(e.target.value))}
-        
-        ></input> 
-        </div>
+        <Layout>
+            <ContentBox gap={20}>
+                <CategoryTitle title="티어 계산기"/>
+                <Container alignLeft gap={32}>
+                    <Select className={styles.TierSelect} options={SELECT_TIERS} onChange={selectChangeHandler}/>
+                    <Container alignLeft gap={10}>
+                        <TitleItem title={"소지 중인 3티어 카드 수"}>
+                            <Input
+                                className={styles.TierInput}
+                                value={tier.tier3}
+                                onChange={(value) => {
+                                    setTierValue(3, value)
+                                }}/>
+                        </TitleItem>
+                        <TitleItem title={"소지 중인 4티어 카드 수"}>
+                            <Input
+                                className={styles.TierInput}
+                                value={tier.tier4}
+                                onChange={(value) => {
+                                    setTierValue(4, value)
+                                }}/>
+                        </TitleItem>
+                        {tier.selectedTier === 6 && <TitleItem title={"소지 중인 5티어 카드 수"}>
+                            <Input
+                                className={styles.TierInput}
+                                value={tier.tier5}
+                                onChange={(value) => {
+                                    setTierValue(5, value)
+                                }}/>
+                        </TitleItem>}
+                        <TitleItem title={"10% 할인 테두리 적용"} titlePosition={'right'}>
+                            <CheckBox id={"saleCheckBox"}
+                                      value={tier.sale}
+                                      onChecked={onSaleCheckBoxCheckHandler}/>
+                        </TitleItem>
+                    </Container>
+                    <Container direction={"row"} gap={20}>
+                        <button className={styles.button}
+                                onClick={onCalcButtonClickHandler}>계산하기
+                        </button>
 
-        <div className={styles.inputflex}>
-        <p>소지 중인 4티어 카드 수</p> <input value={tier4} type="text" className={`${styles.input} input-tier4`}
-        onChange={(e) => setTier4(Number(e.target.value))}
-        ></input>
-        </div>
-
-        {tierToggled && (
-            <div className={styles.inputflex}>
-                <p>소지 중인 5티어 카드 수</p> 
-                <input 
-                    value={tier5}
-                    type="text" 
-                    className={`${styles.input} input-tier5`}
-                    onChange={(e) => setTier5(Number(e.target.value))}
-                />
-            </div>
-        )}
-        <div className={styles.inputflex}>
-            <input
-            type="checkbox"
-            value={sale}
-            className={`${styles.checkbox}  checkbox`}
-            onClick={() => {
-                setSale((current) => !current);
-                console.log('Checkbox clicked!');
-            }}
-            /> 10% 할인 테두리 적용
-        </div>
-        
-        <div className={styles.inputflex}>
-        <button className={styles.button}
-        onClick={() => {
-            onClick();
-        }}
-        >계산하기</button>
-        
-        <button className={styles.resetbutton}
-        onClick={() => {
-            onReset();
-        }}
-        >초기화</button>
-        </div>
-
-        <div className={styles.result}>
-
-            <div className={styles.resultarea}>
-                <div>
-                    <p>필요 3티어 카드 수</p>
-                    <p>3티어 → 4티어 강화비용</p>
-
-                    {tierToggled && (
-                        <p>4티어 → 5티어 강화비용</p>
-                    )}
-                    {!tierToggled && (
-                        <p>5티어까지 총 강화비용</p>
-                    )}
-                    {tierToggled && (
-                        <p>6티어까지 총 강화비용</p>
-                    )}
-                </div>
-                <div>
-
-                {tierToggled && (
-                <>
-                    <p>{needcard} 개</p>
-                    
-                    <p>{sale ? threeup * 0.9 : threeup}루블</p>
-                    
-                    <p>{sale ? fourup*0.9 : fourup}루블</p>
-                    <p>{sale ? 
-                       (threeup + fourup + 1000000)
-                        * 0.9 
-                        : 
-                        threeup + fourup + 1000000
-                        }루블</p>
-                        <p>(6티어 1장 강화비용 100만루블)</p>
-                </>
-                ) || (
-                    <>
-                                        <p>{needcard} 개</p>
-                    
-                    <p>{sale ? threeup * 0.9 : threeup}루블</p>
-
-                    <p>{sale ? threeup + 500000 * 0.9 : threeup + 500000}루블</p>
-                    <p>(5티어 1장 강화비용 50만루블)</p>
-                    </>
-                )}
-                </div>
-            </div>
-
-            </div>
-
-
-        </div>
-        </>
-
+                        <button className={styles.resetbutton}
+                                onClick={onResetButtonClickHandler}>초기화
+                        </button>
+                    </Container>
+                </Container>
+                <Divider/>
+                <ResultContainer>
+                    <TitleItem title={"필요 3티어 카드 수"} titleClassName={styles.TierResultTitle}>
+                        <span className={styles.TierResultText}>
+                            {cost.needCard.toLocaleString()} 개
+                        </span>
+                    </TitleItem>
+                    <TitleItem title={"3티어 → 4티어 강화비용"} titleClassName={styles.TierResultTitle}>
+                        <span className={styles.TierResultText}>
+                            {cost.costOf3To4.toLocaleString()} 루블
+                        </span>
+                    </TitleItem>
+                    <TitleItem title={"4티어 → 5티어 강화비용"} titleClassName={styles.TierResultTitle}>
+                        <span className={styles.TierResultText}>
+                            {cost.costOf4To5.toLocaleString()} 루블
+                        </span>
+                    </TitleItem>
+                    <TitleItem title={"6티어까지 총 강화비용수"} alignTop titleClassName={styles.TierResultTitle}>
+                        <Container alignLeft>
+                        <span className={styles.TierResultText}>
+                            {cost.totalCost.toLocaleString()} 루블
+                        </span>
+                            <br/>
+                            (6티어 1장 강화비용 100만루블)
+                        </Container>
+                    </TitleItem>
+                </ResultContainer>
+                <Divider/>
+            </ContentBox>
+        </Layout>
     )
 }
 

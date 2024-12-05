@@ -1,9 +1,8 @@
 import React, {useState} from "react";
 import styles from "./styles/CheckBox.module.css";
-import Container from "./Container.jsx";
 import Check from "../../assets/icons/check.svg?react"
 
-function CheckBox({id, title, value, onChecked}) {
+function CheckBox({id, value, onChecked}) {
     const [isChecked, setIsChecked] = useState(value ?? false)
     return (<label htmlFor={id}
                    className={styles.CheckBox + " " + (isChecked ? styles.CheckedCheckBox : styles.DefaultCheckBox)}>

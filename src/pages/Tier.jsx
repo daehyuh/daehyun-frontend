@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styles from './styles/Tier.module.css';
 import {useState} from 'react';
 import Select from "../components/base/Select.jsx";
@@ -40,16 +40,30 @@ function Tier() {
         }
         calculatedNeedCard = Math.max(calculatedNeedCard, 0);
 
-
         const sale = tier.sale ? 0.9 : 1;
         // 3티어 → 4티어 강화비용 계산
         const calculated3To4 = (calculatedNeedCard + tier.tier3) / 4 * 100000 * sale;
         // 4티어 → 5티어 강화비용 계산
-        const calculated4To5 = (((calculatedNeedCard) / 4) + tier.tier4) / 5 * 500000 * sale;
+        const calculated4To5 = tier.selectedTier === 6 ? (((calculatedNeedCard) / 4) + tier.tier4) / 5 * 500000 * sale : 0;
 
         const defaultCost = (tier.selectedTier === 6 ? 1000000 : 500000) * sale;
         const calculatedTotalCost = calculated3To4 + calculated4To5 + defaultCost;
 
+        setCost({
+            needCard: calculatedNeedCard,
+            costOf3To4: calculated3To4,
+            costOf4To5: calculated4To5,
+            totalCost: calculatedTotalCost
+        })
+    }
+
+    const setInitialCalcCost = (selectedTier) => {
+        const calculatedNeedCard = initialCostStateValue.needCard
+        const sale = tier.sale ? 0.9 : 1;
+        const calculated3To4 = (calculatedNeedCard) / 4 * 100000 * sale;
+        const calculated4To5 = selectedTier === 6 ? ((calculatedNeedCard) / 4) / 5 * 500000 * sale : 0;
+        const defaultCost = (selectedTier === 6 ? 1000000 : 500000) * sale;
+        const calculatedTotalCost = calculated3To4 + calculated4To5 + defaultCost;
         setCost({
             needCard: calculatedNeedCard,
             costOf3To4: calculated3To4,
@@ -77,11 +91,14 @@ function Tier() {
     }
 
     const selectChangeHandler = (value) => {
-        setTier({selectedTier: Number(value), ...initialTierStateValue});
+        const {selectedTier, ...tierStateValue} = initialTierStateValue
+        setTier({selectedTier: Number(value), ...tierStateValue});
+        setInitialCalcCost(value)
     }
 
     const onSaleCheckBoxCheckHandler = (checked) => {
-        setTier({sale: checked, ...tier});
+        const {sale, ...tierStateValue} = initialTierStateValue
+        setTier({sale: checked, ...tierStateValue});
     }
 
     const onCalcButtonClickHandler = () => {
@@ -151,18 +168,19 @@ function Tier() {
                             {cost.costOf3To4.toLocaleString()} 루블
                         </span>
                     </TitleItem>
-                    <TitleItem title={"4티어 → 5티어 강화비용"} titleClassName={styles.TierResultTitle}>
+                    {tier.selectedTier === 6 &&
+                        <TitleItem title={"4티어 → 5티어 강화비용"} titleClassName={styles.TierResultTitle}>
                         <span className={styles.TierResultText}>
                             {cost.costOf4To5.toLocaleString()} 루블
                         </span>
-                    </TitleItem>
-                    <TitleItem title={"6티어까지 총 강화비용수"} alignTop titleClassName={styles.TierResultTitle}>
-                        <Container alignLeft>
+                        </TitleItem>}
+                    <TitleItem title={`${tier.selectedTier === 6 ? '6' : '5'}티어까지 총 강화비용수`} alignTop
+                               titleClassName={styles.TierResultTitle}>
+                        <Container alignLeft gap={10}>
                         <span className={styles.TierResultText}>
                             {cost.totalCost.toLocaleString()} 루블
                         </span>
-                            <br/>
-                            (6티어 1장 강화비용 100만루블)
+                            {tier.selectedTier === 6 ? '(6티어 1장 강화비용 100만루블)' : '(5티어 1장 강화비용 50만루블)'}
                         </Container>
                     </TitleItem>
                 </ResultContainer>

@@ -1,0 +1,6 @@
+.ContentBox {
+    display: flex;
+    flex-direction: column;
+    width: 88%;
+    align-items: start;
+}

@@ -1,58 +1,45 @@
 .header {
-  flex: 1;
-  width: 100%;
-  background: linear-gradient(180deg, #242426 0%, rgba(36, 36, 38, 0) 100%);
-  }
-  
-  .logo{
-    width: 40px;
-    height: 40px;
-  }
-
-  @media (max-width: 768px){
-    .logo{
-      width: 50px;
-    }
-  }
-  @media (max-width: 480px){
-    .logo{
-      width: 25px;
-    }
-  }
-
-
-.menu{
-  /* display: flex; */
-  padding: 0px;
-  width: 100%;
-  background: #85282C;
-}
-
-.menubar {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  overflow-x: auto;
-  white-space: nowrap;
-  gap: 20px; /* Add space between the a tags (adjust the value as needed) */
+    width: 100%;
+    background: #85282C;
 }
 
 .logo {
-  width: 40px;
-  height: 40px;
+    color: #EAEAEA;
+    width: 36px;
+    height: 36px;
+    @media (max-width: 768px) {
+        width: 28px;
+        height: 28px;
+    }
+    @media (max-width: 480px) {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+.menu {
+    width: 100%;
+    background: linear-gradient(180deg, #242426 0%, rgba(36, 36, 38, 0) 100%);
+    padding: 12px 12px 0  12px;
+}
+
+.menubar {
+    padding: 12px 12px 0  12px;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 .menubar::-webkit-scrollbar {
-  height: 8px; /* 세로 스크롤바 높이 */
+    height: 8px;
 }
 
 .menubar::-webkit-scrollbar-track {
-  background: #3A3A3C;
+    background: #3A3A3C;
 }
 
 .menubar::-webkit-scrollbar-thumb {
-  background: #7C7C7D;
-  border-radius: 4px;
+    background: #7C7C7D;
+    border-radius: 4px;
 }

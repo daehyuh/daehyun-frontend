@@ -1,18 +1,13 @@
-.active {
+.headerItemLink {
     color: white;
-    margin-top: auto;
-    margin-bottom: 0;
-    height: 50px;
     text-align: center;
-    line-height: 50px;
+    margin: 0
+}
+
+.active {
     border-bottom: solid 3px white;
+    padding-bottom: 8px;
 }
 
 .inactive {
-    color: white;
-    margin-top: auto;
-    margin-bottom: 0;
-    height: 50px;
-    text-align: center;
-    line-height: 50px;
 }

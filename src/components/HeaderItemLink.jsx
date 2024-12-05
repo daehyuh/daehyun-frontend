@@ -5,7 +5,7 @@ import React from "react";
 function HeaderItemLink({path, href, title}) {
     return (<Link
         to={href}
-        className={path === href ? styles.active : styles.inactive}>
+        className={`${styles.headerItemLink} ${path === href ? styles.active : styles.inactive}`}>
         {title}
     </Link>)
 }

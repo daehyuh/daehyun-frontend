@@ -1,7 +1,7 @@
 .Container {
     display: flex;
-    width: 100%;
     height: fit-content;
+    box-sizing: border-box;
 }
 
 .DirectionRow {
@@ -10,4 +10,8 @@
 
 .DirectionColumn {
 flex-direction: column;
+}
+
+.Container > * {
+    margin: 0;
 }

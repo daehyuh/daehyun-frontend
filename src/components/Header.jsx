@@ -23,36 +23,20 @@ function Header() {
     ]
 
     return (
-        <div className={styles.menu}>
-
-            <Container className={styles.header}>
+        <Container className={styles.header}>
+            <Container className={styles.menu} fullWidth alignLeft>
                 <Link to="/">
                     <Logo className={styles.logo}/>
                 </Link>
             </Container>
-            
-            <div className={styles.menubar}>
-            <Container direction={'row'} gap={20}>
-                {headerItem.map((item, index) => (
-                    <HeaderItemLink path={path} {...item}/>
-                ))}
+            <Container fullWidth className={styles.menubar}>
+                <Container fullWidth alignTop alignLeft direction={'row'} gap={20}>
+                    {headerItem.map((item, index) => (
+                        <HeaderItemLink key={index} path={path} {...item}/>
+                    ))}
+                </Container>
             </Container>
-            </div>
-            
-            {/* <a href='rice'  className={selected === 'rice' ? styles.active : styles.notactive}
-                onClick={() => handleMenuClick('rice')}
-                >
-                    추석이벤트 연습 사이트
-                </a> */}
-
-            {/* <Link
-                    to="/rice"
-                    className={selected === 'rice' ? styles.active : styles.notactive}
-                    onClick={() => handleMenuClick('rice')}
-                >
-                    추석이벤트 연습 사이트
-                </Link> */}
-        </div>
+        </Container>
     );
 }
 

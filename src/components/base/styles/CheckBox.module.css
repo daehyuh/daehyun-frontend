@@ -1,0 +1,37 @@
+.CheckBoxContainer {
+
+}
+
+.CheckBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+
+}
+
+.DefaultCheckBox {
+    background-color: #3A3A3C;
+    color: #343435;
+}
+
+.CheckedCheckBox {
+    background-color: #91282C;
+    color: #D82F45;
+}
+
+.CheckBoxInput {
+    display: none;
+    appearance: none;
+}
+
+.CheckBoxIcon {
+    width: 18px;
+    height: 28px;
+}
+
+.CheckBoxTitle {
+    color: white;
+}

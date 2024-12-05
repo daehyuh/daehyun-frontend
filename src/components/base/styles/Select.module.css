@@ -1,0 +1,25 @@
+.SelectContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: #3A3A3C;
+    border: 1px solid #7C7C7D;
+    padding:12px 12px;
+    border-radius: 4px;
+    margin: 1px;
+}
+
+.Select {
+    width: 100%;
+    color: #EAEAEA;
+    background-color: transparent;
+    border: none;
+    &:focus {
+        outline: none;
+    }
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.Select::-ms-expand{ display: none; } /* 익스플로러용 */

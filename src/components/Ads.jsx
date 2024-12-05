@@ -30,7 +30,7 @@ function Ads() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % ads.length);
-    }, 3000); // 3초마다 첫 번째 광고 변경
+    }, 5000); // 5초마다 첫 번째 광고 변경
     return () => clearInterval(interval);
   }, [ads.length]);
 
@@ -46,9 +46,9 @@ function Ads() {
       <div className={styles.adContainer}>
         <div className={styles.ad}>{
                 <img
-                            src={`../ad/${ads[currentIndex]}`}
+                            src={`${ads[currentIndex]}`}
                             alt="광고"
-                            style={{ width: "100%", height: "auto", display: "flex", 
+                            style={{ width: "100%", height: "150px", display: "flex", 
                             justifyContent: "center", 
                             alignItems: "center", }}
 

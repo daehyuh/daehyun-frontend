@@ -37,26 +37,40 @@ function Gacha() {
         fetchData(selectedGrade);
     }, [selectedGrade]);
 
-    // 체크 상태에 따라 확률 분배
+    
     useEffect(() => {
         if (items.length === 0) return;
+    
 
         const checkedProbabilitySum = Array.from(checkedItems).reduce(
             (acc, index) => acc + (originalChances[index] || 0),
             0
         );
-
-        const uncheckedCount = items.length - checkedItems.size;
-        const distributedChance = uncheckedCount > 0 ? checkedProbabilitySum / uncheckedCount : 0;
-
+        
+        const uncheckedProbabilitySum = originalChances.reduce((acc, chance, index) => {
+            if (!checkedItems.has(index)) {
+                return acc + chance;
+            }
+            return acc;
+        }, 0);
+    
         const updatedItems = items.map((item, index) => {
             if (checkedItems.has(index)) {
-                return { ...item, chance: 0 }; // 체크된 아이템은 확률 0
+                return { ...item, chance: 0 };
             } else {
-                return { ...item, chance: originalChances[index] + distributedChance }; // 나머지에 확률 분배
+                const originalChance = originalChances[index] || 0;
+                const redistributedChance =
+                    uncheckedProbabilitySum > 0
+                        ? (originalChance / uncheckedProbabilitySum) * checkedProbabilitySum
+                        : 0;
+                        console.log(redistributedChance);
+    
+                return { ...item, chance: originalChance + redistributedChance };
             }
         });
 
+
+    
         setItems(updatedItems);
     }, [checkedItems, items.length, originalChances]);
 
@@ -154,7 +168,7 @@ function Gacha() {
                                     />
                                 </td>
                                 <td>{item.name}</td>
-                                <td>{item.chance.toFixed(2)}%</td>
+                                <td>{item.chance.toFixed(3)}%</td>
                             </tr>
                         ))}
                     </tbody>

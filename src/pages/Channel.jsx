@@ -36,6 +36,7 @@ function Channel() {
             <div className={styles.result}>
                 <div className={styles.resultarea}>
                     <ul className={styles.channelList}>
+                        
                         {channels.map((channel, index) => (
                             <li key={index} className={styles.channelItem}>
                                 <span className={styles.channelName}>{channel.channel_name}:</span>

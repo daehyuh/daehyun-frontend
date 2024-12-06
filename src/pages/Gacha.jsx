@@ -146,10 +146,36 @@ function Gacha() {
                         </tr>
                     </thead>
                     <tbody>
+                    <tr className={styles.stickyRow}>
+                <td>
+                    <input
+                        type="checkbox"
+                        checked={checkedItems.size === items.filter(item => item.equip).length}
+                        onChange={(e) => {
+                            const newCheckedItems = new Set(checkedItems);
+                            if (e.target.checked) {
+                                items.forEach((item, index) => {
+                                    if (item.equip) newCheckedItems.add(index);
+                                });
+                            } else {
+                                items.forEach((item, index) => {
+                                    if (item.equip) newCheckedItems.delete(index);
+                                });
+                            }
+                            setCheckedItems(newCheckedItems);
+                            setCookie("checkedItems", Array.from(newCheckedItems).join(","), 7);
+                            setCookie("allChecked", e.target.checked, 7);
+                        }}
+                    />
+                </td>
+                <td colSpan="3">
+                    장착템 확률: {totalEquipProbability.toFixed(4)}%
+                </td>
+            </tr>
                         {items.map((item, index) => (
                             <tr key={index}>
                                 <td>
-                                    
+                                
                                 {item.equip && (
                                         <input
                                             type="checkbox"

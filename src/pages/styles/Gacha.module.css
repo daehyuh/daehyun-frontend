@@ -268,3 +268,10 @@ select {
   text-align: right;
 }
 
+
+.stickyRow {
+  position: sticky;
+  top: 0; /* 테이블의 최상단에 고정 */
+  background-color: #fff; /* 고정 행의 배경색 */
+  z-index: 1; /* 다른 요소 위에 표시 */
+}

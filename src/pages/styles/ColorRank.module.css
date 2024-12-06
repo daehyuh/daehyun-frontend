@@ -331,3 +331,8 @@ select {
       transform: rotate(360deg);
   }
 }
+
+
+.nofi{
+  color : rgb(252, 115, 115);
+}

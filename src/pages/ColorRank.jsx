@@ -80,7 +80,7 @@ function ColorRank() {
                     onChange={handleInputChange}
                 />
             </div>
-            
+            <h4 className={styles.nofi}>첫번째 검은색(000000) 등록자에게 깜10장을 드립니다!</h4>
             {/* 로딩 상태에 따른 표시 */}
             {loading ? (
                 <div className={styles.loadingSpinner}>

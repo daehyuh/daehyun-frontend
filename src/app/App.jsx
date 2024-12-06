@@ -18,6 +18,7 @@ import Header from "../components/Header.jsx";
 import Ads from "../components/Ads.jsx";
 import Terms from "../pages/terms.jsx";
 import Privacy from "../pages/privacy.jsx";
+import Channel from "../pages/Channel.jsx";
 
 function App() {
     const location = useLocation(); // 현재 경로 정보를 가져옴
@@ -46,6 +47,8 @@ function App() {
                 <Route path="/권엽"  element={<Discipline />} />
            
                 <Route path="/출석보상"  element={<DailyReward />} />
+                <Route path="/채널동접" element={<Channel />} />
+                
          
                 <Route path="/유저게시판"  element={<Board />} />
                 <Route path="/유저게시판/:id" element={<BoardDetail />} />

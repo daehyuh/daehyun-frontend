@@ -168,7 +168,10 @@ function Gacha() {
                         }}
                     />
                 </td>
-                <td colSpan="3">
+                <td>
+                    <strong>전체 체크 박스</strong>
+                </td>
+                <td colSpan="2">
                     장착템 확률: {totalEquipProbability.toFixed(4)}%
                 </td>
             </tr>

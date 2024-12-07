@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 import { Analytics } from '@vercel/analytics/react';
 import Main from "../pages/Main.jsx";
-import Footer from "../components/Footer.jsx";
+import Footer from "../components/Footer.tsx";
 import Tier from "../pages/Tier.tsx";
 import Mail from "../pages/Mail.jsx";
 import Exchange from "../pages/Exchange.jsx";
@@ -15,7 +15,7 @@ import BoardDetail from "../pages/BoardDetail.jsx";
 import ColorRank from "../pages/ColorRank.jsx";
 import LimitCheck from "../pages/LimitCheck.jsx";
 import Header from "../components/Header.tsx";
-import Ads from "../components/Ads.jsx";
+import Ads from "../components/Ads.tsx";
 import Terms from "../pages/terms.jsx";
 import Privacy from "../pages/privacy.jsx";
 import Channel from "../pages/Channel.jsx";

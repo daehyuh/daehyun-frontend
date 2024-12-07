@@ -20,13 +20,15 @@ type StyledContainerProps = {
     borderRadius?: Property.BorderRadius
     padding?: Property.Padding
     margin?: Property.Margin
+    boxShadow?: Property.BoxShadow
+    minHeight?: Property.MinHeight
 }
 
 const StyledContainer = styled.div<StyledContainerProps>`
     display: flex;
     height: fit-content;
     box-sizing: border-box;
-    width: ${({fullWidth}) => fullWidth ? '100%' : 'fit-content'};
+    width: ${({width, fullWidth}) => fullWidth ? '100%' : width ? width : 'fit-content'};
     max-width: 100%;
     flex-direction: ${({flexDirection}) => flexDirection ?? 'column'};
     background: ${({background}) => background};
@@ -36,7 +38,8 @@ const StyledContainer = styled.div<StyledContainerProps>`
     padding: ${({padding}) => padding};
     margin: ${({margin}) => margin};
     gap: ${({gap}) => gap};
-    
+    box-shadow: ${({boxShadow}) => boxShadow};
+    min-height: ${({minHeight}) => minHeight};
     ${({flexDirection, align}) => alignToStyle(flexDirection ?? 'column', align ?? 'center')}
 `
 

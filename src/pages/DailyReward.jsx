@@ -77,6 +77,7 @@ function DailyReward() {
                             <option value="3">3단계</option>
                             <option value="4">4단계</option>
                             <option value="5">5단계</option>
+                            <option value="6">6단계</option>
                         </select>
                     </div>
                     <div className={styles.inputflex}>

@@ -6,8 +6,8 @@ function Ads() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentIndex2, setCurrentIndex2] = useState(0);
 
-    const [ads, setAds] = useState([]);
-    const [ads2, setAds2] = useState([]);
+    const [ads, setAds] = useState({});
+    const [ads2, setAds2] = useState({});
 
     // api 가져와서 ads에 저장
     useEffect(() => {

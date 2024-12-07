@@ -1,5 +1,5 @@
 import styles from "./styles/Footer.module.css";
-import Layout from "./base/Layout.jsx";
+import Layout from "./base/Layout.tsx";
 
 function Footer() {
     return (

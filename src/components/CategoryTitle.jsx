@@ -1,5 +1,5 @@
 import styles from './styles/CategoryTitle.module.css'
-import Container from "./base/Container.jsx";
+import Container from "./base/Container.tsx";
 
 function CategoryTitle({title}) {
     return (

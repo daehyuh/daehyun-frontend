@@ -1,4 +1,4 @@
-import Container from "./base/Container.jsx";
+import Container from "./base/Container.tsx";
 import styles from "./styles/ResultContainer.module.css";
 import React from "react";
 

@@ -1,6 +1,7 @@
 import React from "react";
 import {Property} from "csstype";
 import styled from "styled-components";
+import Align, {alignToStyle} from "../types/Align";
 
 type LayoutProps = {
     children: React.ReactNode;
@@ -20,6 +21,7 @@ const StyledLayout = styled.div<StyledLayoutProps>`
     overflow-y: ${({scrollable}) => scrollable ? 'auto' : 'hidden'};
     padding: ${({padding}) => padding};
     height: ${({scrollable}) => scrollable && '100%'};
+    ${({align}) => alignToStyle('column', align ?? 'center')}
 `
 
 function Layout({

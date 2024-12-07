@@ -1,49 +1,68 @@
-import React, {useRef} from "react";
-import Container from "./Container";
+import React from "react";
 import styled from "styled-components";
+import ReactSelect from "react-select";
 
 type SelectOptionType = {
-    title: string
+    label: string
     value: string | number,
 }
 
 type SelectProps = {
+    value: SelectOptionType
     options: SelectOptionType[],
-    onChange?: (value: string) => void;
+    onChange?: (value: SelectOptionType) => void;
 }
 
-const StyledSelect = styled.select`
-    width: 100%;
+const StyledSelect = styled(ReactSelect)`
+    flex: 1;
+    width: 60%;
     color: #EAEAEA;
-    background-color: transparent;
-    border: none;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-
-    &:focus {
-        outline: none;
+    background-color: #3a3a3c;
+    border: 1px solid #7c7c7d;
+    border-radius: 4px;
+    padding: 4px 12px;
+    cursor: pointer;
+    caret-color: transparent;
+    
+    .Select__menu {
+        color: #3c3d3e;
+        left: 0;
+        width: 100%;
+        background-color: #3A3A3C;
+        padding: 4px 4px;
+        border: 1px solid #7c7c7d;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
     }
-
-    &::-ms-expand {
-        display: none;
+    
+    .Select__option {
+        padding: 8px 4px 4px 4px;
+        color: #DCDCDC;
+    }
+    
+    .Select__option: hover {
+        background-color: #4a4a4a;
+        border-radius: 4px;
+        border-bottom: none;
+    }
+    
+    .Select__indicator-separator {
+        height: 1px;
+        background-color: blue;
     }
 `
 
-function Select({options, onChange}: SelectProps) {
-    const selectRef = useRef(null);
-
+function Select({value, options, onChange}: SelectProps) {
     return (
-        <Container flexDirection={"row"} gap={'10px'}>
-            <StyledSelect
-                ref={selectRef}
-                onChange={(e) => {
-                    onChange?.(e.target.value)
-                }}
-            >
-                {options.map((option, index) => (<option key={index} value={option.value}>{option.title}</option>))}
-            </StyledSelect>
-        </Container>
+        <StyledSelect
+            classNamePrefix="Select"
+            unstyled={true}
+            value={value}
+            options={options}
+            onChange={(selected) => {
+                onChange?.(selected as SelectOptionType)
+            }}
+        />
     );
 }
 

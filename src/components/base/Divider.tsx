@@ -12,6 +12,7 @@ type StyledDividerProps = {
 const StyledDivider = styled.div<StyledDividerProps>`
     width: 100%;
     box-sizing: border-box;
+    height: 2px;
     background-color: ${({dividerColor}) => dividerColor ?? '#91282C'} ;
     padding: ${({padding}) => padding};
 `

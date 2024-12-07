@@ -6,15 +6,17 @@ import Divider from "./base/Divider";
 import Input from "./base/Input";
 import Layout from "./base/Layout";
 import Select, {SelectOptionType} from "./base/Select";
+import Text from "./base/Text";
 
 import Header from "./Header";
 import HeaderItemLink from "./HeaderItemLink";
-import Footer from "./Footer";
-import Ads from "./Ads";
+// import Footer from "./Footer";
+// import Ads from "./Ads";
 import CategoryTitle from "./CategoryTitle";
-import TitleItem from "./TitleItem";
+import TitleItemContainer from "./TitleItemContainer";
 import ResultContainer from "./ResultContainer";
 
-export {SelectOptionType}
-export {Layout, Container, Divider, ContentLayout, Button, Input, CheckBox, Select}
-export {Header, HeaderItemLink, Footer, Ads, CategoryTitle, TitleItem, ResultContainer}
+export type {SelectOptionType}
+export {Layout, ContentLayout, Container, Text, Divider, Button, Input, CheckBox, Select}
+export {Header, HeaderItemLink, CategoryTitle, TitleItemContainer, ResultContainer}
+// Footer, Ads, TitleItem,}

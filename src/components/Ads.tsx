@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import fetchAds from "../apis/fetchAds";
 import styled from "styled-components";
 import Container from "./base/Container";
+import { useLocation } from "react-router-dom";
 
 const StyledAdContainer = styled.div`
     font-size: 22px; /* 글씨 크기 */
@@ -47,8 +48,13 @@ function Ads() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentIndex2, setCurrentIndex2] = useState(0);
 
+
     const [ads, setAds] = useState<string[]>([]);
     const [ads2, setAds2] = useState<string[]>([]);
+    
+    const location = useLocation();
+    const { pathname } = location;
+    const path = decodeURIComponent(pathname);
 
     // api 가져와서 ads에 저장
     useEffect(() => {
@@ -87,7 +93,12 @@ function Ads() {
                     />
                 }</StyledAdContainer>
             </Container>
-            <StyledA href="https://open.kakao.com/o/sWIax8Vc">대현닷컴 홍보문의 링크</StyledA>
+
+            
+            { path === "/" ||
+                <StyledA href="https://open.kakao.com/o/sWIax8Vc">대현닷컴 홍보문의 링크</StyledA>
+            }
+        
         </Container>
     );
 }

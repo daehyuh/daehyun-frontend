@@ -32,8 +32,8 @@ function App() {
             {showHeader && 
             <>
             <Header setSelectedMenu={setSelectedMenu} />
-            <Ads />
-            </>             
+            <Ads /> 
+            </> || <Ads />         
             } {/* /main 경로에서는 Header를 렌더링하지 않음 */}
             
             <Routes>

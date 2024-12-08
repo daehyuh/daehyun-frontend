@@ -7,4 +7,7 @@ export default defineConfig({
     plugins: [react(), svgr(
         {include: "**/*.svg?react"}
     )],
+    define: {
+        'import.meta.env.BASE_URL': JSON.stringify('/')
+    }
 })

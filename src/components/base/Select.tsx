@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import ReactSelect from "react-select";
+import {Property} from "csstype";
 
 type SelectOptionType = {
     label: string
@@ -11,11 +12,15 @@ type SelectProps = {
     value: SelectOptionType
     options: SelectOptionType[],
     onChange?: (value: SelectOptionType) => void;
+} & StyledSelectProps
+
+type StyledSelectProps = {
+    width?: Property.Width
 }
 
-const StyledSelect = styled(ReactSelect)`
+const StyledSelect = styled(ReactSelect)<StyledSelectProps>`
     flex: 1;
-    width: 60%;
+    width: ${({width}) => width ?? '60%'};
     color: #EAEAEA;
     background-color: #3a3a3c;
     border: 1px solid #7c7c7d;
@@ -33,6 +38,13 @@ const StyledSelect = styled(ReactSelect)`
         border: 1px solid #7c7c7d;
         border-bottom-left-radius: 4px;
         border-bottom-right-radius: 4px;
+        z-index: 100;
+       
+    }
+    
+    .Select__menu-list {
+        overflow-y: scroll;
+        max-height: 160px;
     }
     
     .Select__option {
@@ -44,7 +56,9 @@ const StyledSelect = styled(ReactSelect)`
         background-color: #4a4a4a;
         border-radius: 4px;
         border-bottom: none;
+        max-height: 100px;
     }
+    
     
     .Select__indicator-separator {
         height: 1px;
@@ -52,13 +66,14 @@ const StyledSelect = styled(ReactSelect)`
     }
 `
 
-function Select({value, options, onChange}: SelectProps) {
+function Select({value, options, onChange, ...styles}: SelectProps) {
     return (
         <StyledSelect
             classNamePrefix="Select"
             unstyled={true}
             value={value}
             options={options}
+            {...styles}
             onChange={(selected) => {
                 onChange?.(selected as SelectOptionType)
             }}
@@ -68,3 +83,6 @@ function Select({value, options, onChange}: SelectProps) {
 
 export type {SelectOptionType}
 export default Select
+
+
+

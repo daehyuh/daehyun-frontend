@@ -112,7 +112,7 @@ function DailyReward() {
                    />
                    </div>
                 </div>
-
+            
             <div className={styles.result}>
             <div className={styles.resultarea}>
                 <p>

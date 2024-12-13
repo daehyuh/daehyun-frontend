@@ -6,6 +6,8 @@ import Logo from "./base/Logo";
 import styled from "styled-components";
 
 const StyledCMenuContainer = styled(Container)`
+    overflow-x: auto;
+    
     white-space: nowrap;
     &::-webkit-scrollbar {
         height: 8px;
@@ -48,7 +50,7 @@ function Header() {
                     <Logo />
                 </Link>
             </Container>
-            <StyledCMenuContainer fullWidth flexDirection={'row'} gap={'20px'}  padding={'12px 12px 0  12px'} align={'topLeft'}>
+            <StyledCMenuContainer fullWidth flexDirection={'row'} gap={'20px'}  padding={'12px 12px 0  12px'} align={'topLeft'} >
                     {headerItem.map((item, index) => (
                         <HeaderItemLink key={index} path={path} {...item}/>
                     ))}

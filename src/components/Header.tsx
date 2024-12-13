@@ -41,7 +41,7 @@ function Header() {
     ]
 
     return (
-        <Container fullWidth backgroundColor={'#85282C'} align={'topLeft'}>
+        <Container fullWidth backgroundColor={'#85282C'} align={'topLeft'} margin={'0 0 15px 0'}>
             <Container fullWidth
                        align={'topLeft'}
                        background={'linear-gradient(180deg, #242426 0%, rgba(36,36,38,0) 100%)'}

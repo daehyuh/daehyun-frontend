@@ -23,7 +23,7 @@ import Nofi from "../components/Nofi.tsx";
 
 function App() {
     const location = useLocation(); // 현재 경로 정보를 가져옴
-    const [selectedMenu, setSelectedMenu] = useState(null); // 선택된 메뉴 상태
+    const [selectedMenu, setSelectedMenu] = useState('상자깡'); // 선택된 메뉴 상태
 
     const showHeader = location.pathname !== '/'; // "/main"일 때 Header를 렌더링하지 않도록 설정
 
@@ -43,11 +43,12 @@ function App() {
             } */}
 
             <Nofi />
-            <Ads />
             <Header setSelectedMenu={setSelectedMenu} />
-            
+            <Ads />
             
             <Routes>
+                <Route path="/Main" element={<Gacha />} />
+                
                 <Route path="/" element={<Gacha />} />
                 <Route path="/상자깡"  element={<Gacha />} />
                 <Route path="/검닉랭킹"  element={<ColorRank />} />

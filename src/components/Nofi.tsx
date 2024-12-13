@@ -11,7 +11,7 @@ const StyledAdContainer = styled.div`
     text-align: center;
     animation: fade-in 0.5s ease-in-out; /* 부드러운 등장 효과 */
     overflow: clip;
-    
+
     @keyframes fade-in {
         from {
             opacity: 0;
@@ -25,20 +25,29 @@ const StyledAdContainer = styled.div`
 const StyledImage = styled.img`
     display: flex;
     width: 100%;
-    height: 150px;
     max-height: 150px;
     justify-content: center;
     align-items: center;
-    border-radius:10px;
 `
 
-function Ads() {
+const StyledA = styled.a`
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 20px;
+    background-color: #1e1e1e;
+    width: 100%;
+    /* a태그 색 */
+    color: #EAEAEA;
+    text-Align:center;
+    font-weight: bold;
+    display:flex;
+    justify-Content:center;
+`
+
+
+function Nofi() {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [currentIndex2, setCurrentIndex2] = useState(0);
-
-
-    const [ads, setAds] = useState<string[]>([]);
-    const [ads2, setAds2] = useState<string[]>([]);
+    const [nofi, setNofi] = useState<string[]>([]);
     
     const location = useLocation();
     const { pathname } = location;
@@ -46,43 +55,29 @@ function Ads() {
 
     // api 가져와서 ads에 저장
     useEffect(() => {
-        fetchAds((ads) => {
-            setAds(ads.urls[1])
-            setAds2(ads.urls[2])
+        fetchAds((nofi) => {
+            setNofi(nofi.urls[0])
         })
     }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % ads.length);
-        }, 5000); // 5초마다 첫 번째 광고 변경
-        return () => clearInterval(interval);
-    }, [ads.length]);
-
-    useEffect(() => {
         const interval2 = setInterval(() => {
-            setCurrentIndex2((prevIndex) => (prevIndex + 1) % ads2.length);
+            setCurrentIndex((prevIndex) => (prevIndex + 1) % nofi.length);
         }, 5000); // 5초마다 두 번째 광고 변경
         return () => clearInterval(interval2);
-    }, [ads2.length]);
+    }, [nofi.length]);
 
     return (
         <Container fullWidth>
-            <Container width={'90%'}
-                       border={'1px solid #7C7C7D'}
-                       backgroundColor={'#3A3A3C'}
-                       boxShadow={'0 0 10px 0 rgba(0, 0, 0, 0.1)'}
-                       borderRadius={'10px'}>
-                <StyledAdContainer>{
                     <StyledImage
-                        src={`${ads[currentIndex]}`}
+                        src={`${nofi[currentIndex]}`}
                         alt="광고"
                     />
-                }</StyledAdContainer>
-            </Container>
-
+        
+        <StyledA href="https://open.kakao.com/o/sWIax8Vc">대현 : 카카오톡 오픈카톡</StyledA>
+        
         </Container>
     );
 }
 
-export default Ads;
+export default Nofi;

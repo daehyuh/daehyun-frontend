@@ -52,7 +52,7 @@ function Ads() {
       </div> */}
 
 
-            <a className={styles.lastAtag} href="https://open.kakao.com/o/sWIax8Vc">대현닷컴 홍보문의 링크</a>
+            <a className={styles.lastAtag} href="https://open.kakao.com/o/sWIax8Vc">https://open.kakao.com/o/sWIax8Vc</a>
 
         </>
     );

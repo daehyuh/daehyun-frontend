@@ -4,6 +4,7 @@ import Ads from "../constant/Ads";
 
 const fetchAds = (completion: (ad: Ads) => void) => {
     Promise.allSettled<Ad>([
+        fetchAPI<Ad>('nofi'),
         fetchAPI<Ad>('ad1'),
         fetchAPI<Ad>('ad2')
     ])

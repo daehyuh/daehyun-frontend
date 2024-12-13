@@ -19,6 +19,7 @@ import Ads from "../components/Ads.tsx";
 import Terms from "../pages/terms.jsx";
 import Privacy from "../pages/privacy.jsx";
 import Channel from "../pages/Channel.jsx";
+import Nofi from "../components/Nofi.tsx";
 
 function App() {
     const location = useLocation(); // 현재 경로 정보를 가져옴
@@ -29,15 +30,25 @@ function App() {
     return (
         <>
          <Analytics /> {/* Vercel Analytics 추가 */}
-            {showHeader && 
+            {/* {showHeader && 
             <>
             <Header setSelectedMenu={setSelectedMenu} />
-            <Ads /> 
-            </> || <Ads />         
-            } {/* /main 경로에서는 Header를 렌더링하지 않음 */}
+            </>
+            ||
+            <>
+            <Nofi />
+            <Ads />
+            </>
+            
+            } */}
+
+            <Nofi />
+            <Ads />
+            <Header setSelectedMenu={setSelectedMenu} />
+            
             
             <Routes>
-                <Route path="/" element={<Main />} />
+                <Route path="/" element={<Gacha />} />
                 <Route path="/상자깡"  element={<Gacha />} />
                 <Route path="/검닉랭킹"  element={<ColorRank />} />
                 <Route path="/획초체크"  element={<LimitCheck />} />
@@ -55,8 +66,8 @@ function App() {
                 <Route path="/이용약관" element={<Terms />} />
                 <Route path="/개인정보처리방침" element={<Privacy />} />
             </Routes>
+            <Ads />
             <Footer />
-            <></>
         </>
     );
 }

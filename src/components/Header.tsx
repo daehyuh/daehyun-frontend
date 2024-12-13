@@ -45,7 +45,7 @@ function Header() {
             <Container fullWidth
                        align={'topLeft'}
                        background={'linear-gradient(180deg, #242426 0%, rgba(36,36,38,0) 100%)'}
-                       padding={'12px 12px 0  12px'}>
+                       padding={'12px 12px 12px  12px'}>
                 <Link to="/">
                     <Logo />
                 </Link>

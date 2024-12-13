@@ -32,12 +32,10 @@ const StyledImage = styled.img`
     border-radius:10px;
 `
 
-function Ads() {
-    const [currentIndex, setCurrentIndex] = useState(0);
+function Adsbottom() {
+
     const [currentIndex2, setCurrentIndex2] = useState(0);
 
-
-    const [ads, setAds] = useState<string[]>([]);
     const [ads2, setAds2] = useState<string[]>([]);
     
     const location = useLocation();
@@ -47,17 +45,9 @@ function Ads() {
     // api 가져와서 ads에 저장
     useEffect(() => {
         fetchAds((ads) => {
-            setAds(ads.urls[1])
-            setAds2(ads.urls[2])
+            setAds2(ads.urls[1])
         })
     }, []);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % ads.length);
-        }, 5000); // 5초마다 첫 번째 광고 변경
-        return () => clearInterval(interval);
-    }, [ads.length]);
 
     useEffect(() => {
         const interval2 = setInterval(() => {
@@ -75,7 +65,7 @@ function Ads() {
                        borderRadius={'10px'}>
                 <StyledAdContainer>{
                     <StyledImage
-                        src={`${ads[currentIndex]}`}
+                        src={`${ads2[currentIndex2]}`}
                         alt="광고"
                     />
                 }</StyledAdContainer>
@@ -85,4 +75,4 @@ function Ads() {
     );
 }
 
-export default Ads;
+export default Adsbottom;

@@ -1,6 +1,7 @@
 import { Route, Routes, useLocation, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import '../utils/extensions/index'
+import '../utils/overrideConsole'
 
 import { Analytics } from '@vercel/analytics/react';
 import Main from "../pages/Main.jsx";

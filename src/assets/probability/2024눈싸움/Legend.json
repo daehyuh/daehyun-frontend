@@ -1,0 +1,12 @@
+{
+    "items": [
+      { "name": "성냥팔이 소녀 영매 스킨", "chance": 15, "equip": true },
+      { "name": "구원의 종지기 교주 스킨", "chance": 15, "equip": true },
+      { "name": "겨울밤의 친구 테두리", "chance": 15, "equip": true },
+      { "name": "금빛 모금함 테두리", "chance": 15, "equip": true },
+      { "name": "겨울 성냥 바구니", "chance": 15, "equip": true },
+      { "name": "종의 증표", "chance": 15, "equip": true },
+      { "name": "성불 소녀와 유령 친구들", "chance": 10, "equip": true }
+    ]
+  }
+  

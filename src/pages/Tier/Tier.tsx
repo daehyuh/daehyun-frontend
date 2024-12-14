@@ -14,7 +14,7 @@ import {
 } from "@/components";
 
 function Tier() {
-    const SELECT_TIERS: SelectOptionType[] = [{label: '6티어', value: 6}, {label: '5티어', value: 5}]
+    const SELECT_TIERS: SelectOptionType<number>[] = [{label: '6티어', value: 6}, {label: '5티어', value: 5}]
 
     const [selectedTierValue, setSelectedTierValue] = useState(SELECT_TIERS[0]);
 
@@ -96,7 +96,7 @@ function Tier() {
         }));
     }
 
-    const selectChangeHandler = (value: SelectOptionType) => {
+    const selectChangeHandler = (value: SelectOptionType<number>) => {
         const numberValue = Number(value.value)
         const {selectedTier, sale, ...tierStateValue} = initialTierStateValue
         setSelectedTierValue(value)

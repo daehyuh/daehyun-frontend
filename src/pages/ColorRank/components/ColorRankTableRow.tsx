@@ -2,7 +2,6 @@ import React from "react";
 import {Property} from "csstype";
 import RankUser from "@/constant/RankUser";
 import styled from "styled-components";
-import ColorBox from "@components/ColorBox";
 import {Container, Text} from "@/components";
 
 type ColorRankTableRowProps = {

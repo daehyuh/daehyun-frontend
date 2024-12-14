@@ -102,20 +102,20 @@ function ColorRank() {
                 </Container>
                 <Text color={"#fc7373"} fontWeight={'bold'}>첫번째 검은색(000000) 등록자에게 깜10장을 드립니다!</Text>
                 <Container fullWidth align={'center'} gap={'10px'}>
-                    <Spinner isLoading={loading}/>
-                    <Table fullWidth
-                           headers={["랭킹", "이름", "색상(HEX)", "점수"]}
-                           columnWidths={["15%", "35%", "25%", "25%"]}
-                           useRankColor
-                    >
-                        <tbody>
-                        {searchData.filteredItems.map((item, index) => (
-                            <ColorRankTableRow key={index + 1}
-                                               rankUser={item}
-                                               backgroundColor={rankData.easterEgg?.[item.nickname] ? `#${rankData.easterEgg?.[item.nickname]}` : undefined}/>
-                        ))}
-                        </tbody>
-                    </Table>
+                    {loading ? <Spinner isLoading={loading}/> :
+                        <Table fullWidth
+                               headers={["랭킹", "이름", "색상(HEX)", "점수"]}
+                               columnWidths={["15%", "35%", "25%", "25%"]}
+                               useRankColor
+                        >
+                            <tbody>
+                            {searchData.filteredItems.map((item, index) => (
+                                <ColorRankTableRow key={index + 1}
+                                                   rankUser={item}
+                                                   backgroundColor={rankData.easterEgg?.[item.nickname] ? `#${rankData.easterEgg?.[item.nickname]}` : undefined}/>
+                            ))}
+                            </tbody>
+                        </Table>}
                 </Container>
             </ContentLayout>
         </Layout>

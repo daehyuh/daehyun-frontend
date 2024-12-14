@@ -3,15 +3,15 @@ import styled from "styled-components";
 import ReactSelect from "react-select";
 import {Property} from "csstype";
 
-type SelectOptionType = {
+type SelectOptionType<T> = {
     label: string
-    value: string | number,
+    value: T,
 }
 
-type SelectProps = {
-    value: SelectOptionType
-    options: SelectOptionType[],
-    onChange?: (value: SelectOptionType) => void;
+type SelectProps <T>  = {
+    value: SelectOptionType<T>
+    options: SelectOptionType<T>[],
+    onChange?: (value: SelectOptionType<T>) => void;
 } & StyledSelectProps
 
 type StyledSelectProps = {
@@ -66,7 +66,7 @@ const StyledSelect = styled(ReactSelect)<StyledSelectProps>`
     }
 `
 
-function Select({value, options, onChange, ...styles}: SelectProps) {
+function Select<T>({value, options, onChange, ...styles}: SelectProps<T>) {
     return (
         <StyledSelect
             classNamePrefix="Select"
@@ -75,7 +75,7 @@ function Select({value, options, onChange, ...styles}: SelectProps) {
             options={options}
             {...styles}
             onChange={(selected) => {
-                onChange?.(selected as SelectOptionType)
+                onChange?.(selected as SelectOptionType<T>)
             }}
         />
     );

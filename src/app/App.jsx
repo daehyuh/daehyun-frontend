@@ -10,7 +10,7 @@ import Tier from "../pages/Tier/Tier.tsx";
 import Mail from "../pages/Mail.jsx";
 import Exchange from "../pages/Exchange.jsx";
 import Discipline from "../pages/Discipline.jsx";
-import Gacha from "../pages/Gacha.jsx";
+import Gacha from "../pages/Gacha/Gacha.tsx";
 import DailyReward from "../pages/DailyReward.jsx";
 import Board from "../pages/Board.jsx";
 import BoardDetail from "../pages/BoardDetail.jsx";

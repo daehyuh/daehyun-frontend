@@ -9,9 +9,9 @@ import {
     Layout,
     ContentLayout,
     Divider,
-    CategoryTitle, TitleItemContainer, ResultContainer, Button
+    CategoryTitle, TitleItemContainer, ResultContainer, Button,
+    Text
 } from "../components";
-import Text from "../components/base/Text";
 
 function Tier() {
     const SELECT_TIERS: SelectOptionType[] = [{label: '6티어', value: 6}, {label: '5티어', value: 5}]

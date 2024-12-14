@@ -19,7 +19,8 @@
     "react-select": "^5.8.3",
     "styled-component": "^2.8.0",
     "styled-components": "^6.1.13",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

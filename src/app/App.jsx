@@ -14,7 +14,7 @@ import Gacha from "../pages/Gacha.jsx";
 import DailyReward from "../pages/DailyReward.jsx";
 import Board from "../pages/Board.jsx";
 import BoardDetail from "../pages/BoardDetail.jsx";
-import ColorRank from "../pages/ColorRank.jsx";
+import ColorRank from "../pages/ColorRank/ColorRank.jsx";
 import LimitCheck from "../pages/LimitCheck.jsx";
 import Header from "../components/Header.tsx";
 import Ads from "../components/Ads.tsx";

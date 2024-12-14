@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from "react";
-import styles from "./styles/ColorRank.module.css";
+import React, {useState, useEffect} from "react";
+import styles from "../styles/ColorRank.module.css";
+import fetchRank from "../../apis/fetchRank";
+import mergeAPI from "../../apis/base/mergeAPI";
+import fetchTime from "@apis/fetchTime";
 
 function ColorRank() {
     // Loading 상태 변수 추가
@@ -10,16 +13,32 @@ function ColorRank() {
 
     // API 호출을 통해 데이터를 가져오는 함수
     const fetchData = async () => {
+        await mergeAPI({
+                rankUsers: fetchRank(),
+                t1: fetchTime(),
+                t2: fetchTime()
+            },
+            {
+                success: ({rankUsers, t1, t2}) => {
+
+                },
+                failure:
+                    (error) => {
+                        console.log(error);
+                    }
+            }
+        )
+        
         try {
             const response = await fetch("https://hufsnc.com/api/datas");
             const data = await response.json();
 
             const response2 = await fetch("https://hufsnc.com/api/time");
             const data2 = await response2.json();
-            
+
             const response3 = await fetch("https://hufsnc.com/api/easteregg");
             const data3 = await response3.json();
-            
+
             setEasterEgg(data3);
             setTime(data2);
             // data에 랭킹을 컬럼추가
@@ -60,17 +79,18 @@ function ColorRank() {
         <div className={styles.container}>
             <h1 className={styles.title}>검닉 랭킹</h1>
             <div>
-                    <h2>최후의 반론에서 댓글을 달면, 랭킹에 자동으로 추가됩니다.</h2>
-                    <h3>최근 갱신일 {time['colortime']}</h3>
-                    <div className={styles.lastAtag}>
-                    <a style={{color:"red"}} href="https://mafia42.com/#/community/lastDiscussion/lastShow/1007550">최후의 반론 링크</a>
-                    </div>
-                    {/* <img
+                <h2>최후의 반론에서 댓글을 달면, 랭킹에 자동으로 추가됩니다.</h2>
+                <h3>최근 갱신일 {time['colortime']}</h3>
+                <div className={styles.lastAtag}>
+                    <a style={{color: "red"}} href="https://mafia42.com/#/community/lastDiscussion/lastShow/1007550">최후의
+                        반론 링크</a>
+                </div>
+                {/* <img
                             src={`../image/comment.PNG`}
                             alt="comment"
                             style={{ width: "100%", height: "auto", margin: "0 0 10px 0" }}
                     /> */}
-                </div>
+            </div>
             <div className={styles.inputflex}>
                 <input
                     type="text"
@@ -90,32 +110,32 @@ function ColorRank() {
                 <div className={styles.ColorRankContainer}>
                     <table className={styles.ColorRank}>
                         <thead>
-                            <tr>
-                                <th>랭킹</th>
-                                <th>이름</th>
-                                <th>색상(Hex)</th>
-                                <th>점수</th>
-                            </tr>
+                        <tr>
+                            <th>랭킹</th>
+                            <th>이름</th>
+                            <th>색상(Hex)</th>
+                            <th>점수</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {filteredItems.map((item, index) => (
-                                <tr key={index + 1} data-name={item.nickname}>
+                        {filteredItems.map((item, index) => (
+                            <tr key={index + 1} data-name={item.nickname}>
 
-                                
-                                    <td style={easterEgg[item.nickname] ? { backgroundColor: `#${easterEgg[item.nickname]}` } : null}>{item.rank}위</td>
-                                    
-                                    
-                                    <td>{item.nickname}</td>
-                                    <td className={styles.inputflex}>
-                                        <div
-                                            className={styles.colorblock}
-                                            style={{ backgroundColor: `#${item.color}` }}
-                                        ></div>
-                                        {item.color}
-                                    </td>
-                                    <td>{item.closeness}</td>
-                                </tr>
-                            ))}
+
+                                <td style={easterEgg[item.nickname] ? {backgroundColor: `#${easterEgg[item.nickname]}`} : null}>{item.rank}위</td>
+
+
+                                <td>{item.nickname}</td>
+                                <td className={styles.inputflex}>
+                                    <div
+                                        className={styles.colorblock}
+                                        style={{backgroundColor: `#${item.color}`}}
+                                    ></div>
+                                    {item.color}
+                                </td>
+                                <td>{item.closeness}</td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                 </div>

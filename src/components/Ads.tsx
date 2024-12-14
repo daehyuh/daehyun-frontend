@@ -58,12 +58,13 @@ function Ads() {
 
     // api 가져와서 ads에 저장
     useEffect(() => {
-        fetchAds({
-            success: (ads) => {
-                setAds(ads[0].ad)
-                setAds2(ads[1].ad)
-            }
-        })
+        fetchAds()
+            .completionSettledResult({
+                success: (ads) => {
+                    setAds(ads[0]?.ad ?? [])
+                    setAds2(ads[1]?.ad ?? [])
+                }
+            })
     }, []);
 
     useEffect(() => {

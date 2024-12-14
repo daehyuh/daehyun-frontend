@@ -10,6 +10,7 @@ type ContainerProps = {
 
 type StyledContainerProps = {
     fullWidth?: boolean
+    noAlign?: boolean
     align?: Align
     flexDirection?: Property.FlexDirection
     width?: Property.Width
@@ -22,9 +23,11 @@ type StyledContainerProps = {
     margin?: Property.Margin
     boxShadow?: Property.BoxShadow
     minHeight?: Property.MinHeight
+    maxHeight?: Property.MaxHeight
 }
 
 const StyledContainer = styled.div<StyledContainerProps>`
+    position: relative;
     display: flex;
     height: fit-content;
     box-sizing: border-box;
@@ -40,7 +43,22 @@ const StyledContainer = styled.div<StyledContainerProps>`
     gap: ${({gap}) => gap};
     box-shadow: ${({boxShadow}) => boxShadow};
     min-height: ${({minHeight}) => minHeight};
-    ${({flexDirection, align}) => alignToStyle(flexDirection ?? 'column', align ?? 'center')}
+    max-height: ${({maxHeight}) => maxHeight};
+
+    ${({flexDirection, align, noAlign}) => !noAlign && alignToStyle(flexDirection ?? 'column', align ?? 'center')}
+    
+    ::-webkit-scrollbar {
+        height: 8px; /* 세로 스크롤바 높이 */
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #3A3A3C;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #7C7C7D;
+        border-radius: 4px;
+    }
 `
 
 function Container({children, onClick, ...styles}: ContainerProps) {
@@ -52,5 +70,5 @@ function Container({children, onClick, ...styles}: ContainerProps) {
     </StyledContainer>
 }
 
-
+export type {ContainerProps}
 export default Container

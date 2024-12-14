@@ -6,7 +6,7 @@ import '../utils/overrideConsole'
 import { Analytics } from '@vercel/analytics/react';
 import Main from "../pages/Main.jsx";
 import Footer from "../components/Footer.tsx";
-import Tier from "../pages/Tier.tsx";
+import Tier from "../pages/Tier/Tier.tsx";
 import Mail from "../pages/Mail.jsx";
 import Exchange from "../pages/Exchange.jsx";
 import Discipline from "../pages/Discipline.jsx";
@@ -14,7 +14,7 @@ import Gacha from "../pages/Gacha.jsx";
 import DailyReward from "../pages/DailyReward.jsx";
 import Board from "../pages/Board.jsx";
 import BoardDetail from "../pages/BoardDetail.jsx";
-import ColorRank from "../pages/ColorRank/ColorRank.jsx";
+import ColorRank from "../pages/ColorRank/ColorRank";
 import LimitCheck from "../pages/LimitCheck.jsx";
 import Header from "../components/Header.tsx";
 import Ads from "../components/Ads.tsx";

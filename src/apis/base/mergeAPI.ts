@@ -1,6 +1,6 @@
 import {Completion, PromiseError} from "../../utils/extensions/types";
 
-type MergeResult<T> = { [P in keyof T]: T[P] | null }
+type MergeResult<T> = { [K in keyof T]: T[K] extends Promise<infer U> ? U | null : never }
 
 const mergeAPI = async <T extends { [key: string]: Promise<any> } | {}>(values: T,
                                                                         completion: Completion<MergeResult<T>, PromiseError[]>) => {
@@ -18,7 +18,8 @@ const mergeAPI = async <T extends { [key: string]: Promise<any> } | {}>(values: 
                 }, {} as MergeResult<T>);
                 completion.success?.(mappedResults);
             },
-            failure: completion.failure
+            failure: completion.failure,
+            finally: completion.finally
         })
 }
 

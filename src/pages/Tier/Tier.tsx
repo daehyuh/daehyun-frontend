@@ -11,7 +11,7 @@ import {
     Divider,
     CategoryTitle, TitleItemContainer, ResultContainer, Button,
     Text
-} from "../components";
+} from "@/components";
 
 function Tier() {
     const SELECT_TIERS: SelectOptionType[] = [{label: '6티어', value: 6}, {label: '5티어', value: 5}]

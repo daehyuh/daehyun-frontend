@@ -5,7 +5,8 @@ Promise.prototype.completion = async function <T>(completion: Completion<T, Prom
         .then((result) => completion.success?.(result))
         .catch(reason => completion.failure?.(
             new PromiseError("PromiseError'", reason)
-        ));
+        ))
+        .finally(() => completion.finally?.());
 };
 
 Promise.prototype.completionSettledResult = async function <A>(completion: Completion<Array<A | null>, PromiseError[]>): Promise<void> {
@@ -16,7 +17,10 @@ Promise.prototype.completionSettledResult = async function <A>(completion: Compl
                 new PromiseError("PromiseRejectedError", result.reason, index)
                 : null);
             completion.success?.(fulfilled);
-            completion.failure?.(rejected);
+            if (rejected.length > 0) {
+                completion.failure?.(rejected);
+            }
+            completion.finally?.();
         })
 }
 

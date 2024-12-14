@@ -44,7 +44,11 @@ const StyledA = styled.a`
     justify-Content: center;
 `
 
-function Ads() {
+type AdsProps = {
+    useInquiry: boolean;
+}
+
+function Ads({useInquiry = true}: AdsProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentIndex2, setCurrentIndex2] = useState(0);
 
@@ -98,7 +102,7 @@ function Ads() {
             </Container>
 
 
-            {path === "/" ||
+            {useInquiry &&
                 <StyledA href="https://open.kakao.com/o/sWIax8Vc">대현닷컴 홍보문의 링크</StyledA>
             }
 

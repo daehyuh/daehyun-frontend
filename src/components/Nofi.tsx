@@ -55,9 +55,12 @@ function Nofi() {
 
     // api 가져와서 ads에 저장
     useEffect(() => {
-        fetchAds((nofi) => {
-            setNofi(nofi.urls[0])
-        })
+        fetchAds()
+            .completionSettledResult({
+                success: (ads) => {
+                    setNofi(ads[0]?.ad ?? [])
+                }
+            })
     }, []);
 
     useEffect(() => {

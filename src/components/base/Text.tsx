@@ -16,6 +16,7 @@ type StyledTextProps = {
 }
 
 const StyledTitle = styled.span<StyledTextProps>`
+    display: inline-block;
     width: ${({width}) => width};
     text-align: ${({textAlign}) => textAlign};
     color: ${({color}) => color ?? '#EAEAEA'};

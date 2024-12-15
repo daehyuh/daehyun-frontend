@@ -1,43 +1,57 @@
 import { Route, Routes, useLocation, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import '../utils/extensions/index'
+import '../utils/overrideConsole'
 
 import { Analytics } from '@vercel/analytics/react';
 import Main from "../pages/Main.jsx";
 import Footer from "../components/Footer.tsx";
-import Tier from "../pages/Tier.tsx";
+import Tier from "../pages/Tier/Tier.tsx";
 import Mail from "../pages/Mail.jsx";
 import Exchange from "../pages/Exchange.jsx";
 import Discipline from "../pages/Discipline.jsx";
-import Gacha from "../pages/Gacha.jsx";
+import Gacha from "../pages/Gacha/Gacha.tsx";
 import DailyReward from "../pages/DailyReward.jsx";
 import Board from "../pages/Board.jsx";
 import BoardDetail from "../pages/BoardDetail.jsx";
-import ColorRank from "../pages/ColorRank.jsx";
+import ColorRank from "../pages/ColorRank/ColorRank";
 import LimitCheck from "../pages/LimitCheck.jsx";
 import Header from "../components/Header.tsx";
 import Ads from "../components/Ads.tsx";
 import Terms from "../pages/terms.jsx";
 import Privacy from "../pages/privacy.jsx";
 import Channel from "../pages/Channel.jsx";
+import Nofi from "../components/Nofi.tsx";
 
 function App() {
     const location = useLocation(); // 현재 경로 정보를 가져옴
-    const [selectedMenu, setSelectedMenu] = useState(null); // 선택된 메뉴 상태
+    const [selectedMenu, setSelectedMenu] = useState('상자깡'); // 선택된 메뉴 상태
 
     const showHeader = location.pathname !== '/'; // "/main"일 때 Header를 렌더링하지 않도록 설정
 
     return (
         <>
          <Analytics /> {/* Vercel Analytics 추가 */}
-            {showHeader && 
+            {/* {showHeader && 
             <>
             <Header setSelectedMenu={setSelectedMenu} />
-            <Ads /> 
-            </> || <Ads />         
-            } {/* /main 경로에서는 Header를 렌더링하지 않음 */}
+            </>
+            ||
+            <>
+            <Nofi />
+            <Ads />
+            </>
+            
+            } */}
+
+            <Nofi />
+            <Header setSelectedMenu={setSelectedMenu} />
+            <Ads useInquiry={false}/>
             
             <Routes>
-                <Route path="/" element={<Main />} />
+                <Route path="/Main" element={<Gacha />} />
+                
+                <Route path="/" element={<Gacha />} />
                 <Route path="/상자깡"  element={<Gacha />} />
                 <Route path="/검닉랭킹"  element={<ColorRank />} />
                 <Route path="/획초체크"  element={<LimitCheck />} />
@@ -55,8 +69,8 @@ function App() {
                 <Route path="/이용약관" element={<Terms />} />
                 <Route path="/개인정보처리방침" element={<Privacy />} />
             </Routes>
+            <Ads />
             <Footer />
-            <></>
         </>
     );
 }

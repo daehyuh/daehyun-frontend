@@ -1,6 +1,6 @@
 import fetchAPI from "./base/fetchAPI";
 
-const fetchUserGameData = (nickname: string, completion: (userGameData: UserGameData) => void) => {
+const fetchUserGameData = async (nickname: string) => {
     fetchAPI<UserGameData>(`user/?user=${nickname}`)
         .then(({
                    todaygames,
@@ -11,7 +11,6 @@ const fetchUserGameData = (nickname: string, completion: (userGameData: UserGame
             todaygames: todaygames,
             ...result
         }))
-        .then(completion)
 }
 
 export default fetchUserGameData

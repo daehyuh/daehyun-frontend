@@ -21,6 +21,10 @@ const StyledLink = styled(Link)<StyledLinkProps>`
 `
 
 function HeaderItemLink({path, href, title}: HeaderItemLinkProps) {
+    if (path === '/') {
+        path = href;
+        href = '/상자깡';
+    }
     return (<StyledLink to={href} isActive={path === href}>
         {title}
     </StyledLink>)

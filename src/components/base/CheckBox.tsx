@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Check from "../../assets/icons/check.svg?react"
 import styled from "styled-components";
 import {Property} from "csstype";
@@ -42,6 +42,10 @@ const StyledCheckBoxIcon = styled(Check)<StyledCheckBoxIconProps>`
 
 function CheckBox({id, value, onChecked, iconSize, ...styles}: CheckBoxProps) {
     const [isChecked, setIsChecked] = useState(value ?? false)
+
+    useEffect(() => {
+        setIsChecked(value ?? false)
+    }, [value]);
 
     return (<StyledCheckBoxLabel htmlFor={id} isChecked={isChecked} {...styles}>
         <StyledCheckBoxInput

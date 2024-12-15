@@ -12,15 +12,15 @@ import Exchange from "../pages/Exchange.jsx";
 import Discipline from "../pages/Discipline.jsx";
 import Gacha from "../pages/Gacha/Gacha.tsx";
 import DailyReward from "../pages/DailyReward.jsx";
-import Board from "../pages/Board.jsx";
-import BoardDetail from "../pages/BoardDetail.jsx";
+import Board from "../pages/Board/Board.jsx";
+import BoardDetail from "../pages/Board/BoardDetail.jsx";
 import ColorRank from "../pages/ColorRank/ColorRank";
-import LimitCheck from "../pages/LimitCheck.jsx";
+import LimitCheck from "../pages/LimitCheck";
 import Header from "../components/Header.tsx";
 import Ads from "../components/Ads.tsx";
 import Terms from "../pages/terms.jsx";
 import Privacy from "../pages/privacy.jsx";
-import Channel from "../pages/Channel.jsx";
+import Channel from "../pages/Channel/Channel.tsx";
 import Nofi from "../components/Nofi.tsx";
 
 function App() {

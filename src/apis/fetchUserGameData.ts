@@ -1,7 +1,7 @@
 import fetchAPI from "./base/fetchAPI";
 
 const fetchUserGameData = async (nickname: string) => {
-    fetchAPI<UserGameData>(`user/?user=${nickname}`)
+    return fetchAPI<UserGameData>(`user/?user=${nickname}`)
         .then(({
                    todaygames,
                    today_games,

@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import styles from "../styles/Gacha.module.css";
 import {ContentLayout, Layout, Select, SelectOptionType} from "../../components/index";
 import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container} from "@/components";
@@ -100,6 +99,10 @@ function Gacha() {
         const newItems = items
             .map(item => ({...item, isChecked: item.equip ? isChecked : item.isChecked}))
         setItemsWithCalculation(newItems);
+        const cookieValue = newItems
+            .mapNotNull((item, index) => item.isChecked ? index : null)
+            .join(",")
+        setCookie("checkedItems", cookieValue, 7);
     }
 
     return (

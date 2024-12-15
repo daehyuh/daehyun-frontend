@@ -46,7 +46,7 @@ function App() {
 
             <Nofi />
             <Header setSelectedMenu={setSelectedMenu} />
-            <Ads />
+            <Ads useInquiry={false}/>
             
             <Routes>
                 <Route path="/Main" element={<Gacha />} />

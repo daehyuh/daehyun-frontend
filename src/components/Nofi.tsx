@@ -2,7 +2,8 @@ import React, {useState, useEffect} from "react";
 import fetchAds from "../apis/fetchAds";
 import styled from "styled-components";
 import Container from "./base/Container";
-import { useLocation } from "react-router-dom";
+import {useLocation} from "react-router-dom";
+import fetchNotification from "@apis/fetchNotification";
 
 const StyledAdContainer = styled.div`
     font-size: 22px; /* 글씨 크기 */
@@ -38,29 +39,32 @@ const StyledA = styled.a`
     width: 100%;
     /* a태그 색 */
     color: #EAEAEA;
-    text-Align:center;
+    text-Align: center;
     font-weight: bold;
-    display:flex;
-    justify-Content:center;
+    display: flex;
+    justify-Content: center;
 `
 
 
 function Nofi() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [nofi, setNofi] = useState<string[]>([]);
-    
+
     const location = useLocation();
-    const { pathname } = location;
+    const {pathname} = location;
     const path = decodeURIComponent(pathname);
 
     // api 가져와서 ads에 저장
     useEffect(() => {
-        fetchAds()
-            .completionSettledResult({
-                success: (ads) => {
-                    setNofi(ads[0]?.ad ?? [])
-                }
-            })
+        const fetchData = async () => {
+            await fetchNotification()
+                .completion({
+                    success: (notification) => {
+                        setNofi(notification.ad)
+                    }
+                })
+        }
+        fetchData()
     }, []);
 
     useEffect(() => {
@@ -72,13 +76,13 @@ function Nofi() {
 
     return (
         <Container fullWidth>
-                    <StyledImage
-                        src={`${nofi[currentIndex]}`}
-                        alt="광고"
-                    />
-        
-        <StyledA href="https://open.kakao.com/o/sWIax8Vc">홍보문의 오픈카톡/접선</StyledA>
-        
+            <StyledImage
+                src={`${nofi[currentIndex]}`}
+                alt="광고"
+            />
+
+            <StyledA href="https://open.kakao.com/o/sWIax8Vc">홍보문의 오픈카톡/접선</StyledA>
+
         </Container>
     );
 }

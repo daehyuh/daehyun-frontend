@@ -44,7 +44,7 @@ function CheckBox({id, value, onChecked, iconSize, ...styles}: CheckBoxProps) {
     const [isChecked, setIsChecked] = useState(value ?? false)
 
     useEffect(() => {
-        console.log(value)
+        setIsChecked(value ?? false)
     }, [value]);
 
     return (<StyledCheckBoxLabel htmlFor={id} isChecked={isChecked} {...styles}>

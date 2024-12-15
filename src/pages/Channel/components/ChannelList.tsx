@@ -1,13 +1,13 @@
-import styles from "@/pages/styles/Channel.module.css";
 import React from "react";
 import ChannelType from "@/constant/ChannelType";
 import styled from "styled-components";
+import {Property} from "csstype";
 
 
 type ChannelListProps = {
     channel: ChannelType;
     onClick?: (channel: ChannelType) => void;
-}
+} & Omit<StyledChannelUserCountProps, 'userCount'>
 
 const StyledChannelLi = styled.li`
     list-style: none;
@@ -27,17 +27,19 @@ const StyledChannelLi = styled.li`
 
 type StyledChannelUserCountProps = {
     userCount: number;
+    fixedColor?: Property.Color
 }
 
 const StyledChannelUserCount = styled.span<StyledChannelUserCountProps>`
     font-weight: bold;
-    color: ${props => props.userCount >= 2000 ? 'red' : props.userCount >= 1000 ? 'yellow' : 'green'};
+    color: ${({fixedColor, userCount}) =>  fixedColor ? fixedColor : userCount >= 2000 ? '#D82F45' : userCount >= 1000 ? '#FABF47' : '#36B688'};
 `
 
-const ChannelList = ({channel}: ChannelListProps) => {
+const ChannelList = ({channel, fixedColor}: ChannelListProps) => {
     return <StyledChannelLi>
         <span style={{color: "#ffffff", flex: 1}}>{channel.channel_name}:</span>
         <StyledChannelUserCount
+            fixedColor={fixedColor}
             userCount={channel.user_count}
         >
             {channel.user_count}명

@@ -1,9 +1,10 @@
-import React from "react";
+import React, {HTMLInputTypeAttribute} from "react";
 import Container from "./Container";
 import styled from "styled-components";
 import {Property} from "csstype";
 
 type InputProps = {
+    type?: HTMLInputTypeAttribute;
     value: number | string;
     placeholder?: string;
     onChange?: (value: string) => void;
@@ -11,6 +12,7 @@ type InputProps = {
 
 type StyledInputContainerProps = {
     isFocused: boolean
+    width?: Property.Width
     backgroundColor?: Property.BackgroundColor
     focusedBorderColor?: Property.BorderColor
     borderColor?: Property.BorderColor
@@ -27,6 +29,7 @@ const StyledInputContainer = styled(Container)<StyledInputContainerProps>`
     flex-direction: row;
     justify-content: center;
     background-color: #3a3a3c;
+    width: ${({width}) => width ?? undefined};
     border-width: ${({isFocused}) => isFocused ? '2px' : '1px'};
     border-style: solid;
     border-color: ${({
@@ -54,22 +57,23 @@ const StyledInput = styled.input<StyledInputProps>`
 ;
 `
 
-function Input({value, placeholder, onChange}: InputProps) {
+function Input({type = 'text', width,  value, placeholder, onChange}: InputProps) {
     const [isFocused, setIsFocused] = React.useState(false)
 
-    return <StyledInputContainer isFocused={isFocused}>
-        <StyledInput type="text"
-                     placeholder={placeholder}
-                     value={value}
-                     onChange={(e) => {
-                         onChange?.(e.target.value)
-                     }}
-                     onFocus={() => {
-                         setIsFocused(true)
-                     }}
-                     onBlur={() => {
-                         setIsFocused(false)
-                     }}
+    return <StyledInputContainer isFocused={isFocused} width={width}>
+        <StyledInput
+            type={type}
+            placeholder={placeholder}
+            value={value}
+            onChange={(e) => {
+                onChange?.(e.target.value)
+            }}
+            onFocus={() => {
+                setIsFocused(true)
+            }}
+            onBlur={() => {
+                setIsFocused(false)
+            }}
         />
     </StyledInputContainer>
 }

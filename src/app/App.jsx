@@ -4,18 +4,17 @@ import '../utils/extensions/index'
 import '../utils/overrideConsole'
 
 import { Analytics } from '@vercel/analytics/react';
-import Main from "../pages/Main.jsx";
 import Footer from "../components/Footer.tsx";
 import Tier from "../pages/Tier/Tier.tsx";
 import Mail from "../pages/Mail.jsx";
 import Exchange from "../pages/Exchange.jsx";
 import Discipline from "../pages/Discipline.jsx";
 import Gacha from "../pages/Gacha/Gacha.tsx";
-import DailyReward from "../pages/DailyReward.jsx";
+import DailyReward from "../pages/DailyReward";
 import Board from "../pages/Board/Board.jsx";
 import BoardDetail from "../pages/Board/BoardDetail.jsx";
 import ColorRank from "../pages/ColorRank/ColorRank";
-import LimitCheck from "../pages/LimitCheck";
+import LimitCheck from "../pages/LimitCheck/LimitCheck";
 import Header from "../components/Header.tsx";
 import Ads from "../components/Ads.tsx";
 import Terms from "../pages/terms.jsx";

@@ -29,11 +29,12 @@ function Channel() {
             <ContentLayout>
                 <CategoryTitle title={"채널동접 체크"}/>
                 <Container fullWidth backgroundColor={"#3A3A3C"} padding={'8px'} borderRadius={'10px'}>
-                        <ul style={{width: '100%', display: 'flex', flexDirection:'column', gap: '10px'}}>
-                            {channels.map((channel, index) => (
-                                <ChannelList key={index} channel={channel}/>
-                            ))}
-                        </ul>
+                    <ul style={{width: '100%', display: 'flex', flexDirection: 'column', gap: '10px'}}>
+                        {channels.map((channel, index) => (
+                            index !== (channels.length - 1) ? <ChannelList key={index} channel={channel}/> :
+                                <ChannelList key={index} channel={channel} fixedColor={'#0763D3'}/>
+                        ))}
+                    </ul>
                 </Container>
             </ContentLayout>
         </Layout>

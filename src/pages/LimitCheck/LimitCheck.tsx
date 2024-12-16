@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import styles from "../styles/LimitCheck.module.css";
+import styles from "@/legacy/styles/LimitCheck.module.css";
 import {
     Button,
     CategoryTitle,

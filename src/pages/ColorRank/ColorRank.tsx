@@ -1,5 +1,5 @@
 import React, {useState, useEffect, ChangeEvent} from "react";
-import styles from "../styles/ColorRank.module.css";
+import styles from "@/legacy/styles/ColorRank.module.css";
 import {fetchRank, fetchTime, mergeAPI} from "@apis/index";
 import fetchEasterEgg from "@apis/fetchEasterEgg";
 import RankUser from "@/constant/RankUser";

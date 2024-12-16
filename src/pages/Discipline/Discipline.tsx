@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import styles from "../styles/Discipline.module.css";
+import styles from "@/legacy/styles/Discipline.module.css";
 import {CategoryTitle, ContentLayout, Layout} from "@components/index";
 import {Container, Divider, Input, ResultContainer, Text, TitleItemContainer} from "@/components";
 

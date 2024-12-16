@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import styles from "./styles/DailyReward.module.css";
 import {
     CategoryTitle,
     Container,
@@ -7,7 +6,7 @@ import {
     Layout,
     SelectOptionType,
     TitleItemContainer
-} from "../components/index.js";
+} from "@components/index";
 import {CheckBox, Divider, Input, ResultContainer, Select, Text} from "@/components";
 
 type DailyRewardValueImage = {
@@ -143,7 +142,6 @@ function DailyReward() {
                                 src={`../image/Guild/${dailyRewardData.guildLevel.value.image}.png`}
                                 alt="Guild Level"
                                 width={100}
-                                className={styles.image}
                             />
                         </Container>}
                     {dailyRewardData.buffLevel.value.image &&
@@ -153,7 +151,6 @@ function DailyReward() {
                                 src={`../image/statue/${dailyRewardData.buffLevel.value.image}.png`}
                                 alt="Guild Level"
                                 width={100}
-                                className={styles.image}
                             />
                         </Container>}
                 </Container>

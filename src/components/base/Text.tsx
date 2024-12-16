@@ -13,6 +13,7 @@ type StyledTextProps = {
     fontWeight?: Property.FontWeight
     width?: Property.Width
     textAlign?: Property.TextAlign
+    whiteSpace?: Property.WhiteSpace
 }
 
 const StyledTitle = styled.span<StyledTextProps>`
@@ -23,6 +24,7 @@ const StyledTitle = styled.span<StyledTextProps>`
     font: ${({font}) => font};
     font-size: ${({fontSize}) => fontSize};
     font-weight: ${({fontWeight}) => fontWeight};
+    white-space: ${({whiteSpace}) => whiteSpace};
 `
 
 

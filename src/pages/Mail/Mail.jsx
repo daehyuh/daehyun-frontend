@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import styles from "./styles/Mail.module.css";
+import styles from "../styles/Mail.module.css";
 
 function Mail() {
   const priceTable = [

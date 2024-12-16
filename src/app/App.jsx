@@ -6,7 +6,7 @@ import '../utils/overrideConsole'
 import { Analytics } from '@vercel/analytics/react';
 import Footer from "../components/Footer.tsx";
 import Tier from "../pages/Tier/Tier.tsx";
-import Mail from "../pages/Mail/Mail.jsx";
+import Mail from "../pages/Mail/Mail";
 import Exchange from "../pages/Exchange/Exchange";
 import Discipline from "../pages/Discipline/Discipline";
 import Gacha from "../pages/Gacha/Gacha";

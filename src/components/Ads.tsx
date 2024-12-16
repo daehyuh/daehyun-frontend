@@ -45,7 +45,7 @@ const StyledA = styled.a`
 `
 
 type AdsProps = {
-    useInquiry: boolean;
+    useInquiry?: boolean;
 }
 
 function Ads({useInquiry = true}: AdsProps) {

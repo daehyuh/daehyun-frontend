@@ -3,8 +3,8 @@ import React from "react";
 import styled from "styled-components";
 
 type HeaderItemLinkProps = {
-    path?: string;
-    href: string;
+    path: string;
+    hrefs: string[];
     title?: string;
 }
 
@@ -20,12 +20,8 @@ const StyledLink = styled(Link)<StyledLinkProps>`
     padding-bottom: ${({isActive}) => isActive && '8px'};
 `
 
-function HeaderItemLink({path, href, title}: HeaderItemLinkProps) {
-    if (path === '/') {
-        path = href;
-        href = '/상자깡';
-    }
-    return (<StyledLink to={href} isActive={path === href}>
+function HeaderItemLink({path, hrefs, title}: HeaderItemLinkProps) {
+    return (<StyledLink to={hrefs.at(0) ?? ""} isActive={hrefs.some(e => e === path)}>
         {title}
     </StyledLink>)
 }

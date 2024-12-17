@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import {ContentLayout, Layout, Select, SelectOptionType} from "../../components/index";
 import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container} from "@/components";
-import snowballFightProbability from "@/assets/probability/snowballFightProbability";
+import snowballFightProbability from "@/assets/probabilities/snowballFightProbability";
 import GradeProbability from "@/constant/GradeProbability";
 import ProbabilityItem from "@/constant/ProbabilityItem";
 import Table from "@components/base/Table";

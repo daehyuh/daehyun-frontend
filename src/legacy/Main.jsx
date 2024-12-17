@@ -7,7 +7,6 @@ function Main() {
     <div className={styles.container}>
       <div className={styles.header}>
           <Logo className={styles.logo}/>
-          {/*<img className={styles.logo} src="./image/logo.png" alt="LOGO"/>*/}
       </div>
       
       <img className={styles.left} src="./image/LEFT.png" alt="LEFT"/>
@@ -19,7 +18,6 @@ function Main() {
         <Link to="/상자깡">
         <button className={styles.button}>시작하기</button>
         </Link>
-        
       </div>
       <img className={styles.right} src="./image/RIGHT.png" alt="Right"/>
     </div>

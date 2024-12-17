@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./styles/BoardDetail.module.css";
+import styles from "../styles/BoardDetail.module.css";
 import { useParams, useNavigate } from "react-router-dom";
 
 function BoardDetail() {

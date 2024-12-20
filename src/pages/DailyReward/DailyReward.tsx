@@ -92,7 +92,7 @@ function DailyReward() {
         const ruble = Math.floor(amountValue +
             (amountValue * ((guildLevel.value.value ?? 0) + (buffLevel.value.value ?? 0)) / 100) +
             (fame ? ((amountValue * 3) / 100) : 0))
-        const luna = Math.floor(ruble / 4200)
+        const luna = Math.floor(amount/42)
         setDailyRewardResult({ruble: ruble, luna: luna})
     }, [dailyRewardData]);
 

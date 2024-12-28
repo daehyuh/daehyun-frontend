@@ -25,7 +25,7 @@ const StyledAdContainer = styled.div`
 const StyledImage = styled.img`
     display: flex;
     width: 100%;
-    height: 80%;
+    max-height : 200px;
     justify-content: center;
     align-items: center;
 `

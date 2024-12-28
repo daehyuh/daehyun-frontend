@@ -25,7 +25,7 @@ const StyledAdContainer = styled.div`
 const StyledImage = styled.img`
     display: flex;
     width: 100%;
-    height: 150px;
+    height: 80%;
     justify-content: center;
     align-items: center;
 `
@@ -86,7 +86,7 @@ function Ads({useInquiry = true}: AdsProps) {
     }, [ads2.length]);
 
     return (
-        <Container fullWidth padding={'15px 0'}>
+        <Container fullWidth minHeight={'250px'} padding={'0 0'}>
             <Container width={'90%'}
                        border={'1px solid #7C7C7D'}
                        minHeight={'60px'}

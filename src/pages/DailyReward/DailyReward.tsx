@@ -95,7 +95,7 @@ function DailyReward() {
         const luna = Math.floor(amount/42)
         setDailyRewardResult({ruble: ruble, luna: luna})
     }, [dailyRewardData]);
-
+    
     return (
         <Layout>
             <ContentLayout gap={'20px'}>

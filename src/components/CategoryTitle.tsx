@@ -6,7 +6,7 @@ type CategoryTitleProps = {
 }
 
 const StyledCategoryTitle = styled.h1`
-    font-size: 36px;
+    font-size: 30px;
     font-weight: bold;
     color: #EAEAEA;
     margin-bottom: 1rem;

@@ -3,6 +3,7 @@ import fetchAds from "../apis/fetchAds";
 import styled from "styled-components";
 import Container from "./base/Container";
 import {useLocation} from "react-router-dom";
+import { isDotDotDotToken } from "typescript";
 
 const StyledAdContainer = styled.div`
     font-size: 22px; /* 글씨 크기 */
@@ -92,7 +93,9 @@ function Ads({useInquiry = true}: AdsProps) {
                        minHeight={'60px'}
                        backgroundColor={'#3A3A3C'}
                        boxShadow={'0 0 10px 0 rgba(0, 0, 0, 0.1)'}
-                       borderRadius={'10px'}>
+                       borderRadius={'10px'}
+                       overflow={'hidden'}
+                       >
                 <StyledAdContainer>{
                     <StyledImage
                         src={`${ads[currentIndex]}`}
@@ -100,7 +103,6 @@ function Ads({useInquiry = true}: AdsProps) {
                     />
                 }</StyledAdContainer>
             </Container>
-
 
             {useInquiry &&
                 <StyledA href="https://open.kakao.com/o/sWIax8Vc">대현닷컴 홍보문의 링크</StyledA>

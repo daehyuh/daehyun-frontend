@@ -24,6 +24,7 @@ type StyledContainerProps = {
     boxShadow?: Property.BoxShadow
     minHeight?: Property.MinHeight
     maxHeight?: Property.MaxHeight
+    overflow?: Property.Overflow
 }
 
 const StyledContainer = styled.div<StyledContainerProps>`
@@ -44,7 +45,7 @@ const StyledContainer = styled.div<StyledContainerProps>`
     box-shadow: ${({boxShadow}) => boxShadow};
     min-height: ${({minHeight}) => minHeight};
     max-height: ${({maxHeight}) => maxHeight};
-
+    overflow: ${({overflow}) => overflow};
     ${({flexDirection, align, noAlign}) => !noAlign && alignToStyle(flexDirection ?? 'column', align ?? 'center')}
     
     ::-webkit-scrollbar {

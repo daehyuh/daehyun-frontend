@@ -162,11 +162,13 @@ function Mail() {
                             onChange={(selected) => setMailDataWithKey('purposeMail', selected)}/>
                     </TitleItemContainer>
                     <TitleItemContainer title={"보유 헤르메스(선택)"} width={'128px'}>
-                        <Input value={mailData.hermes}
+                        <Input width={'100px'}
+                                value={mailData.hermes}
                                onChange={(value) => setMailDataWithKey('hermes', parseInt(value) || 0)}/>
                     </TitleItemContainer>
                     <TitleItemContainer title={"현재 환율(선택)"} width={'128px'}>
-                        <Input value={mailData.exchange}
+                        <Input width={'100px'}
+                                value={mailData.exchange}
                                onChange={(value) => setMailDataWithKey('exchange', parseInt(value) || 0)}/>
                     </TitleItemContainer>
                 </Container>

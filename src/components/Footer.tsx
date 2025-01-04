@@ -32,7 +32,8 @@ function Footer() {
                 <Text color={'gray'}>대현닷컴 © 2021</Text>
                 {/* <Text color={'gray'}>쓰리이디엇츠 · 대표 강대현</Text> */}
                 {/* <Text color={'gray'}>사업자 등록번호 868-18-02199</Text> */}
-                <Text color={'gray'}>문의 · rkdeown10@naver.com · 010-7712-2413</Text>
+                <Text color={'gray'}>문의 · rkdeown10@naver.com</Text>
+                <Text color={'gray'}>010-7712-2413</Text>
             </Container>
             <Container gap={'10px'} align={'topLeft'}>
                 <StyledA href="이용약관">이용약관</StyledA>

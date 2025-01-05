@@ -81,7 +81,7 @@ function Nofi() {
                 alt="광고"
             />
 
-            <StyledA href="https://open.kakao.com/o/sWIax8Vc">홍보문의 오픈카톡/접선</StyledA>
+            <StyledA href="https://open.kakao.com/o/sWIax8Vc">대현닷컴 홍보문의 오픈카톡</StyledA>
 
         </Container>
     );

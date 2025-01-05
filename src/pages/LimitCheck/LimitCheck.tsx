@@ -72,7 +72,7 @@ function LimitCheck() {
                         <>
                             <TitleItemContainer width={'160px'} title={"오늘 플레이한 게임"}>
                                 <Text>
-                                    오늘 {gameData.today_games.toString()}판
+                                    오늘 {gameData.today_games.toString()}판 (승리 {(gameData.current_win_count-gameData.past_win_count).toString()}판, 패배 {(gameData.current_lose_count-gameData.past_lose_count).toString()}판) 
                                 </Text>
                             </TitleItemContainer>
                             <TitleItemContainer width={'160px'} title={"현재 승리판수"}>

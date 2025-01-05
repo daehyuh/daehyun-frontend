@@ -50,8 +50,8 @@ function LimitCheck() {
             <ContentLayout gap={'20px'}>
                 <CategoryTitle title={"획초 체크"}/>
                 <Container align={'centerLeft'} gap={'18px'} fullWidth>
-                    <Text fontSize={'1.5rem'} fontWeight={'bold'}>최후의 반론에서 댓글을 달면, 랭킹에 자동으로 추가됩니다.</Text>
-                    <Text fontSize={'1.17rem'} fontWeight={'bold'}>최근 갱신일 {time?.colortime ?? ""}.</Text>
+                    <Text fontSize={'1.5rem'} fontWeight={'bold'}>최후의 반론에서 댓글을 달면, 판수를 자동으로 관리합니다.</Text>
+                    <Text fontSize={'1.17rem'} fontWeight={'bold'}>최근 갱신일 {time?.gametime ?? ""}.</Text>
                     <A href="https://mafia42.com/#/community/lastDiscussion/lastShow/1007550"
                        backgroundColor={'#1e1e1e'}
                        width={'100%'}>
@@ -72,7 +72,18 @@ function LimitCheck() {
                         <>
                             <TitleItemContainer width={'160px'} title={"오늘 플레이한 게임"}>
                                 <Text>
-                                    {gameData.today_games.toString()}판
+                                    오늘 {gameData.today_games.toString()}판
+                                </Text>
+                            </TitleItemContainer>
+                            <TitleItemContainer width={'160px'} title={"현재 승리판수"}>
+                                <Text>
+                                    {gameData.current_win_count.toString()}승 {gameData.current_lose_count.toString()}패
+                                </Text>
+                            </TitleItemContainer>
+
+                            <TitleItemContainer width={'160px'} title={"어제 승리판수"}>
+                                <Text>
+                                    {gameData.past_win_count.toString()}승 {gameData.past_lose_count.toString()}패
                                 </Text>
                             </TitleItemContainer>
 
@@ -82,6 +93,7 @@ function LimitCheck() {
                                 </Text>
                             </TitleItemContainer>
                         </>}
+
                     <Text color={'gray'}>랭크게임 구분은 되어있지 않습니다.</Text>
                 </ResultContainer>
                 <Divider/>

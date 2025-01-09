@@ -18,6 +18,7 @@ import Ads from "../components/Ads";
 import Channel from "../pages/Channel/Channel";
 import Nofi from "../components/Nofi";
 import MarkdownPage from "../pages/Common/MarkdownPage";
+import GuildColorRank from "@/pages/GuildColorRank/GuildColorRank";
 
 export type PageType = {
     hide?: boolean
@@ -30,6 +31,7 @@ function App() {
     const pages: PageType[] = [
         {hrefs: ["/상자깡", "/"], title: "상자깡 확률", page: <Gacha/>},
         {hrefs: ["/검닉랭킹"], title: "검닉랭킹", page: <ColorRank/>},
+        {hrefs: ["/길드검닉랭킹"], title: "길드검닉랭킹", page: <GuildColorRank/>},
         {hrefs: ["/획초체크"], title: "획초체크", page: <LimitCheck/>},
         {hrefs: ["/채널동접"], title: "채널동접", page: <Channel/>},
         {hrefs: ["/티어"], title: "티어 계산기", page: <Tier/>},

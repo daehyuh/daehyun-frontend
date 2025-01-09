@@ -43,7 +43,7 @@ const GuildColorRankTableRow = ({
         <td style={{backgroundColor: backgroundColor}}>
             {rankGuild.rank}위
         </td>
-        <td>{rankGuild.guild_name}</td>
+        <td>{rankGuild.guild_name +"("+rankGuild.guild_point+"GP)"}</td>
         <td>
             <Container fullWidth flexDirection={'row'} gap={'10px'}>
                 <div

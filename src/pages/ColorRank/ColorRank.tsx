@@ -101,6 +101,8 @@ function ColorRank() {
                            onChange={handleInputChange}/>
                 </Container>
                 <Text color={"#fc7373"} fontWeight={'bold'}>첫번째 검은색(000000) 등록자에게 깜10장을 드립니다!</Text>
+                <Text color={"#ff0000"} fontWeight={'bold'}>90점 이상은 검정색으로 인정됩니다.</Text>
+                <Text color={"#ffffff"} fontWeight={'bold'}>검닉으로 인정되면 점수앞에 ✅가 붙습니다</Text>
                 <Container fullWidth align={'center'} gap={'10px'}>
                     {loading ? <Spinner isLoading={loading}/> :
                         <Table fullWidth

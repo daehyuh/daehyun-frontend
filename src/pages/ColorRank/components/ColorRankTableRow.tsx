@@ -58,7 +58,7 @@ const ColorRankTableRow = ({
                 <Text color={'white'}>{hexCodeValue}</Text>
             </Container>
         </td>
-        <td>{rankUser.closeness}</td>
+        <td>{rankUser.closeness > 90 ? "✅"+rankUser.closeness:rankUser.closeness}</td>
     </StyledTableRow>
 }
 

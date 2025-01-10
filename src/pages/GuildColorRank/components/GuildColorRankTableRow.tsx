@@ -32,7 +32,7 @@ const GuildColorRankTableRow = ({
                                     borderBottomColor = '#444',
                                     hoverBackgroundColor = '#222',
                                     color = 'white',
-                                    height = '50px',
+                                    height = '75px',
                                 }: GuildColorRankTableRowProps) => {
     const initialHexCodeValue = rankGuild.initial_color.length > 0 && rankGuild.initial_color[0] === '#' ? rankGuild.initial_color : `#${rankGuild.initial_color}`
     const backgroundHexColorValue = rankGuild.initial_background_color.length > 0 && rankGuild.initial_background_color[0] === '#' ? rankGuild.initial_background_color : `#${rankGuild.initial_background_color}`
@@ -43,9 +43,10 @@ const GuildColorRankTableRow = ({
         <td style={{backgroundColor: backgroundColor}}>
             {rankGuild.rank}위
         </td>
-        <td>{rankGuild.guild_name +"("+rankGuild.guild_point+"GP)"}</td>
+        <td>{rankGuild.guild_name}<br/>({rankGuild.guild_point}GP)</td>
         <td>
-            <Container fullWidth flexDirection={'row'} gap={'10px'}>
+            <Container fullWidth gap={'10px'}>
+            {/* flexDirection={'row'}  */}
                 <div
                     style={{
                         backgroundColor: backgroundHexColorValue,
@@ -63,7 +64,7 @@ const GuildColorRankTableRow = ({
                 <Text color={'white'}>{initialHexCodeValue}</Text>
             </Container>
         </td>
-        <td>{rankGuild.initial_background_closeness}</td>
+        <td>{rankGuild.initial_background_closeness > 90 ? "✅"+rankGuild.initial_background_closeness:rankGuild.initial_background_closeness}</td>
     </StyledTableRow>
 }
 

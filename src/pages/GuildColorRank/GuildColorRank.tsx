@@ -109,7 +109,7 @@ function GuildColorRank() {
                     {loading ? <Spinner isLoading={loading}/> :
                         <Table fullWidth
                                headers={["랭킹", "길드명", "배경 색상(HEX)", "점수"]}
-                               columnWidths={["25%", "25%", "25%", "25%"]}
+                               columnWidths={["15%", "35%", "25%", "25%"]}
                                useRankColor
                         >
                             <tbody>

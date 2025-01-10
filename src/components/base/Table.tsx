@@ -19,7 +19,7 @@ type StyledTableProps = {
 const StyledTableContainer = styled(Container)`
     overflow-y: auto; /* 세로 스크롤 */
     overflow-x: hidden; /* 가로 스크롤 숨기기 */
-    white-space: nowrap;
+    // white-space: nowrap;
 `
 
 const StyledTable = styled.table<StyledTableProps>`

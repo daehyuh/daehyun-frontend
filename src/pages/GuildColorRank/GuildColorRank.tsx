@@ -34,15 +34,14 @@ function GuildColorRank() {
     useEffect(() => {
         const fetchData = async () => {
             await mergeAPI({
-                    guildRanks: fetchGuildRank(),
+                    rankGuilds: fetchGuildRank(),
                     time: fetchTime(),
                     easterEgg: fetchEasterEgg()
                 },
                 {
                     success: (result) => {
                         setRankData(result as GuildColorRankData);
-                        updateSearchItem(null, result.guildRanks);
-                        console.log(result)
+                        updateSearchItem(null, result.rankGuilds);
                     },
                     failure:
                         (error) => {
@@ -58,15 +57,13 @@ function GuildColorRank() {
 
     const updateSearchItem = (search: string | null,
                               rankGuilds: RankGuild[] | null = null) => {
-        setSearchData(({searchItems}) => {
+        setSearchData(({searchItems, filteredItems}) => {
+            console.log(search, filteredItems)
             const searchValue = search ?? searchItems;
             const rankGuildsValue = rankGuilds ?? rankData.rankGuilds ?? []
-
-            const filteredRankGuilds = (searchValue.length > 0 ? rankGuildsValue.filter((rankGuilds) => {
-                return rankGuilds.guild_name.toLowerCase().includes(searchValue.toLowerCase())
+            const filteredRankGuilds = (searchValue.length > 0 ? rankGuildsValue.filter((rankGuild) => {
+                return rankGuild.guild_name.toLowerCase().includes(searchValue.toLowerCase())
             }) : rankGuildsValue) ?? []
-
-
 
             return {
                 searchItems: searchValue,
@@ -106,8 +103,8 @@ function GuildColorRank() {
                 </Container>
                 <Text color={"#fc7373"} fontWeight={'bold'}>첫번째 검은색(000000) 등록자에게 깜10장을 드립니다!</Text>
                 <Text color={"#ff0000"} fontWeight={'bold'}>90점 이상은 검정색으로 인정됩니다.</Text>
-                                <Text color={"#ffffff"} fontWeight={'bold'}>검닉으로 인정되면 점수앞에 ✅가 붙습니다</Text>
-                                
+                <Text color={"#ffffff"} fontWeight={'bold'}>검닉으로 인정되면 점수앞에 ✅가 붙습니다</Text>
+
                 <Container fullWidth align={'center'} gap={'10px'}>
                     {loading ? <Spinner isLoading={loading}/> :
                         <Table fullWidth
@@ -118,7 +115,7 @@ function GuildColorRank() {
                             <tbody>
                             {searchData.filteredItems.map((item, index) => (
                                 <GuildColorRankTableRow key={index + 1}
-                                                   rankGuild={item}/>
+                                                        rankGuild={item}/>
                             ))}
                             </tbody>
                         </Table>}

@@ -1,16 +1,6 @@
 {
   "items": [
   {
-    "chance": 0.7,
-    "equip": true,
-    "name": "실험 설계자 심리학자 스킨"
-  },
-  {
-    "chance": 0.7,
-    "equip": true,
-    "name": "시스템 브레이커 해커 스킨"
-  },
-  {
     "chance": 0.01,
     "equip": true,
     "name": "계승되는 선의 간호사 스킨"

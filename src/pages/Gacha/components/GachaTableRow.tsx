@@ -59,8 +59,8 @@ const GachaTableRow = ({
         <td>
             <img
                 width={50}
-                src={`image/Items/${item.name}.webp`}
-                alt={item.name}
+                src={`image/Items/${item.name.replace(': ', '')}.webp`}
+                alt={item.name.replace(': ', '')}
             />
         </td>
         <td>{item.name}</td>

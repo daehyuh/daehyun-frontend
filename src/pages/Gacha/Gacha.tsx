@@ -121,7 +121,7 @@ function Gacha() {
     return (
         <Layout>
             <ContentLayout>
-            <CategoryTitle title={`이미지는 천천히 노가다`}/>
+            <CategoryTitle title={`신규 이미지 제보받아요 - 대현`}/>
                 <CategoryTitle title={`장착템 확률 : ${totalProbability.equip.toFixed(4)}%`}/>
                 <Container fullWidth align={'centerLeft'} gap={'20px'}>
                     <Select

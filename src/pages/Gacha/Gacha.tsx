@@ -2,7 +2,11 @@ import React, {useState, useEffect} from "react";
 import {ContentLayout, Layout, Select, SelectOptionType} from "../../components/index";
 import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container} from "@/components";
+
 import snowballFightProbability from "@/assets/probabilities/snowballFightProbability";
+
+import yutnoriProbabillty from "@/assets/probabilities/yutnoriProbabillty";
+
 import GradeProbability from "@/constant/GradeProbability";
 import ProbabilityItem from "@/constant/ProbabilityItem";
 import Table from "@components/base/Table";
@@ -49,13 +53,22 @@ function Gacha() {
 
     const fetchItems = (grade: keyof GradeProbability | null) => {
         const savedCheckedItems = getCookie("checkedItems");
-        const savedCheckedItemsSet = new Set(savedCheckedItems ? savedCheckedItems.split(",").map(Number) : []);
-        const items = (grade ? snowballFightProbability[grade].items : []).map((item, index) => ({
+
+        // const savedCheckedItemsSet = new Set(savedCheckedItems ? savedCheckedItems.split(",").map(Number) : []);
+        // const items = (grade ? yutnoriProbabillty[grade].items : []).map((item, index) => ({
+        //     ...item,
+        //     isChecked: savedCheckedItemsSet.has(index),
+        //     originalChance: item.chance
+        // }))
+
+        const savedCheckedItemsSet2 = new Set(savedCheckedItems ? savedCheckedItems.split(",").map(Number) : []);
+        const items2 = (grade ? yutnoriProbabillty[grade].items : []).map((item, index) => ({
             ...item,
-            isChecked: savedCheckedItemsSet.has(index),
+            isChecked: savedCheckedItemsSet2.has(index),
             originalChance: item.chance
         }))
-        setItemsWithCalculation(items)
+
+        setItemsWithCalculation(items2)
     }
 
     const setItemsWithCalculation = (items: GachaProbabilityItem[]) => {
@@ -108,6 +121,7 @@ function Gacha() {
     return (
         <Layout>
             <ContentLayout>
+            <CategoryTitle title={`이미지는 천천히 노가다`}/>
                 <CategoryTitle title={`장착템 확률 : ${totalProbability.equip.toFixed(4)}%`}/>
                 <Container fullWidth align={'centerLeft'} gap={'20px'}>
                     <Select

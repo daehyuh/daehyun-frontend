@@ -1,0 +1,38 @@
+{ "items":[
+  {
+    "chance": 15,
+    "equip": true,
+    "name": "계승되는 선의 간호사 스킨"
+  },
+  {
+    "chance": 15,
+    "equip": true,
+    "name": "악몽 수집가 최면술사 스킨"
+  },
+  {
+    "chance": 15,
+    "equip": true,
+    "name": "하얀 용의 속삭임"
+  },
+  {
+    "chance": 15,
+    "equip": true,
+    "name": "꿈의 침식"
+  },
+  {
+    "chance": 15,
+    "equip": true,
+    "name": "선녀의 날개옷 테두리"
+  },
+  {
+    "chance": 15,
+    "equip": true,
+    "name": "물뱀의 뼈 테두리"
+  },
+  {
+    "chance": 10,
+    "equip": true,
+    "name": "몽환의 서"
+  }
+]
+}

@@ -26,7 +26,6 @@ import styled from 'styled-components';
 const Container = styled.div`
   display: flex; // 부모 컨테이너를 flex로 설정
   justify-content: flex-start; // 기본적으로 왼쪽 정렬
-  margin: 0 auto; // 가운데 정렬
 `;
 
 export type PageType = {
@@ -66,10 +65,10 @@ function App() {
 
     return (
         <>
-        <Container>
+        {/* <Container> */}
             <Analytics/> {/* Vercel Analytics 추가 */}
-            <GoogleAdSense/>
-            <div style={{ flex: 1 }}>
+            {/* <GoogleAdSense/> */}
+            {/* <div style={{ flex: 1 }}> */}
             <Nofi/>
             <Header pages={pages}/>
             <Ads useInquiry={false}/>
@@ -84,9 +83,9 @@ function App() {
             </Routes>
             <Ads/>
             <Footer/>
-            </div>
-            <GoogleAdSense/>
-        </Container>
+            {/* </div> */}
+
+        {/* </Container> */}
             
         </>
     );

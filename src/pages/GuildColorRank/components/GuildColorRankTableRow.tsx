@@ -61,7 +61,7 @@ const GuildColorRankTableRow = ({
                         </span>
                 </div>
 
-                <Text color={'white'}>{initialHexCodeValue}</Text>
+                <Text color={'white'}>{backgroundHexColorValue}</Text>
             </Container>
         </td>
         <td>{rankGuild.initial_background_closeness > 90 ? "✅"+rankGuild.initial_background_closeness:rankGuild.initial_background_closeness}</td>

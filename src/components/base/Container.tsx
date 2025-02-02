@@ -32,7 +32,6 @@ const StyledContainer = styled.div<StyledContainerProps>`
     display: flex;
     height: fit-content;
     box-sizing: border-box;
-    margin-bottom: 10px;
     width: ${({width, fullWidth}) => fullWidth ? '100%' : width ? width : 'fit-content'};
     max-width: 100%;
     flex-direction: ${({flexDirection}) => flexDirection ?? 'column'};

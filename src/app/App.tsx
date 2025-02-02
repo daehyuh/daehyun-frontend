@@ -24,8 +24,9 @@ import GoogleAdSense from "@/components/GoogleAdSense";
 import styled from 'styled-components';
 
 const Container = styled.div`
-  display: flex; // 부모 컨테이너를 flex로 설정
-  justify-content: flex-start; // 기본적으로 왼쪽 정렬
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch; // 자식 요소가 자동으로 늘어나게 함
 `;
 
 export type PageType = {
@@ -61,14 +62,11 @@ function App() {
         }
     ]
 
-    
-
     return (
-        <>
-        {/* <Container> */}
+        <Container>
             <Analytics/> {/* Vercel Analytics 추가 */}
-            {/* <GoogleAdSense/> */}
-            {/* <div style={{ flex: 1 }}> */}
+            <GoogleAdSense/>
+            <div style={{ flex: 1, width: '100%' }}>
             <Nofi/>
             <Header pages={pages}/>
             <Ads useInquiry={false}/>
@@ -83,11 +81,10 @@ function App() {
             </Routes>
             <Ads/>
             <Footer/>
-            {/* </div> */}
-
-        {/* </Container> */}
+            </div>
+            <GoogleAdSense/>
+        </Container>
             
-        </>
     );
 }
 

@@ -19,6 +19,15 @@ import Channel from "../pages/Channel/Channel";
 import Nofi from "../components/Nofi";
 import MarkdownPage from "../pages/Common/MarkdownPage";
 import GuildColorRank from "@/pages/GuildColorRank/GuildColorRank";
+import GoogleAdSense from "@/components/GoogleAdSense";
+
+import styled from 'styled-components';
+
+const Container = styled.div`
+  display: flex; // 부모 컨테이너를 flex로 설정
+  justify-content: flex-start; // 기본적으로 왼쪽 정렬
+  margin: 0 auto; // 가운데 정렬
+`;
 
 export type PageType = {
     hide?: boolean
@@ -53,9 +62,14 @@ function App() {
         }
     ]
 
+    
+
     return (
         <>
+        <Container>
             <Analytics/> {/* Vercel Analytics 추가 */}
+            <GoogleAdSense/>
+            <div style={{ flex: 1 }}>
             <Nofi/>
             <Header pages={pages}/>
             <Ads useInquiry={false}/>
@@ -67,11 +81,13 @@ function App() {
                         ))
                     ))
                 }
-                {/*<Route path="/유저게시판"  element={<Board />} />*/}
-                {/*<Route path="/유저게시판/:id" element={<BoardDetail />} />*/}
             </Routes>
             <Ads/>
             <Footer/>
+            </div>
+            <GoogleAdSense/>
+        </Container>
+            
         </>
     );
 }

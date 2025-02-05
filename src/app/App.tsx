@@ -40,8 +40,8 @@ function App() {
     const pages: PageType[] = [
         {hrefs: ["/상자깡", "/"], title: "상자깡 확률", page: <Gacha/>},
         {hrefs: ["/검닉랭킹"], title: "검닉랭킹", page: <ColorRank/>},
-        {hrefs: ["/길드검닉랭킹"], title: "길드검닉랭킹", page: <GuildColorRank/>},
-        {hrefs: ["/획초체크"], title: "획초체크", page: <LimitCheck/>},
+        {hrefs: ["/길드배경랭킹"], title: "길드배경랭킹", page: <GuildColorRank/>},
+        {hrefs: ["/전적검색"], title: "전적검색", page: <LimitCheck/>},
         {hrefs: ["/채널동접"], title: "채널동접", page: <Channel/>},
         {hrefs: ["/티어"], title: "티어 계산기", page: <Tier/>},
         {hrefs: ["/우체통"], title: "우체통 계산기", page: <Mail/>},

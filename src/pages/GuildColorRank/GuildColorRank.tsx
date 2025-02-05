@@ -80,7 +80,7 @@ function GuildColorRank() {
     return (
         <Layout>
             <ContentLayout gap={'20px'}>
-                <CategoryTitle title="길드 검닉 랭킹"/>
+                <CategoryTitle title="길드 배경 랭킹"/>
                 <Container align={'centerLeft'} gap={'18px'} fullWidth>
                     <Text fontSize={'1.5rem'} fontWeight={'bold'}>최후의 반론에서 댓글을 달면, 랭킹에 자동으로 추가됩니다.</Text>
                     <Text fontSize={'1.17rem'} fontWeight={'bold'}>최근 갱신일 {rankData.time?.colortime ?? ""}.</Text>

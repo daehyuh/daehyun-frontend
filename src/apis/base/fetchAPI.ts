@@ -1,4 +1,4 @@
-const BASE_URL = "https://hufsnc.com/api"
+const BASE_URL = "http://152.67.211.81//api"
 const generateUrl = (path: string) => `${BASE_URL}/${path}`
 
 const fetchAPI = async <T>(path: string): Promise<T> => {

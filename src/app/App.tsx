@@ -66,7 +66,7 @@ function App() {
         <Container>
             <Analytics/> {/* Vercel Analytics 추가 */}
             <GoogleAdSense/>
-            <div style={{ flex: 1, width: '100%', minWidth: '000px' }}>
+            <div style={{ flex: 1, width: '100%'}}>
             <Nofi/>
             <Header pages={pages}/>
             <Ads useInquiry={false}/>

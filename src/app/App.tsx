@@ -69,7 +69,7 @@ function App() {
             <div style={{ flex: 1, width: '100%'}}>
             <Nofi/>
             <Header pages={pages}/>
-            <Ads useInquiry={false}/>
+            {/* <Ads useInquiry={false}/> */}
             <Routes>
                 {
                     pages.map((item) => (
@@ -79,7 +79,7 @@ function App() {
                     ))
                 }
             </Routes>
-            <Ads/>
+            {/* <Ads/> */}
             <Footer/>
             </div>
             <GoogleAdSense/>

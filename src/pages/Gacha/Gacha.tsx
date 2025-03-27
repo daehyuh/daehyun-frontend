@@ -5,7 +5,7 @@ import {CategoryTitle, Container} from "@/components";
 
 import snowballFightProbability from "@/assets/probabilities/snowballFightProbability";
 
-import yutnoriProbabillty from "@/assets/probabilities/yutnoriProbabillty";
+import yutnoriProbabillty from "@/assets/probabilities/cityProbability";
 
 import GradeProbability from "@/constant/GradeProbability";
 import ProbabilityItem from "@/constant/ProbabilityItem";

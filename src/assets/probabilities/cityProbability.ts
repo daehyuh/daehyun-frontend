@@ -1,6 +1,6 @@
 import json150 from './202542시티/150.json';
 import json500 from './202542시티/750.json';
-import json2500R from './202542시티/750.json';
+import json2500R from './202542시티/2500R.json';
 import jsonLegend from './202542시티/Legend.json';
 import GradeProbability from "@/constant/GradeProbability";
 import JsonProbability from "@/constant/JsonProbability";

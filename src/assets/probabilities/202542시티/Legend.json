@@ -1,11 +1,39 @@
 {
   "items": [
-    { "chance": 15, "equip": true, "name": "도시 계획가 공무원 스킨" },
-    { "chance": 15, "equip": true, "name": "명당의 주인 예언자 스킨" },
-    { "chance": 15, "equip": true, "name": "골드 체인 테두리" },
-    { "chance": 15, "equip": true, "name": "다운타운 테두리" },
-    { "chance": 15, "equip": true, "name": "타탄 스트랩" },
-    { "chance": 15, "equip": true, "name": "머니 로드" },
-    { "chance": 10, "equip": true, "name": "클래식 오거나이저" }
+    {
+      "name": "도시 계획가 공무원 스킨",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "명당의 주인 예언자 스킨",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "골드 체인 테두리",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "다운타운 테두리",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "타탄 스트랩",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "머니 로드",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "클래식 오거나이저",
+      "chance": 10,
+      "equip": true
+    }
   ]
 }

@@ -1,5 +1,5 @@
-import {Route, Routes, useLocation} from "react-router-dom";
-import {ReactElement, useState} from "react";
+import {Route, Routes} from "react-router-dom";
+import {ReactElement, useEffect, useState} from "react";
 import '../utils/extensions/index'
 import '../utils/overrideConsole'
 
@@ -26,7 +26,7 @@ import styled from 'styled-components';
 const Container = styled.div`
   display: flex;
   justify-content: flex-start;
-  align-items: stretch; // 자식 요소가 자동으로 늘어나게 함
+  align-items: stretch;
 `;
 
 export type PageType = {
@@ -37,6 +37,29 @@ export type PageType = {
 }
 
 function App() {
+    const [showPrank, setShowPrank] = useState(true);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setShowPrank(false);
+        }, 3000);
+
+        const skip = () => setShowPrank(false);
+
+        window.addEventListener("click", skip);
+        window.addEventListener("keydown", skip);
+        window.addEventListener("mousemove", skip);
+        window.addEventListener("scroll", skip);
+
+        return () => {
+            clearTimeout(timeout);
+            window.removeEventListener("click", skip);
+            window.removeEventListener("keydown", skip);
+            window.removeEventListener("mousemove", skip);
+            window.removeEventListener("scroll", skip);
+        };
+    }, []);
+
     const pages: PageType[] = [
         {hrefs: ["/상자깡", "/"], title: "상자깡 확률", page: <Gacha/>},
         {hrefs: ["/검닉랭킹"], title: "검닉랭킹", page: <ColorRank/>},
@@ -62,29 +85,48 @@ function App() {
         }
     ]
 
+    if (showPrank) {
+        return (
+            <div style={{
+                position: "fixed",
+                top: 0, left: 0,
+                width: "100vw",
+                height: "100vh",
+                backgroundColor: "black",
+                zIndex: 9999,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+            }}>
+                <img
+                    src="https://hufsnc.com/web/images/ad/%EB%A7%8C%EC%9A%B0%EC%A0%88.png"
+                    alt="만우절 이벤트"
+                    style={{maxWidth: "100%", maxHeight: "100%"}}
+                />
+            </div>
+        );
+    }
+
     return (
         <Container>
-            <Analytics/> {/* Vercel Analytics 추가 */}
+            <Analytics/>
             <GoogleAdSense/>
             <div style={{ flex: 1, width: '100%'}}>
-            <Nofi/>
-            <Header pages={pages}/>
-            {/* <Ads useInquiry={false}/> */}
-            <Routes>
-                {
-                    pages.map((item) => (
-                        item.hrefs.map(href => (
-                            <Route key={href} path={href} element={item.page}/>
+                <Nofi/>
+                <Header pages={pages}/>
+                <Routes>
+                    {
+                        pages.map((item) => (
+                            item.hrefs.map(href => (
+                                <Route key={href} path={href} element={item.page}/>
+                            ))
                         ))
-                    ))
-                }
-            </Routes>
-            {/* <Ads/> */}
-            <Footer/>
+                    }
+                </Routes>
+                <Footer/>
             </div>
             <GoogleAdSense/>
         </Container>
-            
     );
 }
 

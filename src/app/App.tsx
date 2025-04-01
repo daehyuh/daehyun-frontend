@@ -37,7 +37,7 @@ export type PageType = {
 }
 
 function App() {
-    const [showPrank, setShowPrank] = useState(true);
+    const [showPrank, setShowPrank] = useState(false);
 
     useEffect(() => {
         const timeout = setTimeout(() => {

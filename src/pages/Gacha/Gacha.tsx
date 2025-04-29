@@ -3,9 +3,7 @@ import {ContentLayout, Layout, Select, SelectOptionType} from "../../components/
 import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container} from "@/components";
 
-import snowballFightProbability from "@/assets/probabilities/snowballFightProbability";
-
-import yutnoriProbabillty from "@/assets/probabilities/cityProbability";
+import sasangProbabillty from "@/assets/probabilities/sasangProbabillty";
 
 import GradeProbability from "@/constant/GradeProbability";
 import ProbabilityItem from "@/constant/ProbabilityItem";
@@ -53,16 +51,9 @@ function Gacha() {
 
     const fetchItems = (grade: keyof GradeProbability | null) => {
         const savedCheckedItems = getCookie("checkedItems");
-
-        // const savedCheckedItemsSet = new Set(savedCheckedItems ? savedCheckedItems.split(",").map(Number) : []);
-        // const items = (grade ? yutnoriProbabillty[grade].items : []).map((item, index) => ({
-        //     ...item,
-        //     isChecked: savedCheckedItemsSet.has(index),
-        //     originalChance: item.chance
-        // }))
-
+        
         const savedCheckedItemsSet2 = new Set(savedCheckedItems ? savedCheckedItems.split(",").map(Number) : []);
-        const items2 = (grade ? yutnoriProbabillty[grade].items : []).map((item, index) => ({
+        const items2 = (grade ? sasangProbabillty[grade].items : []).map((item, index) => ({
             ...item,
             isChecked: savedCheckedItemsSet2.has(index),
             originalChance: item.chance

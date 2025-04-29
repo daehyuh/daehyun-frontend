@@ -1,0 +1,12 @@
+{
+    "items": [
+      { "chance": 20, "equip": true, "name": "석조각가 청부업자 스킨" },
+      { "chance": 20, "equip": true, "name": "철조각가 용병 스킨" },
+      { "chance": 10, "equip": true, "name": "순백의 기도 테두리" },
+      { "chance": 10, "equip": true, "name": "적열의 여운 테두리" },
+      { "chance": 10, "equip": true, "name": "장난스러운 조준" },
+      { "chance": 10, "equip": true, "name": "예술가의 용광로" },
+      { "chance": 20, "equip": true, "name": "영광스러운 도록" }
+    ]
+  }
+  

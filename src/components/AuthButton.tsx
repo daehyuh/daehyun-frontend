@@ -51,8 +51,8 @@ const handleSubmit = async () => {
     try {
         const encodedNickname = encodeURIComponent(nickname);
         const encodedCode = encodeURIComponent(userCode);
-
-        const url = `https://hufsnc.com/Account/sync?nickname=${encodedNickname}&code=${encodedCode}`;
+        
+        const url = `https://api.daehyun.dev/Account/sync?nickname=${encodedNickname}&code=${encodedCode}`;
 
         const response = await fetch(url, {
             method: "POST",

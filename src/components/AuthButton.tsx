@@ -15,19 +15,17 @@ function AuthSection() {
     }, []);
     
     const handleLogin = () => {
-        const clientId = "609416675991-2g5jqg562hursv4v09upi96q1fvrvius.apps.googleusercontent.com";
-        const redirectUri = "https://api.daehyun.dev/login/oauth2/code/google"; // 배포 시 교체
-        const scope = [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/userinfo.profile"
-    ].join(" ");
-        const url = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${encodeURIComponent(scope)}`;
-        window.location.href = url;
+        window.location.href = "https://accounts.google.com/o/oauth2/auth?client_id=609416675991-2g5jqg562hursv4v09upi96q1fvrvius.apps.googleusercontent.com&redirect_uri=https://api.daehyun.dev/login/oauth2/code/google&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile";
     };
 
     const handleLogout = () => {
-        document.cookie = "accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;";
+        // 쿠키에서 accessToken만 제거
+        
+        document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
         setIsLoggedIn(false);
+        setNickname("");
+        setUserCode("");
+        alert("로그아웃 되었습니다.");
         window.location.reload();
     };
 
@@ -67,7 +65,7 @@ const handleSubmit = async () => {
             alert(`요청 실패: ${response.status} - ${text}`);
             return;
         }
-
+        
         const data = await response.json();
         alert("동기화 성공!");
     } catch (e) {

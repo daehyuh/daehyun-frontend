@@ -16,7 +16,7 @@ function AuthSection() {
     
     const handleLogin = () => {
         const clientId = "609416675991-2g5jqg562hursv4v09upi96q1fvrvius.apps.googleusercontent.com";
-        const redirectUri = "https://hufsnc.com/login/oauth2/code/google"; // 배포 시 교체
+        const redirectUri = "https://daehyuh.dev/login/oauth2/code/google"; // 배포 시 교체
         const scope = [
         "https://www.googleapis.com/auth/userinfo.email",
         "https://www.googleapis.com/auth/userinfo.profile"
@@ -53,7 +53,7 @@ const handleSubmit = async () => {
         const encodedCode = encodeURIComponent(userCode);
         
         const url = `https://api.daehyun.dev/Account/sync?nickname=${encodedNickname}&code=${encodedCode}`;
-
+        
         const response = await fetch(url, {
             method: "POST",
             headers: {

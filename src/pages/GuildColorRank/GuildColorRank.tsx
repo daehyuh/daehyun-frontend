@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from "react";
-import {fetchTime, mergeAPI} from "@apis/index";
-import fetchEasterEgg from "@apis/fetchEasterEgg";
+import {mergeAPI} from "@apis/index";
 import EasterEgg from "@/constant/EasterEgg";
-import Time from "@/constant/Time";
 import {CategoryTitle, Container, ContentLayout, Input, Layout, Text} from "@/components";
 import Spinner from "@components/base/Spinner";
 import A from "@components/base/A";
@@ -11,9 +9,7 @@ import GuildColorRankTableRow from "@/pages/GuildColorRank/components/GuildColor
 import fetchGuildRank from "@apis/fetchGuildRank";
 
 type GuildColorRankData = {
-    rankGuilds?: RankGuild[],
-    time?: Time,
-    easterEgg?: EasterEgg
+    rankGuilds?: RankGuild[]
 }
 
 type GuildColorRankSearchData = {
@@ -34,9 +30,7 @@ function GuildColorRank() {
     useEffect(() => {
         const fetchData = async () => {
             await mergeAPI({
-                    rankGuilds: fetchGuildRank(),
-                    time: fetchTime(),
-                    easterEgg: fetchEasterEgg()
+                    rankGuilds: fetchGuildRank()
                 },
                 {
                     success: (result) => {
@@ -81,28 +75,11 @@ function GuildColorRank() {
         <Layout>
             <ContentLayout gap={'20px'}>
                 <CategoryTitle title="길드 배경 랭킹"/>
-                <Container align={'centerLeft'} gap={'18px'} fullWidth>
-                    <Text fontSize={'1.5rem'} fontWeight={'bold'}>최후의 반론에서 댓글을 달면, 랭킹에 자동으로 추가됩니다.</Text>
-                    <Text fontSize={'1.17rem'} fontWeight={'bold'}>최근 갱신일 {rankData.time?.colortime ?? ""}.</Text>
-                    <A href="https://mafia42.com/#/community/lastDiscussion/lastShow/1007550"
-                       backgroundColor={'#1e1e1e'}
-                       width={'100%'}>
-                        <Text width={'100%'} textAlign={'center'} color={'red'} fontSize={'1.2rem'} fontWeight={'bold'}>최후의
-                            반론 링크</Text>
-                    </A>
-                    {/* <img
-                            src={`../image/comment.PNG`}
-                            alt="comment"
-                            style={{ width: "100%", height: "auto", margin: "0 0 10px 0" }}
-                    /> */}
-                </Container>
                 <Container>
                     <Input value={searchData.searchItems}
                            placeholder={"길드 검색"}
                            onChange={handleInputChange}/>
                 </Container>
-                <Text color={"#fc7373"} fontWeight={'bold'}>첫번째 검은색(000000) 등록자에게 깜10장을 드립니다!</Text>
-                <Text color={"#ff0000"} fontWeight={'bold'}>90점 이상은 검정색으로 인정됩니다.</Text>
                 <Text color={"#ffffff"} fontWeight={'bold'}>검닉으로 인정되면 점수앞에 ✅가 붙습니다</Text>
 
                 <Container fullWidth align={'center'} gap={'10px'}>

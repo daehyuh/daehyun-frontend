@@ -1,5 +1,11 @@
+import ADdata from "./ADdata";
+
 type Ad = {
-    ad: string[]
+    success : boolean,
+    data : ADdata[],
+    message : string
 }
 
-export default Ad
+
+
+export default Ad;

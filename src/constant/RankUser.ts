@@ -1,7 +1,8 @@
 type RankUser = {
     rank?: number,
-    closeness: number,
     color: string,
+    isBlack : boolean,
+    closeness: number,
     nickname: string
 }
 

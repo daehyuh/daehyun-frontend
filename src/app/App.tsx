@@ -38,14 +38,14 @@ export type PageType = {
 
 function App() {
     const [showPrank, setShowPrank] = useState(false);
-
+    
     useEffect(() => {
         const timeout = setTimeout(() => {
             setShowPrank(false);
         }, 3000);
 
         const skip = () => setShowPrank(false);
-
+        
         window.addEventListener("click", skip);
         window.addEventListener("keydown", skip);
         window.addEventListener("mousemove", skip);
@@ -59,13 +59,9 @@ function App() {
             window.removeEventListener("scroll", skip);
         };
     }, []);
-
+    
     const pages: PageType[] = [
         {hrefs: ["/상자깡", "/"], title: "상자깡 확률", page: <Gacha/>},
-        {hrefs: ["/검닉랭킹"], title: "검닉랭킹", page: <ColorRank/>},
-        {hrefs: ["/길드배경랭킹"], title: "길드배경랭킹", page: <GuildColorRank/>},
-        {hrefs: ["/전적검색"], title: "전적검색", page: <LimitCheck/>},
-        {hrefs: ["/채널동접"], title: "채널동접", page: <Channel/>},
         {hrefs: ["/티어"], title: "티어 계산기", page: <Tier/>},
         {hrefs: ["/우체통"], title: "우체통 계산기", page: <Mail/>},
         {hrefs: ["/출석보상"], title: "출석보상 계산기", page: <DailyReward/>},
@@ -83,6 +79,14 @@ function App() {
             title: "개인정보처리방침",
             page: <MarkdownPage markdownFilePath={"src/assets/markdowns/privacy.md"}/>
         }
+    ]
+
+
+    const member_pages: PageType[] = [
+        {hrefs: ["/검닉랭킹"], title: "검닉랭킹", page: <ColorRank/>},
+        {hrefs: ["/길드배경랭킹"], title: "길드배경랭킹", page: <GuildColorRank/>},
+        {hrefs: ["/전적검색"], title: "전적검색", page: <LimitCheck/>},
+        {hrefs: ["/채널동접"], title: "채널동접", page: <Channel/>},
     ]
 
     if (showPrank) {
@@ -113,8 +117,15 @@ function App() {
             <GoogleAdSense/>
             <div style={{ flex: 1, width: '100%'}}>
                 <Nofi/>
-                <Header pages={pages}/>
+                <Header pages={pages} member_pages={member_pages}/>
                 <Routes>
+                    {
+                        member_pages.map((item) => (
+                            item.hrefs.map(href => (
+                                <Route key={href} path={href} element={item.page}/>
+                            ))
+                        ))
+                    }
                     {
                         pages.map((item) => (
                             item.hrefs.map(href => (

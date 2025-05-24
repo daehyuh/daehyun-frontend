@@ -4,6 +4,9 @@ import styled from "styled-components";
 import Container from "./base/Container";
 import {useLocation} from "react-router-dom";
 import fetchNotification from "@apis/fetchNotification";
+import ChannelType from "@/constant/ChannelType";
+import Ad from "@/constant/Ad";
+import ADdata from "@/constant/ADdata";
 
 const StyledAdContainer = styled.div`
     font-size: 22px; /* 글씨 크기 */
@@ -48,7 +51,7 @@ const StyledA = styled.a`
 
 function Nofi() {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [nofi, setNofi] = useState<string[]>([]);
+    const [nofi, setNofi] = useState<ADdata[]>([]);
 
     const location = useLocation();
     const {pathname} = location;
@@ -60,13 +63,22 @@ function Nofi() {
             await fetchNotification()
                 .completion({
                     success: (notification) => {
-                        setNofi(notification.ad)
+                        notification.data = notification.data.filter((ad: ADdata) => {
+                            const currentDate = new Date();
+                            const startDate = new Date(ad.startDate);
+                            const endDate = new Date(ad.endDate);
+                            startDate.setHours(0, 0, 0, 0);
+                            endDate.setHours(23, 59, 59, 999);
+                            currentDate.setHours(0, 0, 0, 0);
+                            return currentDate >= startDate && currentDate <= endDate;
+                        })
+                        setNofi(notification.data)
                     }
                 })
         }
         fetchData()
     }, []);
-
+    
     useEffect(() => {
         const interval2 = setInterval(() => {
             setCurrentIndex((prevIndex) => (prevIndex + 1) % nofi.length);
@@ -77,7 +89,13 @@ function Nofi() {
     return (
         <Container fullWidth>
             <StyledImage
-                src={`${nofi[currentIndex]}`}
+                src={`http://localhost:8080/attach/images/${nofi[currentIndex]?.url ?? ""}`}
+                onClick={() => {
+                    const current = nofi[currentIndex];
+                    if (current?.href) {
+                        window.open(current.href, "_blank");
+                    }
+                }}
                 alt="광고"
             />
 

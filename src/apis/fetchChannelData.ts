@@ -1,5 +1,5 @@
-import fetchAPI from "./base/fetchAPI";
 import ChannelData from "@/constant/ChannelData";
+import fetchAPI from "./base/fetchAPI";
 
 const fetchChannelData = async () => {
     return fetchAPI<ChannelData>('getChannel')

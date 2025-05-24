@@ -1,7 +1,9 @@
-import ChannelType from "@/constant/ChannelType";
+import ChannelDataData from "./ChannelDataData";
 
 type ChannelData = {
-    channels: ChannelType[]
+  success: boolean;
+  data: ChannelDataData;
+  message: string;
 }
 
 export default ChannelData;

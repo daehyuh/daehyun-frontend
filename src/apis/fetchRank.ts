@@ -2,7 +2,7 @@ import fetchAPI from "./base/fetchAPI";
 import RankUser from "../constant/RankUser";
 
 const fetchRank = async () => {
-    return fetchAPI<RankUser[]>('datas')
+    return fetchAPI<RankUser[]>('rank/black')
         .thenUpdateIndex('rank', 1)
 };
 

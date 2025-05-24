@@ -5,4 +5,5 @@ type UserGameData = {
     past_win_count: number
     todaygames: number | string
     today_games: number | null
+    isTodayLimit?: boolean
 }

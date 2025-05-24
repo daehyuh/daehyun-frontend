@@ -1,18 +1,20 @@
 import React, {useState, useEffect} from "react";
 import {CategoryTitle, Container, ContentLayout, Layout} from "@/components";
 import fetchChannelData from "@apis/fetchChannelData";
-import ChannelType from "@/constant/ChannelType";
 import ChannelList from "@/pages/Channel/components/ChannelList";
+import ChannelDataData from "@/constant/ChannelDataData";
+import ChannelDataItem from "@/constant/ChannelDataItem";
 
 function Channel() {
-    const [channels, setChannels] = useState<ChannelType[]>([]);
+    const [channels, setChannels] = useState<ChannelDataItem[]>([]);
 
     // FastAPI에서 데이터 가져오기
     const fetchChannels = async () => {
         await fetchChannelData()
             .completion({
                 success: result => {
-                    setChannels(result.channels);
+                    setChannels(result.data.channels);
+                    console.log("채널 데이터:", result.data);
                 }
             })
     };

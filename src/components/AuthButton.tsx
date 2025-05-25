@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Text from "./base/Text";
 
 function AuthSection() {
     const [loginId, setloginId] = useState("");
@@ -139,6 +140,12 @@ const handleSubmit = async () => {
                     />
                     구글 로그인
                 </button>
+                <Text color={"#ffffff"} fontWeight={'bold'}>로그인하시면 아래 기능에서 유저등록이 가능합니다. 검닉랭킹, 획초체크 등등</Text>
+                <img
+                    src="../image/example.png"
+                    alt="Login Illustration"
+                    style={{ width: "100%", marginTop: "20px" }}
+                />
             </div>
 
         );

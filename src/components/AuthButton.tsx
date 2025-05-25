@@ -14,35 +14,37 @@ function AuthSection() {
             .some((c) => c.startsWith("accessToken="));
         setIsLoggedIn(hasToken);
 
-        const accessToken = document.cookie
-                .split(";")
-                .map(c => c.trim())
-                .find(c => c.startsWith("accessToken="))
-                ?.split("=")[1];
+        if (hasToken) {
+            const accessToken = document.cookie
+                    .split(";")
+                    .map(c => c.trim())
+                    .find(c => c.startsWith("accessToken="))
+                    ?.split("=")[1];
 
-        if (accessToken) {
-            fetch("https://api.daehyun.dev/User/profile/me", {
-                method: "GET",
-                headers: {
-                "Authorization": `Bearer ${accessToken}`,
-                "Accept": "*/*",
-            },
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+            if (accessToken) {
+                fetch("https://api.daehyun.dev/User/profile/me", {
+                    method: "GET",
+                    headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Accept": "*/*",
+                },
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
                 }
-                return response.json();
+                )
+                .then(data => {
+                    setloginId(data.id);
+                })
+                .catch(error => {
+                    console.error("Error fetching user data:", error);
+                    alert("로그인이 만료되었습니다.");
+                    setIsLoggedIn(false);
+                });
             }
-            )
-            .then(data => {
-                setloginId(data.id);
-            })
-            .catch(error => {
-                console.error("Error fetching user data:", error);
-                alert("로그인 정보가 유효하지 않습니다. 다시 로그인해주세요.");
-                setIsLoggedIn(false);
-            });
         }
         
 

@@ -42,7 +42,7 @@ function AuthSection() {
                 .catch(error => {
                     console.error("Error fetching user data:", error);
                     alert("로그인이 만료되었습니다.");
-                    setIsLoggedIn(false);
+                    window.location.href = "https://api.daehyun.dev/core/logout";
                 });
             }
         }

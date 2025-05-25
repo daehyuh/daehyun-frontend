@@ -18,16 +18,18 @@ function AuthSection() {
         window.location.href = "https://accounts.google.com/o/oauth2/auth?client_id=609416675991-2g5jqg562hursv4v09upi96q1fvrvius.apps.googleusercontent.com&redirect_uri=https://api.daehyun.dev/login/oauth2/code/google&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile";
     };
 
-    const handleLogout = () => {
-        // 쿠키에서 accessToken만 제거
+const handleLogout = async () => {
+    try {
+        await fetch("https://api.daehyun.dev/core/logout", {
+            method: "get", // 백엔드에 따라 GET일 수도 있음
+            credentials: "include", // 쿠키 포함 필수
+        });
         
-        document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
-        setIsLoggedIn(false);
-        setNickname("");
-        setUserCode("");
-        alert("로그아웃 되었습니다.");
-        window.location.reload();
-    };
+        window.location.href = "/";
+    } catch (error) {
+        console.error("로그아웃 실패:", error);
+    }
+};
 
 const handleSubmit = async () => {
     const accessToken = document.cookie
@@ -45,7 +47,7 @@ const handleSubmit = async () => {
         alert("닉네임과 유저 코드를 모두 입력해주세요.");
         return;
     }
-
+    
     try {
         const encodedNickname = encodeURIComponent(nickname);
         const encodedCode = encodeURIComponent(userCode);
@@ -76,23 +78,33 @@ const handleSubmit = async () => {
 
     if (!isLoggedIn) {
         return (
-            <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto" }}>
+         <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto" }}>
                 <button
+                    onClick={handleLogin}
                     style={{
                         width: "100%",
                         padding: "12px",
                         backgroundColor: "#fff",
                         color: "#444",
-                        border: "none",
+                        border: "1px solid #ddd",
                         borderRadius: "6px",
                         fontWeight: "bold",
                         cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "8px"
                     }}
-                    onClick={handleLogin}
                 >
+                    <img
+                        src="https://developers.google.com/identity/images/g-logo.png"
+                        alt="Google Logo"
+                        style={{ width: "18px", height: "18px" }}
+                    />
                     구글 로그인
                 </button>
             </div>
+
         );
     }
 

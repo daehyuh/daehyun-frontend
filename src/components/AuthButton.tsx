@@ -13,6 +13,13 @@ function AuthSection() {
             .map((c) => c.trim())
             .some((c) => c.startsWith("accessToken="));
         setIsLoggedIn(hasToken);
+        const accessToken = document.cookie
+                .split(";")
+                .map(c => c.trim())
+                .find(c => c.startsWith("accessToken="))
+                ?.split("=")[1];
+        
+        setloginId(accessToken || "");
 
         // if (hasToken) {
         //     const accessToken = document.cookie

@@ -14,39 +14,39 @@ function AuthSection() {
             .some((c) => c.startsWith("accessToken="));
         setIsLoggedIn(hasToken);
 
-        if (hasToken) {
-            const accessToken = document.cookie
-                    .split(";")
-                    .map(c => c.trim())
-                    .find(c => c.startsWith("accessToken="))
-                    ?.split("=")[1];
+        // if (hasToken) {
+        //     const accessToken = document.cookie
+        //             .split(";")
+        //             .map(c => c.trim())
+        //             .find(c => c.startsWith("accessToken="))
+        //             ?.split("=")[1];
 
-            if (accessToken) {
-                fetch("https://api.daehyun.dev/User/profile/me", {
-                      method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${accessToken}`,
-                        "Accept": "*/*",
-                    },
-                    credentials: "include",
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                }
-                )
-                .then(data => {
-                    setloginId(data.id);
-                })
-                .catch(error => {
-                    console.error("Error fetching user data:", error);
-                    alert("로그인이 만료되었습니다.");
-                    window.location.href = "https://api.daehyun.dev/core/logout";
-                });
-            }
-        }
+        //     if (accessToken) {
+        //         fetch("https://api.daehyun.dev/User/profile/me", {
+        //               method: "GET",
+        //             headers: {
+        //                 "Authorization": `Bearer ${accessToken}`,
+        //                 "Accept": "*/*",
+        //             },
+        //             credentials: "include",
+        //         })
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error(`HTTP error! status: ${response.status}`);
+        //             }
+        //             return response.json();
+        //         }
+        //         )
+        //         .then(data => {
+        //             setloginId(data.id);
+        //         })
+        //         .catch(error => {
+        //             console.error("Error fetching user data:", error);
+        //             alert("로그인이 만료되었습니다.");
+        //             window.location.href = "https://api.daehyun.dev/core/logout";
+        //         });
+        //     }
+        // }
         
 
     }, []);

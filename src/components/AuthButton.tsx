@@ -23,11 +23,12 @@ function AuthSection() {
 
             if (accessToken) {
                 fetch("https://api.daehyun.dev/User/profile/me", {
-                    method: "GET",
+                      method: "GET",
                     headers: {
-                    "Authorization": `Bearer ${accessToken}`,
-                    "Accept": "*/*",
-                },
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Accept": "*/*",
+                    },
+                    credentials: "include",
                 })
                 .then(response => {
                     if (!response.ok) {

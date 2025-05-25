@@ -148,7 +148,9 @@ const handleSubmit = async () => {
     return (
         <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto" }}>
 
-            로그인 유저 아이디 : {userId}
+            <h2 style={{ color: "#FEC97B", textAlign: "center", marginBottom: "20px" }}>
+                {loginId} 님, 안녕하세요!
+            </h2>
 
             {/* 닉네임 입력 */}
             <div style={{ marginBottom: "12px" }}>

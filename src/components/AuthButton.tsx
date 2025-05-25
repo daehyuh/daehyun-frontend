@@ -19,16 +19,7 @@ function AuthSection() {
     };
 
 const handleLogout = async () => {
-    try {
-        await fetch("https://api.daehyun.dev/core/logout", {
-            method: "get", // 백엔드에 따라 GET일 수도 있음
-            credentials: "include", // 쿠키 포함 필수
-        });
-        
-        window.location.href = "/";
-    } catch (error) {
-        console.error("로그아웃 실패:", error);
-    }
+        window.location.href = "https://api.daehyun.dev/core/logout";
 };
 
 const handleSubmit = async () => {
@@ -110,6 +101,7 @@ const handleSubmit = async () => {
 
     return (
         <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto" }}>
+
             {/* 닉네임 입력 */}
             <div style={{ marginBottom: "12px" }}>
                 <label

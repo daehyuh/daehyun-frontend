@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 function AuthSection() {
+    const [loginId, setloginId] = useState("");
     const [nickname, setNickname] = useState("");
     const [userCode, setUserCode] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -12,15 +13,50 @@ function AuthSection() {
             .map((c) => c.trim())
             .some((c) => c.startsWith("accessToken="));
         setIsLoggedIn(hasToken);
+
+        const accessToken = document.cookie
+                .split(";")
+                .map(c => c.trim())
+                .find(c => c.startsWith("accessToken="))
+                ?.split("=")[1];
+
+        if (accessToken) {
+            fetch("https://api.daehyun.dev/User/profile/me", {
+                method: "GET",
+                headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Accept": "*/*",
+            },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            }
+            )
+            .then(data => {
+                setloginId(data.id);
+            })
+            .catch(error => {
+                console.error("Error fetching user data:", error);
+                alert("로그인 정보가 유효하지 않습니다. 다시 로그인해주세요.");
+                setIsLoggedIn(false);
+            });
+        }
+        
+
     }, []);
+
+
     
     const handleLogin = () => {
         window.location.href = "https://accounts.google.com/o/oauth2/auth?client_id=609416675991-2g5jqg562hursv4v09upi96q1fvrvius.apps.googleusercontent.com&redirect_uri=https://api.daehyun.dev/login/oauth2/code/google&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile";
     };
 
-const handleLogout = async () => {
-        window.location.href = "https://api.daehyun.dev/core/logout";
-};
+    const handleLogout = async () => {
+            window.location.href = "https://api.daehyun.dev/core/logout";
+    };
 
 const handleSubmit = async () => {
     const accessToken = document.cookie
@@ -43,7 +79,7 @@ const handleSubmit = async () => {
         const encodedNickname = encodeURIComponent(nickname);
         const encodedCode = encodeURIComponent(userCode);
         
-        const url = `https://api.daehyun.dev/Account/sync?nickname=${encodedNickname}&code=${encodedCode}`;
+        const url = `https://api.daehyun.dev/User/Account/sync?nickname=${encodedNickname}&code=${encodedCode}`;
         
         const response = await fetch(url, {
             method: "POST",
@@ -101,6 +137,8 @@ const handleSubmit = async () => {
 
     return (
         <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto" }}>
+
+            로그인 유저 아이디 : {userId}
 
             {/* 닉네임 입력 */}
             <div style={{ marginBottom: "12px" }}>

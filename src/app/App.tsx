@@ -103,7 +103,7 @@ function App() {
                 alignItems: "center"
             }}>
                 <img
-                    src="https://api.daehyun.dev/web/images/ad/%EB%A7%8C%EC%9A%B0%EC%A0%88.png"
+                    src="https://api.xn--vk1b177d.com/web/images/ad/%EB%A7%8C%EC%9A%B0%EC%A0%88.png"
                     alt="만우절 이벤트"
                     style={{maxWidth: "100%", maxHeight: "100%"}}
                 />

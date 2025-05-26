@@ -30,7 +30,7 @@ function AuthSection() {
                     ?.split("=")[1];
             
             if (accessToken) {
-                fetch("https://api.daehyun.dev/User/profile/me", {
+                fetch("https://api.xn--vk1b177d.com/User/profile/me", {
                       method: "GET",
                     headers: {
                         "Authorization": `Bearer ${accessToken}`,
@@ -51,7 +51,7 @@ function AuthSection() {
                 .catch(error => {
                     console.error("Error fetching user data:", error);
                     alert("로그인이 만료되었습니다.");
-                    window.location.href = "https://api.daehyun.dev/core/logout";
+                    window.location.href = "https://xn--vk1b177d.com/core/logout";
                 });
             }
         }
@@ -62,11 +62,11 @@ function AuthSection() {
 
     
     const handleLogin = () => {
-        window.location.href = "https://accounts.google.com/o/oauth2/auth?client_id=609416675991-2g5jqg562hursv4v09upi96q1fvrvius.apps.googleusercontent.com&redirect_uri=https://api.daehyun.dev/login/oauth2/code/google&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile";
+        window.location.href = "https://accounts.google.com/o/oauth2/auth?client_id=609416675991-2g5jqg562hursv4v09upi96q1fvrvius.apps.googleusercontent.com&redirect_uri=https://api.xn--vk1b177d.com/login/oauth2/code/google&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile";
     };
-
+    
     const handleLogout = async () => {
-            window.location.href = "https://api.daehyun.dev/core/logout";
+            window.location.href = "https://api.xn--vk1b177d.com/core/logout";
     };
 
 const handleSubmit = async () => {
@@ -90,7 +90,7 @@ const handleSubmit = async () => {
         const encodedNickname = encodeURIComponent(nickname);
         const encodedCode = encodeURIComponent(userCode);
         
-        const url = `https://api.daehyun.dev/User/Account/sync?nickname=${encodedNickname}&code=${encodedCode}`;
+        const url = `https://api.xn--vk1b177d.com/User/Account/sync?nickname=${encodedNickname}&code=${encodedCode}`;
         
         const response = await fetch(url, {
             method: "POST",
@@ -191,7 +191,7 @@ const handleSubmit = async () => {
                         fontWeight: "bold",
                     }}
                 >
-                    유저 코드
+                    스파이의 비밀문서 코드
                 </label>
                 <input
                     type="text"

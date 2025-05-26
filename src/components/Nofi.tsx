@@ -89,7 +89,7 @@ function Nofi() {
     return (
         <Container fullWidth>
             <StyledImage
-                src={`https://api.daehyun.dev/attach/images/${nofi[currentIndex]?.url ?? ""}`}
+                src={`https://api.xn--vk1b177d.com/attach/images/${nofi[currentIndex]?.url ?? ""}`}
                 onClick={() => {
                     const current = nofi[currentIndex];
                     if (current?.href) {

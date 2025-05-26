@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Text from "./base/Text";
+import { data } from "react-router-dom";
 
 function AuthSection() {
     const [loginId, setloginId] = useState("");
@@ -107,9 +108,10 @@ const handleSubmit = async () => {
         
         const data = await response.json();
         alert("동기화 성공!");
+
     } catch (e) {
         console.error(e);
-        alert("에러 발생: " + e);
+        alert("에러 발생 (이미 등록된 유저이거나, 1계정당 1번만 등록 가능합니다.)");
     }
 };
 
@@ -169,7 +171,7 @@ const handleSubmit = async () => {
                     onMouseEnter={() => setHoveredField("nickname")}
                     onMouseLeave={() => setHoveredField(null)}
                     style={{
-                        width: "100%",
+                        width: "90%",
                         padding: "12px",
                         marginTop: "4px",
                         background: "#1C1C1E",
@@ -199,7 +201,7 @@ const handleSubmit = async () => {
                     onMouseEnter={() => setHoveredField("userCode")}
                     onMouseLeave={() => setHoveredField(null)}
                     style={{
-                        width: "100%",
+                        width: "90%",
                         padding: "12px",
                         marginTop: "4px",
                         background: "#1C1C1E",

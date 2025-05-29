@@ -3,7 +3,7 @@ import {ContentLayout, Layout, Select, SelectOptionType} from "../../components/
 import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container} from "@/components";
 
-import sasangProbabillty from "@/assets/probabilities/sasangProbabillty";
+import ballFlickingProbability from "@/assets/probabilities/ballFlickingProbability";
 
 import GradeProbability from "@/constant/GradeProbability";
 import ProbabilityItem from "@/constant/ProbabilityItem";
@@ -53,7 +53,7 @@ function Gacha() {
         const savedCheckedItems = getCookie("checkedItems");
         
         const savedCheckedItemsSet2 = new Set(savedCheckedItems ? savedCheckedItems.split(",").map(Number) : []);
-        const items2 = (grade ? sasangProbabillty[grade].items : []).map((item, index) => ({
+        const items2 = (grade ? ballFlickingProbability[grade].items : []).map((item, index) => ({
             ...item,
             isChecked: savedCheckedItemsSet2.has(index),
             originalChance: item.chance

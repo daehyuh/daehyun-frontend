@@ -10,6 +10,7 @@ import AuthButton from './AuthButton';
 
 
 
+
 const StyledCMenuContainer = styled(Container)`
     overflow-x: scroll;
     white-space: nowrap;
@@ -39,18 +40,17 @@ function Header({pages, member_pages}: HeaderProps ) {
     const path = decodeURIComponent(pathname);
     
     return (
-        <Container fullWidth backgroundColor={'#85282C'} align={'topLeft'} margin={'0 0 15px 0'}>
+        <Container fullWidth backgroundColor={'#85282C'} align={'topLeft'} margin={'0 0 0 0'}>
             <Container fullWidth
                        align={'topLeft'}
                        background={'linear-gradient(180deg, #242426 0%, rgba(36,36,38,0) 100%)'}
-                       padding={'12px 12px 12px  12px'}>
+                       padding={'12px 0px 12px  0px'}>
                 <Link to="/">
                     <Logo/>
                 </Link>
-                
             </Container>
 
-        <StyledCMenuContainer fullWidth flexDirection={'row'} gap={'20px'} padding={'12px 12px 12px 12px'}
+        <StyledCMenuContainer fullWidth flexDirection={'row'} gap={'20px'} padding={'0px 12px 12px 12px'}
                             align={'topLeft'}>
                 {pages
                     .filter(item => !item.hide)
@@ -67,7 +67,7 @@ function Header({pages, member_pages}: HeaderProps ) {
                     <Container>
                         <AuthButton />
                     </Container>
-               
+                    
 
                 </Container>
             </Container>

@@ -35,18 +35,16 @@ const StyledImage = styled.img`
 `
 
 const StyledA = styled.a`
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font-size: 20px;
+    font-size: 18px;
+    margin-top: 0px;
     background-color: #1e1e1e;
     width: 100%;
-    /* a태그 색 */
     color: #EAEAEA;
     text-Align: center;
-    font-weight: bold;
     display: flex;
     justify-Content: center;
-`
+    text-decoration: underline;
+    `
 
 
 function Nofi() {
@@ -98,9 +96,7 @@ function Nofi() {
                 }}
                 alt="광고"
             />
-
             <StyledA href="https://open.kakao.com/o/sWIax8Vc">대현닷컴 홍보문의 오픈카톡</StyledA>
-
         </Container>
     );
 }

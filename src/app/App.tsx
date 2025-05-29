@@ -23,6 +23,21 @@ import GoogleAdSense from "@/components/GoogleAdSense";
 
 import styled from 'styled-components';
 
+
+const StyledA = styled.a`
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    background-color: #1e1e1e;
+    width: 100%;
+    /* a태그 색 */
+    color: #EAEAEA;
+    text-Align: center;
+    font-weight: bold;
+    display: flex;
+    justify-Content: center;`
+
+
 const Container = styled.div`
   display: flex;
   justify-content: flex-start;

@@ -112,7 +112,7 @@ function Gacha() {
     return (
         <Layout>
             <ContentLayout>
-            <CategoryTitle title={`2025 42시티 미술관 업데이트 완료`}/>
+            <CategoryTitle title={`2025 알까기 업데이트`}/>
                 <CategoryTitle title={`장착템 확률 : ${totalProbability.equip.toFixed(4)}%`}/>
                 <Container fullWidth align={'centerLeft'} gap={'20px'}>
                     <Select

@@ -71,13 +71,13 @@ function App() {
             hide: true,
             hrefs: ["/이용약관"],
             title: "이용약관",
-            page: <MarkdownPage markdownFilePath={"src/assets/markdowns/terms.md"}/>
+            page: <MarkdownPage markdownFilePath={"/markdowns/terms.md"}/>
         },
         {
             hide: true,
             hrefs: ["/개인정보처리방침"],
             title: "개인정보처리방침",
-            page: <MarkdownPage markdownFilePath={"src/assets/markdowns/privacy.md"}/>
+            page: <MarkdownPage markdownFilePath={"markdowns/privacy.md"}/>
         }
     ]
 

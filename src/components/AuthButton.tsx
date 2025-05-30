@@ -140,8 +140,13 @@ const handleSubmit = async () => {
                         alt="Google Logo"
                         style={{ width: "18px", height: "18px" }}
                     />
-                    구글 로그인
+                    대현닷컴 회원가입/로그인
                 </button>
+                <div style={{ marginTop: "12px", textAlign: "center", color: "#fff" }}>
+                    <Text>
+                        {"대현닷컴에 회원가입/로그인 하시면\n닉네임과 유저 코드를 입력하여 유저를 등록할 수 있습니다."}
+                    </Text>
+                </div>
             </div>
         );
     }

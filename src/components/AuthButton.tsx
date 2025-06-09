@@ -153,7 +153,7 @@ const handleSubmit2 = async () => {
         }
         
         const data = await response.json();
-        alert(`${data}를 최후의 반론 Team42 공지의 댓글로 남겨주세요.`);
+        alert(`${data.data}를 최후의 반론 Team42 공지의 댓글로 남겨주세요.`);
 
     } catch (e) {
         console.error(e);

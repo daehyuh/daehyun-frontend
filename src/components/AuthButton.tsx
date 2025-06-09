@@ -134,7 +134,7 @@ const handleSubmit2 = async () => {
     }
     
     try {
-        const encodedNickname = encodeURIComponent(nickname);
+        const encodedNickname = encodeURIComponent(nickname2);
         
         const url = `https://api.xn--vk1b177d.com/User/Account/addGuest?nickname=${encodedNickname}`;
         

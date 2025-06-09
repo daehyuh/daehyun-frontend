@@ -4,6 +4,7 @@ import { data } from "react-router-dom";
 
 function AuthSection() {
     const [loginId, setloginId] = useState("");
+    const [nickname2, setNickname2] = useState("");
     const [nickname, setNickname] = useState("");
     const [userCode, setUserCode] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -111,7 +112,52 @@ const handleSubmit = async () => {
 
     } catch (e) {
         console.error(e);
-        alert("에러 발생 (이미 등록된 유저이거나, 1계정당 1번만 등록 가능합니다.)");
+        alert("에러 발생 (이미 등록된 유저이거나, 1계정당 1번만 등록 가능합니다.), 추가를 원하시면 문의해주세요.");
+    }
+};
+
+const handleSubmit2 = async () => {
+    const accessToken = document.cookie
+        .split(";")
+        .map(c => c.trim())
+        .find(c => c.startsWith("accessToken="))
+        ?.split("=")[1];
+
+    if (!accessToken) {
+        alert("로그인이 필요합니다.");
+        return;
+    }
+
+    if (!nickname2) {
+        alert("최반 닉네임을 입력해주세요.");
+        return;
+    }
+    
+    try {
+        const encodedNickname = encodeURIComponent(nickname);
+        
+        const url = `https://api.xn--vk1b177d.com/User/Guest/addGuest?nickname=${encodedNickname}`;
+        
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Accept": "*/*",
+            },
+        });
+
+        if (!response.ok) {
+            const text = await response.text();
+            alert(`요청 실패: ${response.status} - ${text}`);
+            return;
+        }
+        
+        const data = await response.json();
+        alert(`${data}를 최후의 반론 Team42 공지의 댓글로 남겨주세요.`);
+
+    } catch (e) {
+        console.error(e);
+        alert("에러 발생 (이미 등록된 유저이거나, 1계정당 1번만 등록 가능합니다.), 추가를 원하시면 문의해주세요.");
     }
 };
 
@@ -147,12 +193,65 @@ const handleSubmit = async () => {
     }
 
     return (
-        <div style={{ padding: "20px", width: "300px", maxWidth: "400px", margin: "0 auto" }}>
+        <div style={{ padding: "20px", width: "300px", maxWidth: "600px", margin: "0 auto" }}>
 
             <h2 style={{ color: "#FEC97B", textAlign: "center", marginBottom: "20px" }}>
                 {loginId} 님, 안녕하세요!
             </h2>
+            <div style={{ marginBottom: "20px", textAlign: "center", display: "flex", gap: "10px", flexDirection: "column", alignItems: "center" }}>
+            <div>
+                {/* 닉네임 입력 */}
+            <div style={{ marginBottom: "12px" }}>
+                <label
+                    style={{
+                        color: hoveredField === "nickname2" ? "#FEC97B" : "#CCCCCC",
+                        fontWeight: "bold",
+                    }}
+                >
+                    최후의 반론 Team42 공지 댓글에 인증번호를 입력하여 인증해주세요.
+                </label>
+                <input
+                    type="text"
+                    value={nickname2}
+                    onChange={(e) => setNickname2(e.target.value)}
+                    placeholder="닉네임을 입력해주세요."
+                    onMouseEnter={() => setHoveredField("nickname2")}
+                    onMouseLeave={() => setHoveredField(null)}
+                    style={{
+                        width: "90%",
+                        padding: "12px",
+                        marginTop: "4px",
+                        background: "#1C1C1E",
+                        color: "#fff",
+                        border: `1px solid ${hoveredField === "nickname2" ? "#FEC97B" : "#888"}`,
+                        borderRadius: "6px",
+                        outline: "none",
+                    }}
+                />
+            </div>
+            </div>
+                
 
+            {/* 확인 버튼 */}
+            <button
+                onClick={handleSubmit2}
+                style={{
+                    width: "100%",
+                    padding: "14px",
+                    backgroundColor: "#D82F45",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "8px",
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                    marginBottom: "20px",
+                }}
+            >
+            Team42 최후의반론 공지 댓글로 인증
+            </button>
+
+            <div>
             {/* 닉네임 입력 */}
             <div style={{ marginBottom: "12px" }}>
                 <label
@@ -229,8 +328,14 @@ const handleSubmit = async () => {
                     marginBottom: "20px",
                 }}
             >
-                대현닷컴에 유저 등록
+                스파이의 비밀문서 코드로 인증
             </button>
+            
+            
+            </div>
+            </div>
+            
+            {/* 로그인 정보 표시 */}
 
             {/* 로그아웃 버튼 */}
             <button

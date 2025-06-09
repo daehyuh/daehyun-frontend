@@ -6,7 +6,7 @@ import Logo from "./base/Logo";
 import styled from "styled-components";
 import {PageType} from "@/app/App";
 import { useEffect, useState } from 'react';
-import AuthButton from './AuthButton';
+
 
 
 
@@ -59,21 +59,7 @@ function Header({pages, member_pages}: HeaderProps ) {
                     ))}
             </StyledCMenuContainer>
 
-
-
-            <Container background={'#3a3a3c'} fullWidth align='center' padding={'12px 12px 12px 12px'} gap={'20px'}>
-                <Container padding={'0 12px 12px 12px'}>
-                    
-                    <Container>
-                        <AuthButton />
-                    </Container>
-                    
-
-                </Container>
-            </Container>
-
-
-            <StyledCMenuContainer background={'#3a3a3c'} fullWidth flexDirection={'row'} gap={'20px'} margin={'0px 0px 10px 0px'} padding={'12px 12px 12px  12px'} align={'topLeft'}>
+            <StyledCMenuContainer background={'#2A2A2A'} fullWidth flexDirection={'row'} gap={'20px'} margin={'0px 0px 10px 0px'} padding={'12px 12px 12px  12px'} align={'topLeft'}>
                 {member_pages
                     .filter(item => !item.hide)
                     .map((item, index) => (

@@ -22,6 +22,7 @@ import GuildColorRank from "@/pages/GuildColorRank/GuildColorRank";
 import GoogleAdSense from "@/components/GoogleAdSense";
 
 import styled from 'styled-components';
+import AuthButton from "@/components/AuthButton";
 
 
 const StyledA = styled.a`
@@ -98,6 +99,7 @@ function App() {
 
 
     const member_pages: PageType[] = [
+        {hrefs: ["/인증"], title: "인증", page: <AuthButton/>},
         {hrefs: ["/검닉랭킹"], title: "검닉랭킹", page: <ColorRank/>},
         {hrefs: ["/길드배경랭킹"], title: "길드배경랭킹", page: <GuildColorRank/>},
         {hrefs: ["/전적검색"], title: "전적검색", page: <LimitCheck/>},

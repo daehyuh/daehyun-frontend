@@ -153,7 +153,7 @@ const handleSubmit2 = async () => {
         }
         
         const data = await response.json();
-        alert(`${data.data}를 최후의 반론 Team42 공지의 댓글로 남겨주세요.`);
+        alert(`"${data.data}"를 최후의 반론 Team42 공지의 댓글로 남겨주세요.(번호만 입력)`);
 
     } catch (e) {
         console.error(e);
@@ -186,7 +186,7 @@ const handleSubmit2 = async () => {
                         alt="Google Logo"
                         style={{ width: "18px", height: "18px" }}
                     />
-                    구글 로그인
+                    대현닷컴 로그인
                 </button>
             </div>
         );

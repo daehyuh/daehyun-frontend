@@ -136,7 +136,7 @@ const handleSubmit2 = async () => {
     try {
         const encodedNickname = encodeURIComponent(nickname);
         
-        const url = `https://api.xn--vk1b177d.com/User/Guest/addGuest?nickname=${encodedNickname}`;
+        const url = `https://api.xn--vk1b177d.com/User/Account/addGuest?nickname=${encodedNickname}`;
         
         const response = await fetch(url, {
             method: "POST",

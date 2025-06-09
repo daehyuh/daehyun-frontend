@@ -208,7 +208,7 @@ const handleSubmit2 = async () => {
                         fontWeight: "bold",
                     }}
                 >
-                    최후의 반론 Team42 공지 댓글에 인증번호를 입력하여 인증해주세요.
+                닉네임을 기입후 최후의 반론 Team42 공지 댓글에 인증번호를 입력하여 인증해주세요. (스파이의 비밀문서가 안되는 분들을 위한 인증방법)
                 </label>
                 <input
                     type="text"

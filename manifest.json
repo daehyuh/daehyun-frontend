@@ -3,7 +3,7 @@
   "name": "마피아42 편리기능 서비스 대현닷컴",
   "icons": [
     {
-      "src": "images/favicon.ico",
+      "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     }

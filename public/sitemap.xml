@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
-
-
-<url>
-  <loc>https://www.xn--vk1b177d.com/</loc>
-  <lastmod>2024-11-20T21:34:13+00:00</lastmod>
-</url>
-
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://대현.com/</loc></url>
+  <url><loc>https://대현.com/인증</loc></url>
+  <url><loc>https://대현.com/검닉랭킹</loc></url>
+  <url><loc>https://대현.com/길드배경랭킹</loc></url>
+  <url><loc>https://대현.com/전적검색</loc></url>
+  <url><loc>https://대현.com/채널동접</loc></url>
+  <url><loc>https://대현.com/상자깡</loc></url>
+  <url><loc>https://대현.com/티어</loc></url>
+  <url><loc>https://대현.com/우체통</loc></url>
+  <url><loc>https://대현.com/출석보상</loc></url>
+  <url><loc>https://대현.com/환율</loc></url>
+  <url><loc>https://대현.com/권엽</loc></url>
+  <url><loc>https://대현.com/이용약관</loc></url>
+  <url><loc>https://대현.com/개인정보처리방침</loc></url>
 </urlset>

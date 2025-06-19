@@ -36,65 +36,91 @@ function Tier() {
     };
     const [cost, setCost] = useState(initialCostStateValue);
 
-    const calcCost = () => {
-        const sale = tier.sale ? 0.9 : 1;
+const calcCost = () => {
+    const sale = tier.sale ? 0.9 : 1;
 
-        if (tier.selectedTier === 6) {
-            // 6티어 1장 → 5티어 6장 필요
-            const remainingTier5 = Math.max(6 - tier.tier5, 0);
+    if (tier.selectedTier === 6) {
+        const needTier5 = Math.max(6 - tier.tier5, 0);
+        const needTier4 = Math.max(needTier5 * 5 - tier.tier4, 0);
+        const needTier3 = Math.max(needTier4 * 4 - tier.tier3, 0);
+        
 
-            // 5티어 1장 → 4티어 5장 → 총 5 * 6 = 30장 필요
-            const remainingTier4 = Math.max(remainingTier5 * 5 - tier.tier4, 0);
+        console.log('needTier3:', needTier3, 'needTier4:', needTier4, 'needTier5:', needTier5);
+        
+        // const costOf3To4 = Math.ceil((needTier3) / 4) * 100000 * sale;
 
-            // 4티어 1장 → 3티어 4장 → 총 30 * 4 = 120장 필요
-            const remainingTier3 = Math.max(remainingTier4 * 4 - tier.tier3, 0);
+        const costOf3To4 = Math.ceil((120 - (tier.tier4*4 + tier.tier5*20)) / 4 * 100000 * sale);
+        const costOf4To5 = Math.ceil(30 - (tier.tier5*5)) / 5  * 500000 * sale;
+        const defaultCost = 1000000 * sale;
+        const totalCost = costOf3To4 + costOf4To5 + defaultCost;
 
-            const calculated3To4 = remainingTier3 / 4 * 100000 * sale;
-            const calculated4To5 = remainingTier4 / 5 * 500000 * sale;
-            const defaultCost = 1000000 * sale;
-            const totalCost = calculated3To4 + calculated4To5 + defaultCost;
-
-            setCost({
-                needCard: remainingTier3,
-                costOf3To4: calculated3To4,
-                costOf4To5: calculated4To5,
-                totalCost: totalCost
-            });
-        } else {
-            // 5티어 1장 → 4티어 5장
-            const remainingTier4 = Math.max(5 - tier.tier4, 0);
-
-            // 4티어 1장 → 3티어 4장 → 총 5 * 4 = 20장 필요
-            const remainingTier3 = Math.max(remainingTier4 * 4 - tier.tier3, 0);
-
-            const calculated3To4 = remainingTier3 / 4 * 100000 * sale;
-            const defaultCost = 500000 * sale;
-            const totalCost = calculated3To4 + defaultCost;
-
-            setCost({
-                needCard: remainingTier3,
-                costOf3To4: calculated3To4,
-                costOf4To5: 0,
-                totalCost: totalCost
-            });
-        }
-    };
-
-    const setInitialCalcCost = (selectedTier: number) => {
-        const sale = tier.sale ? 0.9 : 1;
-        let needCard = selectedTier === 6 ? 120 : 20;
-        const calculated3To4 = needCard / 4 * 100000 * sale;
-        const calculated4To5 = selectedTier === 6 ? (needCard / 4) / 5 * 500000 * sale : 0;
-        const defaultCost = (selectedTier === 6 ? 1000000 : 500000) * sale;
-        const totalCost = calculated3To4 + calculated4To5 + defaultCost;
+        console.log('costOf3To4:', costOf3To4, 'costOf4To5:', costOf4To5, 'defaultCost:', defaultCost, 'totalCost:', totalCost);
 
         setCost({
-            needCard,
-            costOf3To4: calculated3To4,
-            costOf4To5: calculated4To5,
+            needCard: needTier3,
+            costOf3To4 : costOf3To4,
+            costOf4To5 : costOf4To5,
+            totalCost : totalCost
+        });
+    } else {
+        const needTier4 = Math.max(5 - tier.tier4, 0);
+        const needTier3 = Math.max(20 - tier.tier4 * 4, 0);
+        
+
+        const costOf3To4 = Math.ceil((20 - (tier.tier4*4)) / 4 * 100000 * sale);
+        const defaultCost = 500000 * sale;
+        const totalCost = costOf3To4 + defaultCost;
+        console.log('needTier3:', needTier3, 'needTier4:', needTier4);
+        console.log('costOf3To4:', costOf3To4, 'defaultCost:', defaultCost, 'totalCost:', totalCost);
+        setCost({
+            needCard: needTier3,
+            costOf3To4 : costOf3To4,
+            costOf4To5: 0,
+            totalCost : totalCost
+        });
+    }
+};
+
+
+    const setInitialCalcCost = (selectedTier: number) => {
+    const sale = tier.sale ? 0.9 : 1;
+
+    if (selectedTier === 6) {
+        const needTier5 = 6;
+        const needTier4 = needTier5 * 5;
+        const needTier3 = needTier4 * 4;
+
+        const costOf3To4 = Math.ceil(needTier3 / 4) * 100000 * sale;
+        const costOf4To5 = Math.ceil(needTier4 / 5) * 500000 * sale;
+        const defaultCost = 1000000 * sale;
+
+        const totalCost = costOf3To4 + costOf4To5 + defaultCost;
+
+        setCost({
+            needCard: needTier3,
+            costOf3To4,
+            costOf4To5,
             totalCost
         });
-    };
+    } else {
+        const needTier4 = 5;
+        const needTier3 = needTier4 * 4;
+
+        const costOf3To4 = Math.ceil(needTier3 / 4) * 100000 * sale;
+        const costOf4To5 = 0;
+        const defaultCost = 500000 * sale;
+
+        const totalCost = costOf3To4 + defaultCost;
+
+        setCost({
+            needCard: needTier3,
+            costOf3To4,
+            costOf4To5,
+            totalCost
+        });
+    }
+};
+
 
     const reset = () => {
         setTier(prev => {

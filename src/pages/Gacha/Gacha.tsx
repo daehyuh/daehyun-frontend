@@ -3,7 +3,7 @@ import {ContentLayout, Layout, Select, SelectOptionType} from "../../components/
 import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container} from "@/components";
 
-import ballFlickingProbability from "@/assets/probabilities/ballFlickingProbability";
+import frogProbabillty from "@/assets/probabilities/FrogProbability";
 
 import GradeProbability from "@/constant/GradeProbability";
 import ProbabilityItem from "@/constant/ProbabilityItem";
@@ -53,7 +53,7 @@ function Gacha() {
         const savedCheckedItems = getCookie("checkedItems");
         
         const savedCheckedItemsSet2 = new Set(savedCheckedItems ? savedCheckedItems.split(",").map(Number) : []);
-        const items2 = (grade ? ballFlickingProbability[grade].items : []).map((item, index) => ({
+        const items2 = (grade ? frogProbabillty[grade].items : []).map((item, index) => ({
             ...item,
             isChecked: savedCheckedItemsSet2.has(index),
             originalChance: item.chance
@@ -112,7 +112,7 @@ function Gacha() {
     return (
         <Layout>
             <ContentLayout>
-            <CategoryTitle title={`2025 알까기 업데이트`}/>
+            <CategoryTitle title={`2025 개구리 업데이트 완료`}/>
                 <CategoryTitle title={`장착템 확률 : ${totalProbability.equip.toFixed(4)}%`}/>
                 <Container fullWidth align={'centerLeft'} gap={'20px'}>
                     <Select

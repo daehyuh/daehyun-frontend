@@ -1,0 +1,11 @@
+{
+  "items": [
+    { "name": "유영하는 점쟁이 스킨", "chance": 15.0, "equip": true },
+    { "name": "피서지 도둑 스킨", "chance": 15.0, "equip": true },
+    { "name": "상어 이빨 테두리", "chance": 15.0, "equip": true },
+    { "name": "빛나는 밤바다 테두리", "chance": 15.0, "equip": true },
+    { "name": "도난 방지 표식", "chance": 15.0, "equip": true },
+    { "name": "여름 밤의 추억", "chance": 15.0, "equip": true },
+    { "name": "별의 바다 지갑", "chance": 10.0, "equip": true }
+  ]
+}

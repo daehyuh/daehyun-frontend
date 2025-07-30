@@ -26,27 +26,17 @@ const StyledTableRow = styled.tr<StyledTableRowProps>`
     }
 `
 
-const GuildColorRankTableRow = ({
-                                    rankGuild,
-                                    backgroundColor,
-                                    borderBottomColor = '#444',
-                                    hoverBackgroundColor = '#222',
-                                    color = 'white',
-                                    height = '75px',
-                                }: GuildColorRankTableRowProps) => {
+function renderGuildColorRankRow(rankGuild: RankGuild) {
     const initialHexCodeValue = rankGuild.initial_color.length > 0 && rankGuild.initial_color[0] === '#' ? rankGuild.initial_color : `#${rankGuild.initial_color}`
     const backgroundHexColorValue = rankGuild.initial_background_color.length > 0 && rankGuild.initial_background_color[0] === '#' ? rankGuild.initial_background_color : `#${rankGuild.initial_background_color}`
 
-
-    return <StyledTableRow borderBottomColor={borderBottomColor} hoverBackgroundColor={hoverBackgroundColor}
-                           color={color} height={height}>
-        <td style={{backgroundColor: backgroundColor}}>
+    return <>
+        <td>
             {rankGuild.rank}위
         </td>
         <td>{rankGuild.guild_name}<br/>({rankGuild.guild_point}GP)</td>
         <td>
             <Container fullWidth gap={'10px'}>
-            {/* flexDirection={'row'}  */}
                 <div
                     style={{
                         backgroundColor: backgroundHexColorValue,
@@ -57,14 +47,30 @@ const GuildColorRankTableRow = ({
                     }}
                 >
                     <span style={{color: initialHexCodeValue}}>
-                    {rankGuild.guild_initial}
-                        </span>
+                        {rankGuild.guild_initial}
+                    </span>
                 </div>
-
                 <Text color={'white'}>{backgroundHexColorValue}</Text>
             </Container>
         </td>
         <td>{rankGuild.initial_background_closeness > 90 ? "✅"+rankGuild.initial_background_closeness:rankGuild.initial_background_closeness}</td>
+    </>;
+}
+
+const GuildColorRankTableRow = ({
+                                    rankGuild,
+                                    backgroundColor,
+                                    borderBottomColor = '#444',
+                                    hoverBackgroundColor = '#222',
+                                    color = 'white',
+                                    height = '75px',
+                                }: GuildColorRankTableRowProps) => {
+
+    return <StyledTableRow borderBottomColor={borderBottomColor} hoverBackgroundColor={hoverBackgroundColor}
+                           color={color} height={height}>
+        <td style={{backgroundColor: backgroundColor}}>
+            {renderGuildColorRankRow(rankGuild)}
+        </td>
     </StyledTableRow>
 }
 

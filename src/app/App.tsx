@@ -77,7 +77,7 @@ function App() {
     }, []);
     
     const pages: PageType[] = [
-        {hrefs: ["/상자깡"], title: "상자깡 확률", page: <Gacha/>},
+        {hrefs: ["/상자깡", "/"], title: "상자깡 확률", page: <Gacha/>},
         {hrefs: ["/티어"], title: "티어 계산기", page: <Tier/>},
         {hrefs: ["/우체통"], title: "우체통 계산기", page: <Mail/>},
         {hrefs: ["/출석보상"], title: "출석보상 계산기", page: <DailyReward/>},
@@ -99,7 +99,7 @@ function App() {
 
 
     const member_pages: PageType[] = [
-        {hrefs: ["/인증", "/"], title: "인증/유저등록", page: <AuthButton/>},
+        {hrefs: ["/인증"], title: "인증/유저등록", page: <AuthButton/>},
         {hrefs: ["/검닉랭킹"], title: "검닉랭킹", page: <ColorRank/>},
         {hrefs: ["/길드배경랭킹"], title: "길드배경랭킹", page: <GuildColorRank/>},
         {hrefs: ["/전적검색"], title: "전적검색", page: <LimitCheck/>},

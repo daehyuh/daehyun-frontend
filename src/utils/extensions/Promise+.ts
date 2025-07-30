@@ -29,8 +29,7 @@ Promise.prototype.thenMap = async function <V, U>(callback: (value: U, index: nu
         .then((result) => result.map(callback));
 }
 
-
-Promise.prototype.thenMap = async function <V, U>(callback: (value: U, index: number, array: U[]) => V | null | undefined): Promise<V[]> {
+Promise.prototype.thenMapNotNull = async function <V, U>(callback: (value: U, index: number, array: U[]) => V | null | undefined): Promise<V[]> {
     return (this as Promise<U[]>)
         .then((result) => result
             .map(callback)

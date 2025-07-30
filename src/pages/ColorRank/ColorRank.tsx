@@ -1,10 +1,11 @@
 import React, {useState, useEffect, ChangeEvent} from "react";
-import {fetchRank, mergeAPI} from "@apis/index";
+import {mergeAPI} from "@apis/index";
 import RankUser from "@/constant/RankUser";
 import {CategoryTitle, Container, ContentLayout, Input, Layout, Text} from "@/components";
 import Spinner from "@components/base/Spinner";
 import Table from "@components/base/Table";
-import ColorRankTableRow from "@/pages/ColorRank/components/ColorRankTableRow";
+import CommonTableRow from "@/pages/ColorRank/components/ColorRankTableRow";
+import { useRankSearch } from "@/hooks/useRankSearch";
 
 type ColorRankData = {
     rankUsers?: RankUser[],
@@ -16,63 +17,22 @@ type ColorRankSearchData = {
 }
 
 function ColorRank() {
-    // Loading 상태 변수 추가
-    const [loading, setLoading] = useState(true);
-    const [rankData, setRankData] = useState({} as ColorRankData);
-    const [searchData, setSearchData] = useState({
-        searchItems: "",
-        filteredItems: []
-    } as ColorRankSearchData);
-
-    // 컴포넌트가 처음 렌더링될 때 데이터를 불러오는 effect
-    useEffect(() => {
-        const fetchData = async () => {
-            await mergeAPI({
-                    rankUsers: fetchRank(),
-                },
-                {
-                    success: (result) => {
-                        setRankData(result as ColorRankData);
-                        updateSearchItem(null, result.rankUsers);
-                    },
-                    failure:
-                        (error) => {
-                            console.error("데이터를 불러오는 데 실패했습니다:", error);
-                        },
-                    finally: () => {
-                        setLoading(false);
-                    }
-                })
-        }
-        fetchData();
-    }, []);
-
-    const updateSearchItem = (search: string | null,
-                              rankUsers: RankUser[] | null = null) => {
-        setSearchData(({searchItems}) => {
-            const searchValue = search ?? searchItems;
-            const rankUsersValue = rankUsers ?? rankData.rankUsers ?? []
-            const filteredRankUsers = (searchValue.length > 0 ? rankUsersValue.filter((rankUser) => {
-                return rankUser.nickname.toLowerCase().includes(searchValue.toLowerCase())
-            }) : rankUsersValue) ?? []
-            return {
-                searchItems: searchValue,
-                filteredItems: filteredRankUsers
-            }
-        })
-    }
-
-    // 검색어 입력 change 이벤트 핸들러
-    const handleInputChange = (value: string) => {
-        updateSearchItem(value);
-    };
+    const {
+        loading,
+        search,
+        filtered,
+        handleInputChange
+    } = useRankSearch<RankUser>({
+        fetcher: async () => await import('@/apis/fetchRank').then(m => m.default()),
+        filterKey: "nickname"
+    });
 
     return (
         <Layout>
             <ContentLayout gap={'20px'}>
                 <CategoryTitle title="검닉 랭킹"/>
                 <Container>
-                    <Input value={searchData.searchItems}
+                    <Input value={search}
                            placeholder={"유저 검색"}
                            onChange={handleInputChange}/>
                 </Container>
@@ -85,10 +45,8 @@ function ColorRank() {
                                useRankColor
                         >
                             <tbody>
-                            {searchData.filteredItems.map((item, index) => (
-                                <ColorRankTableRow key={index + 1}
-                                                   rankUser={item}
-                                                   />
+                            {filtered.map((item, index) => (
+                                <CommonTableRow key={index + 1} type="user" data={item} />
                             ))}
                             </tbody>
                         </Table>}

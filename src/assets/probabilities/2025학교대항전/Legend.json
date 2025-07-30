@@ -1,0 +1,39 @@
+{
+  "items": [
+    {
+      "name": "학교 경비원 경찰 스킨",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "수상한 전학생 스파이 스킨",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "졸업 앨범 테두리",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "피자 파티 테두리",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "학급 게시판",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "배부용 피자 박스",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "악동들의 우당탕 학교생활",
+      "chance": 10,
+      "equip": true
+    }
+  ]
+}

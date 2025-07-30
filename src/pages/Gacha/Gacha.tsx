@@ -3,7 +3,7 @@ import {ContentLayout, Layout, Select, SelectOptionType} from "../../components/
 import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container} from "@/components";
 
-import frogProbabillty from "@/assets/probabilities/FrogProbability";
+import frogProbabillty from "@/assets/probabilities/School2025Probability";
 
 import GradeProbability from "@/constant/GradeProbability";
 import ProbabilityItem from "@/constant/ProbabilityItem";
@@ -112,7 +112,7 @@ function Gacha() {
     return (
         <Layout>
             <ContentLayout>
-            <CategoryTitle title={`2025 개구리 업데이트 완료`}/>
+            <CategoryTitle title={`2025 학교대항전 업데이트 완료`}/>
                 <CategoryTitle title={`장착템 확률 : ${totalProbability.equip.toFixed(4)}%`}/>
                 <Container fullWidth align={'centerLeft'} gap={'20px'}>
                     <Select

@@ -6,7 +6,7 @@
     // "initial_background_color": "0C1748",
     // "initial_closeness": 47.73
 
-type RankGuild = {
+export type RankGuild = {
     initial_background_closeness: number
     guild_name: string
     guild_initial: string

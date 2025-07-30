@@ -3,7 +3,7 @@ import {ContentLayout, Layout, Select, SelectOptionType} from "../../components/
 import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container} from "@/components";
 
-import frogProbabillty from "@/assets/probabilities/School2025Probability";
+import frogProbabillty from "@/assets/probabilities/school2025Probability";
 
 import GradeProbability from "@/constant/GradeProbability";
 import ProbabilityItem from "@/constant/ProbabilityItem";

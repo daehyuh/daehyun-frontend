@@ -92,12 +92,10 @@ const CommonTableRow = ({
 }: CommonTableRowProps) => {
     return (
         <StyledTableRow borderBottomColor={borderBottomColor} hoverBackgroundColor={hoverBackgroundColor}
-                        color={color} height={height}>
-            <td style={{backgroundColor: backgroundColor}}>
-                {type === "user"
-                    ? renderUserRow(data as RankUser)
-                    : renderGuildRow(data as RankGuild)}
-            </td>
+                        color={color} height={height} style={{backgroundColor: backgroundColor}}>
+            {type === "user"
+                ? renderUserRow(data as RankUser)
+                : renderGuildRow(data as RankGuild)}
         </StyledTableRow>
     );
 };

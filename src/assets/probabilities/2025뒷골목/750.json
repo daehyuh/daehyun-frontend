@@ -163,17 +163,17 @@
     {
       "name": "여왕의 머리 장식",
       "chance": 0.7,
-      "equip": false
+      "equip": true
     },
     {
       "name": "수호 기사의 맹세",
       "chance": 0.7,
-      "equip": false
+      "equip": true
     },
     {
       "name": "환영 트럼프 지갑",
       "chance": 0.4,
-      "equip": false
+      "equip": true
     },
     {
       "name": "클로버의 잭 사립탐정 스킨",
@@ -203,17 +203,17 @@
     {
       "name": "트럼프 지갑",
       "chance": 0.4,
-      "equip": false
+      "equip": true
     },
     {
       "name": "붉은 여왕의 심장",
       "chance": 0.7,
-      "equip": false
+      "equip": true
     },
     {
       "name": "타락한 왕의 권능",
       "chance": 0.7,
-      "equip": false
+      "equip": true
     },
     {
       "name": "다이아몬드 테두리",
@@ -228,32 +228,32 @@
     {
       "name": "이야기꾼의 거울",
       "chance": 0.7,
-      "equip": false
+      "equip": true
     },
     {
       "name": "타락한 깃털",
       "chance": 0.7,
-      "equip": false
+      "equip": true
     },
     {
       "name": "충성스러운 기사의 수호",
       "chance": 0.7,
-      "equip": false
+      "equip": true
     },
     {
       "name": "화려한 권신의 탐욕",
       "chance": 0.7,
-      "equip": false
+      "equip": true
     },
     {
       "name": "이면 세계의 트럼프 지갑",
       "chance": 0.4,
-      "equip": false
+      "equip": true
     },
     {
       "name": "신비한 합창",
       "chance": 0.4,
-      "equip": false
+      "equip": true
     },
     {
       "name": "마법의 염색약",

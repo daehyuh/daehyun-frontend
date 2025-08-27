@@ -115,20 +115,36 @@
           const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
           const isAndroid = /Android/.test(navigator.userAgent);
           
-          if (isIOS) {
-            // iOS에서 Safari로 직접 열기
-            window.location.href = currentUrl.replace(/^https?:/, 'https:');
-          } else if (isAndroid) {
-            // Android에서 기본 브라우저로 열기
-            const intent = 'intent://' + currentUrl.replace(/https?:\/\//, '') + '#Intent;scheme=https;package=com.android.chrome;end';
-            window.location.href = intent;
-            // 백업으로 일반 URL
-            setTimeout(() => {
-              window.location.href = currentUrl;
-            }, 1000);
-          } else {
-            // 기타 환경에서는 새 창으로 열기
-            window.open(currentUrl, '_blank');
+          // 사용자에게 안내 메시지 표시
+          const message = '정식 브라우저에서 더 나은 서비스를 이용하실 수 있습니다.\n\n' +
+                         '아래 버튼을 눌러 브라우저에서 열어주세요.\n\n' +
+                         '• Safari (iOS)\n' +
+                         '• Chrome (Android)\n' +
+                         '• 기본 브라우저';
+          
+          if (confirm(message)) {
+            if (isIOS) {
+              // iOS에서 Safari로 열기 시도
+              window.location.href = 'x-web-search://?q=' + encodeURIComponent(currentUrl);
+              // 백업 방법들
+              setTimeout(() => {
+                window.open(currentUrl, '_system');
+              }, 100);
+              setTimeout(() => {
+                window.open(currentUrl, '_blank');
+              }, 500);
+            } else if (isAndroid) {
+              // Android에서 Chrome으로 열기
+              const intent = 'intent://' + currentUrl.replace(/https?:\/\//, '') + '#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=' + encodeURIComponent(currentUrl) + ';end';
+              window.location.href = intent;
+              // 백업으로 일반 브라우저
+              setTimeout(() => {
+                window.open(currentUrl, '_system');
+              }, 1000);
+            } else {
+              // 기타 환경에서는 새 창으로 열기
+              window.open(currentUrl, '_blank');
+            }
           }
         }
 

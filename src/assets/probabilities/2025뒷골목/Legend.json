@@ -1,0 +1,39 @@
+{
+  "items": [
+    {
+      "name": "무언의 압박 간호사 스킨",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "황야의 신기루 사기꾼 스킨",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "황야의 살롱 테두리",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "승리의 설렘 테두리",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "사막의 장미",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "리바이벌 찬스",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "하트 말풍선",
+      "chance": 10,
+      "equip": true
+    }
+  ]
+}

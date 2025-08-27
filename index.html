@@ -116,12 +116,8 @@
           const isAndroid = /Android/.test(navigator.userAgent);
           
           if (isIOS) {
-            // iOS에서 Safari로 열기
-            window.location.href = 'x-web-search://?q=' + encodeURIComponent(currentUrl);
-            // 백업으로 Safari 직접 호출
-            setTimeout(() => {
-              window.location.href = currentUrl;
-            }, 1000);
+            // iOS에서 Safari로 직접 열기
+            window.location.href = currentUrl.replace(/^https?:/, 'https:');
           } else if (isAndroid) {
             // Android에서 기본 브라우저로 열기
             const intent = 'intent://' + currentUrl.replace(/https?:\/\//, '') + '#Intent;scheme=https;package=com.android.chrome;end';

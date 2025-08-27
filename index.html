@@ -55,6 +55,94 @@
 
       gtag('config', 'G-5VFJNJPHTE');
     </script>
+
+    <!-- 인앱 브라우저 감지 및 정식 브라우저 리디렉션 스크립트 -->
+    <script>
+      (function() {
+        function isInAppBrowser() {
+          const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+          
+          // 카카오톡 인앱 브라우저 감지
+          if (/KAKAOTALK/i.test(userAgent)) {
+            return true;
+          }
+          
+          // 페이스북 인앱 브라우저 감지
+          if (/FBAN|FBAV/i.test(userAgent)) {
+            return true;
+          }
+          
+          // 인스타그램 인앱 브라우저 감지
+          if (/Instagram/i.test(userAgent)) {
+            return true;
+          }
+          
+          // 네이버 앱 인앱 브라우저 감지
+          if (/NAVER/i.test(userAgent)) {
+            return true;
+          }
+          
+          // 라인 앱 인앱 브라우저 감지
+          if (/Line/i.test(userAgent)) {
+            return true;
+          }
+          
+          // 트위터 앱 인앱 브라우저 감지
+          if (/TwitterAndroid|Twitter for iPhone/i.test(userAgent)) {
+            return true;
+          }
+          
+          // 다음 앱 인앱 브라우저 감지
+          if (/DaumApps/i.test(userAgent)) {
+            return true;
+          }
+          
+          // 웨일 브라우저는 정식 브라우저로 간주
+          if (/whale/i.test(userAgent)) {
+            return false;
+          }
+          
+          // 기타 인앱 브라우저 패턴 감지
+          if (/wv|WebView|(?:(?!.*Chrome\/).)*Version\//i.test(userAgent)) {
+            return true;
+          }
+          
+          return false;
+        }
+
+        function redirectToExternalBrowser() {
+          const currentUrl = window.location.href;
+          const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+          const isAndroid = /Android/.test(navigator.userAgent);
+          
+          if (isIOS) {
+            // iOS에서 Safari로 열기
+            window.location.href = 'x-web-search://?q=' + encodeURIComponent(currentUrl);
+            // 백업으로 Safari 직접 호출
+            setTimeout(() => {
+              window.location.href = currentUrl;
+            }, 1000);
+          } else if (isAndroid) {
+            // Android에서 기본 브라우저로 열기
+            const intent = 'intent://' + currentUrl.replace(/https?:\/\//, '') + '#Intent;scheme=https;package=com.android.chrome;end';
+            window.location.href = intent;
+            // 백업으로 일반 URL
+            setTimeout(() => {
+              window.location.href = currentUrl;
+            }, 1000);
+          } else {
+            // 기타 환경에서는 새 창으로 열기
+            window.open(currentUrl, '_blank');
+          }
+        }
+
+        // 인앱 브라우저 감지 시 리디렉션 실행
+        if (isInAppBrowser()) {
+          // 페이지가 완전히 로드되기 전에 리디렉션
+          redirectToExternalBrowser();
+        }
+      })();
+    </script>
   
   </head>
   <body>

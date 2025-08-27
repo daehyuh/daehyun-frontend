@@ -132,9 +132,9 @@
           }
         }
 
-        // 인앱 브라우저 감지 시 리디렉션 실행
-        if (isInAppBrowser()) {
-          // 페이지가 완전히 로드되기 전에 리디렉션
+        // 인앱 브라우저 감지 시 리디렉션 실행 (무한 리디렉션 방지)
+        if (isInAppBrowser() && !sessionStorage.getItem('redirected')) {
+          sessionStorage.setItem('redirected', 'true');
           redirectToExternalBrowser();
         }
       })();

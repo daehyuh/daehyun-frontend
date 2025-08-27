@@ -124,14 +124,11 @@
           
           if (confirm(message)) {
             if (isIOS) {
-              // iOS에서 Safari로 열기 시도
-              window.location.href = 'x-web-search://?q=' + encodeURIComponent(currentUrl);
-              // 백업 방법들
+              // iOS에서 Safari로 직접 열기
+              window.open(currentUrl, '_blank');
+              // 백업으로 현재 창에서 이동
               setTimeout(() => {
-                window.open(currentUrl, '_system');
-              }, 100);
-              setTimeout(() => {
-                window.open(currentUrl, '_blank');
+                window.location.replace(currentUrl);
               }, 500);
             } else if (isAndroid) {
               // Android에서 Chrome으로 열기

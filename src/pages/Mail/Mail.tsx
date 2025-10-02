@@ -146,28 +146,28 @@ function Mail() {
         <Layout>
             <ContentLayout gap={'20px'}>
                 <CategoryTitle title={"우체통 계산기"}/>
-                <Container align={'centerLeft'} gap={'10px'}>
-                    <TitleItemContainer title={"현재 우체통"} width={'128px'}>
+                <Container align={'centerLeft'} gap={'16px'}>
+                    <TitleItemContainer title={"현재 우체통"} width={'180px'}>
                         <Select
-                            width={'100px'}
+                            width={'160px'}
                             value={mailData.currentMail}
                             options={SELECT_CURRENT_MAIL}
                             onChange={(selected) => setMailDataWithKey('currentMail', selected)}/>
                     </TitleItemContainer>
-                    <TitleItemContainer title={"목표 우체통"} width={'128px'}>
+                    <TitleItemContainer title={"목표 우체통"} width={'180px'}>
                         <Select
-                            width={'100px'}
+                            width={'160px'}
                             value={mailData.purposeMail}
                             options={SELECT_PURPOSE_MAIL}
                             onChange={(selected) => setMailDataWithKey('purposeMail', selected)}/>
                     </TitleItemContainer>
-                    <TitleItemContainer title={"보유 헤르메스(선택)"} width={'128px'}>
-                        <Input width={'100px'}
+                    <TitleItemContainer title={"보유 헤르메스(선택)"} width={'180px'}>
+                        <Input width={'160px'}
                                 value={mailData.hermes}
                                onChange={(value) => setMailDataWithKey('hermes', parseInt(value) || 0)}/>
                     </TitleItemContainer>
-                    <TitleItemContainer title={"현재 환율(선택)"} width={'128px'}>
-                        <Input width={'100px'}
+                    <TitleItemContainer title={"현재 환율(선택)"} width={'180px'}>
+                        <Input width={'160px'}
                                 value={mailData.exchange}
                                onChange={(value) => setMailDataWithKey('exchange', parseInt(value) || 0)}/>
                     </TitleItemContainer>
@@ -176,22 +176,22 @@ function Mail() {
                 <Divider/>
 
                 <ResultContainer>
-                    <TitleItemContainer title={"필요 루블"} align={'topLeft'} width={'100px'}>
+                    <TitleItemContainer title={"필요 루블"} align={'topLeft'} width={'180px'}>
                         <Container gap={'10px'} align={'topLeft'}>
                             <Text>{(mailResult.neededRuble / 10000).toLocaleString()}만 루블</Text>
                             <Text>({(mailResult.neededRuble).toLocaleString()} 루블)</Text>
                         </Container>
                     </TitleItemContainer>
-                    <TitleItemContainer title={"필요 루나"} align={'topLeft'} width={'100px'}>
+                    <TitleItemContainer title={"필요 루나"} align={'topLeft'} width={'180px'}>
                         <Container gap={'10px'} align={'topLeft'}>
                             <Text>{(mailResult.neededLuna).toLocaleString()} 루나</Text>
                             <Text>(수수료 포함 환율)</Text>
                         </Container>
                     </TitleItemContainer>
-                    <TitleItemContainer title={"필요 현금"} width={'100px'}>
+                    <TitleItemContainer title={"필요 현금"} width={'180px'}>
                         <Text>총 {mailResult.neededCash.toLocaleString()}원</Text>
                     </TitleItemContainer>
-                    <TitleItemContainer title={"구매 할 패키지"} width={'100px'} align={'topLeft'}>
+                    <TitleItemContainer title={"구매 할 패키지"} width={'180px'} align={'topLeft'}>
                         <Container gap={'20px'}>
                             {mailResult.packages.map((item, index) => (
                                 <Container key={index} gap={'4px'} align={'centerLeft'}>

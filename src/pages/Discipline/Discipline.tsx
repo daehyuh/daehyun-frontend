@@ -19,14 +19,14 @@ function Discipline() {
         <Layout>
             <ContentLayout gap={'20px'}>
                 <CategoryTitle title={"권엽 계산기"}/>
-                <Container>
-                    <TitleItemContainer title={"명성"}>
-                        <Input value={amount} onChange={amountChangeHandler}/>
+                <Container gap={'16px'} align={'centerLeft'}>
+                    <TitleItemContainer title={"명성"} width={'180px'}>
+                        <Input value={amount} onChange={amountChangeHandler} width={'160px'}/>
                     </TitleItemContainer>
                 </Container>
                 <Divider/>
                 <ResultContainer>
-                    <TitleItemContainer title={"권엽 차감 명성"} width={'100px'}>
+                    <TitleItemContainer title={"권엽 차감 명성"} width={'180px'}>
                         <Text>{result.toString()}</Text>
                     </TitleItemContainer>
                 </ResultContainer>

@@ -118,7 +118,8 @@ function Gacha() {
                     <Select
                         value={selectedGradeValue}
                         options={SELECT_GRADES}
-                        onChange={selectChangeHandler}/>
+                        onChange={selectChangeHandler}
+                        width={'160px'}/>
 
                     <Table fullWidth headers={['선택', '이미지', '아이템', '확률']}
                            columnWidths={['15%', '20%', '40%', '10%']} margin={'0 0 50px 0'} borderRadius={'8px'} maxHeight={'1200px'}>

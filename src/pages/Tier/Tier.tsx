@@ -170,19 +170,19 @@ const calcCost = () => {
                         options={SELECT_TIERS}
                         onChange={selectChangeHandler}
                     />
-                    <Container align={'centerLeft'} gap={'10px'}>
-                        <TitleItemContainer title={"소지 중인 3티어 카드 수"}>
-                            <Input value={tier.tier3} onChange={(value) => setTierValue(3, value)} />
+                    <Container align={'centerLeft'} gap={'16px'}>
+                        <TitleItemContainer title={"소지 중인 3티어 카드 수"} width={'180px'}>
+                            <Input value={tier.tier3} onChange={(value) => setTierValue(3, value)} width={'160px'} />
                         </TitleItemContainer>
-                        <TitleItemContainer title={"소지 중인 4티어 카드 수"}>
-                            <Input value={tier.tier4} onChange={(value) => setTierValue(4, value)} />
+                        <TitleItemContainer title={"소지 중인 4티어 카드 수"} width={'180px'}>
+                            <Input value={tier.tier4} onChange={(value) => setTierValue(4, value)} width={'160px'} />
                         </TitleItemContainer>
                         {tier.selectedTier === 6 && (
-                            <TitleItemContainer title={"소지 중인 5티어 카드 수"}>
-                                <Input value={tier.tier5} onChange={(value) => setTierValue(5, value)} />
+                            <TitleItemContainer title={"소지 중인 5티어 카드 수"} width={'180px'}>
+                                <Input value={tier.tier5} onChange={(value) => setTierValue(5, value)} width={'160px'} />
                             </TitleItemContainer>
                         )}
-                        <TitleItemContainer title={"10% 할인 테두리 적용"} titlePosition={'right'}>
+                        <TitleItemContainer title={"10% 할인 테두리 적용"} titlePosition={'right'} width={'180px'}>
                             <CheckBox
                                 id={"saleCheckBox"}
                                 value={tier.sale}
@@ -197,18 +197,18 @@ const calcCost = () => {
                 </Container>
                 <Divider />
                 <ResultContainer>
-                    <TitleItemContainer width={'160px'} title={"필요 3티어 카드 수"}>
+                    <TitleItemContainer width={'180px'} title={"필요 3티어 카드 수"}>
                         <Text>{cost.needCard.toLocaleString()} 개</Text>
                     </TitleItemContainer>
-                    <TitleItemContainer width={'160px'} title={"3티어 → 4티어 강화비용"}>
+                    <TitleItemContainer width={'180px'} title={"3티어 → 4티어 강화비용"}>
                         <Text>{cost.costOf3To4.toLocaleString()} 루블</Text>
                     </TitleItemContainer>
                     {tier.selectedTier === 6 && (
-                        <TitleItemContainer width={'160px'} title={"4티어 → 5티어 강화비용"}>
+                        <TitleItemContainer width={'180px'} title={"4티어 → 5티어 강화비용"}>
                             <Text>{cost.costOf4To5.toLocaleString()} 루블</Text>
                         </TitleItemContainer>
                     )}
-                    <TitleItemContainer width={'160px'} align={'topLeft'}
+                    <TitleItemContainer width={'180px'} align={'topLeft'}
                         title={`${tier.selectedTier}티어까지 총 강화비용수`}>
                         <Container align={'centerLeft'} gap={'10px'}>
                             <Text>{cost.totalCost.toLocaleString()} 루블</Text>

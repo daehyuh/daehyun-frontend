@@ -67,26 +67,27 @@ function Exchange() {
         <Layout>
             <ContentLayout gap={'20px'}>
                 <CategoryTitle title={"환율 계산기"}/>
-                <Container gap={'20px'} align={'centerLeft'}>
+                <Container gap={'16px'} align={'centerLeft'}>
                     <Select value={exchangeData.type}
                             options={SELECT_TYPE}
                             onChange={typeSelectChangeHandler}
+                            width={'160px'}
                     />
-                    <TitleItemContainer title={exchangeData.type.value === 1 ? "구매 루나" : "구매 루블"}>
+                    <TitleItemContainer title={exchangeData.type.value === 1 ? "구매 루나" : "구매 루블"} width={'180px'}>
                         <Input value={exchangeData.amount}
                                onChange={amountChangeHandler}
-                               width={'100px'}/>
+                               width={'160px'}/>
                     </TitleItemContainer>
-                    <TitleItemContainer title={"현재 환율"}>
+                    <TitleItemContainer title={"현재 환율"} width={'180px'}>
                         <Input value={exchangeData.exchange}
                                onChange={exchangeChangeHandler}
-                               width={'100px'}/>
+                               width={'160px'}/>
                     </TitleItemContainer>
                 </Container>
                 <Divider/>
                 <ResultContainer>
                     <Container align={'centerLeft'} gap={'10px'}>
-                        <TitleItemContainer title={exchangeData.type.value === 1 ? "지불 루블" : "지불 루나"} width={'100px'}>
+                        <TitleItemContainer title={exchangeData.type.value === 1 ? "지불 루블" : "지불 루나"} width={'180px'}>
                             <Text> {exchangeResult.exchanged.toString()}{exchangeData.type.value === 1 ? "루블" : "루나"} </Text>
                         </TitleItemContainer>
                         {exchangeData.type.value === 2 && <Text>(수수료포함)</Text>}

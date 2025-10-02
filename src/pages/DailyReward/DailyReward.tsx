@@ -101,15 +101,15 @@ function DailyReward() {
             <ContentLayout gap={'20px'}>
                 <CategoryTitle title={"출석보상 계산기"}/>
 
-                <Container gap={'14px'} align={'centerLeft'}>
-                    <TitleItemContainer title={"명성"} width={'100px'}>
+                <Container gap={'16px'} align={'centerLeft'}>
+                    <TitleItemContainer title={"명성"} width={'180px'}>
                         <Input
                             value={dailyRewardData.amount}
                             placeholder={"명성"}
                             onChange={amountChangeHandler}
                             width={'160px'}/>
                     </TitleItemContainer>
-                    <TitleItemContainer title={"나의 길드 등급"} width={'100px'}>
+                    <TitleItemContainer title={"나의 길드 등급"} width={'180px'}>
                         <Select value={dailyRewardData.guildLevel}
                                 options={SELECT_GUILD}
                                 onChange={guildChangeHandler}
@@ -117,7 +117,7 @@ function DailyReward() {
                         />
                     </TitleItemContainer>
 
-                    <TitleItemContainer title={"동상 버프 레벨"} width={'100px'}>
+                    <TitleItemContainer title={"동상 버프 레벨"} width={'180px'}>
                         <Select value={dailyRewardData.buffLevel}
                                 options={SELECT_BUFF}
                                 onChange={buffChangeHandler}
@@ -125,7 +125,7 @@ function DailyReward() {
                         />
                     </TitleItemContainer>
 
-                    <TitleItemContainer title={"유명세"} width={'100px'}>
+                    <TitleItemContainer title={"유명세"} width={'180px'}>
                         <CheckBox id={"fameCheckBox"}
                                   value={dailyRewardData.fame}
                                   onChecked={fameCheckedHandler}

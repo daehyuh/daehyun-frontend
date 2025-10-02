@@ -121,7 +121,7 @@ function Gacha() {
                         onChange={selectChangeHandler}/>
 
                     <Table fullWidth headers={['선택', '이미지', '아이템', '확률']}
-                           columnWidths={['15%', '20%', '40%', '10%']} margin={'0 0 50px 0'} borderRadius={'8px'}>
+                           columnWidths={['15%', '20%', '40%', '10%']} margin={'0 0 50px 0'} borderRadius={'8px'} maxHeight={'1200px'}>
                         <tbody>
                         <GachaTableStickyRow totalProbability={totalProbability}
                                              value={items.every(item => !item.equip || item.isChecked)}

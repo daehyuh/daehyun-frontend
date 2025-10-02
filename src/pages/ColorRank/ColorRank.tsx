@@ -46,7 +46,7 @@ function ColorRank() {
                         >
                             <tbody>
                             {filtered.map((item, index) => (
-                                <CommonTableRow key={index + 1} type="user" data={item} />
+                                <CommonTableRow key={item.nickname} type="user" data={item} />
                             ))}
                             </tbody>
                         </Table>}

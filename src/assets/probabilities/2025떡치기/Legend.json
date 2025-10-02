@@ -1,0 +1,39 @@
+{
+  "items": [
+  {
+    "chance": 15,
+    "equip": true,
+    "name": "타오르는 달 점쟁이 스킨"
+  },
+  {
+    "chance": 15,
+    "equip": true,
+    "name": "붉은 달의 사자 도굴꾼 스킨"
+  },
+  {
+    "chance": 15,
+    "equip": true,
+    "name": "정화의 춤 테두리"
+  },
+  {
+    "chance": 15,
+    "equip": true,
+    "name": "붉은 보름달 테두리"
+  },
+  {
+    "chance": 15,
+    "equip": true,
+    "name": "나부끼는 소매"
+  },
+  {
+    "chance": 15,
+    "equip": true,
+    "name": "기묘한 달맞이"
+  },
+  {
+    "chance": 10,
+    "equip": true,
+    "name": "토끼인간의 희노예락"
+  }
+]
+}

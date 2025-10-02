@@ -16,10 +16,8 @@ import LimitCheck from "../pages/LimitCheck/LimitCheck";
 import Header from "../components/Header";
 import Ads from "../components/Ads";
 import Channel from "../pages/Channel/Channel";
-import Nofi from "../components/Nofi";
 import MarkdownPage from "../pages/Common/MarkdownPage";
 import GuildColorRank from "@/pages/GuildColorRank/GuildColorRank";
-import GoogleAdSense from "@/components/GoogleAdSense";
 
 import styled from 'styled-components';
 import AuthButton from "@/components/AuthButton";
@@ -41,8 +39,13 @@ const StyledA = styled.a`
 
 const Container = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: stretch;
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 1200px;
+  width: 100%;
 `;
 
 export type PageType = {
@@ -99,11 +102,11 @@ function App() {
 
 
     const member_pages: PageType[] = [
-        {hrefs: ["/인증"], title: "인증/유저등록", page: <AuthButton/>},
-        {hrefs: ["/검닉랭킹"], title: "검닉랭킹", page: <ColorRank/>},
-        {hrefs: ["/길드배경랭킹"], title: "길드배경랭킹", page: <GuildColorRank/>},
-        {hrefs: ["/전적검색"], title: "전적검색", page: <LimitCheck/>},
-        {hrefs: ["/채널동접"], title: "채널동접", page: <Channel/>},
+        {hide: true, hrefs: ["/인증"], title: "인증/유저등록", page: <AuthButton/>},
+        {hide: true, hrefs: ["/검닉랭킹"], title: "검닉랭킹", page: <ColorRank/>},
+        {hide: true, hrefs: ["/길드배경랭킹"], title: "길드배경랭킹", page: <GuildColorRank/>},
+        {hide: true, hrefs: ["/전적검색"], title: "전적검색", page: <LimitCheck/>},
+        {hide: true, hrefs: ["/채널동접"], title: "채널동접", page: <Channel/>},
     ]
 
     if (showPrank) {
@@ -131,9 +134,7 @@ function App() {
     return (
         <Container>
             <Analytics/>
-            <GoogleAdSense/>
-            <div style={{ flex: 1, width: '100%'}}>
-                <Nofi/>
+            <ContentWrapper>
                 <Header pages={pages} member_pages={member_pages}/>
                 <Routes>
                     {
@@ -152,8 +153,7 @@ function App() {
                     }
                 </Routes>
                 <Footer/>
-            </div>
-            <GoogleAdSense/>
+            </ContentWrapper>
         </Container>
     );
 }

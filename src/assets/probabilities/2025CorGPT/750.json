@@ -1,0 +1,284 @@
+{
+  "items": [
+    {
+      "name": "프로토콜 옵저버 해커 스킨",
+      "chance": 3,
+      "equip": true
+    },
+    {
+      "name": "시뮬라크르 마술사 스킨",
+      "chance": 3,
+      "equip": true
+    },
+    {
+      "name": "코기 어시스턴트 테두리",
+      "chance": 3,
+      "equip": true
+    },
+    {
+      "name": "픽셀이 빛나는 밤 테두리",
+      "chance": 3,
+      "equip": true
+    },
+    {
+      "name": "멍멍 대화창",
+      "chance": 3,
+      "equip": true
+    },
+    {
+      "name": "매직 쇼 이펙트",
+      "chance": 3,
+      "equip": true
+    },
+    {
+      "name": "시크릿 프롬프트",
+      "chance": 2.5,
+      "equip": true
+    },
+    {
+      "name": "실험 설계자 심리학자 스킨",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "시스템 브레이커 해커 스킨",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "실험체 시민 스킨",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "글리치 스크린 테두리",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "생체 추적 신호 테두리",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "프라이멀 코드",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "코어 터미널",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "네트워크 속 무법자",
+      "chance": 0.5,
+      "equip": true
+    },
+    {
+      "name": "연구시설 경비원 군인 스킨",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "실종자 수색대 용병 스킨",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "실험용 수조 테두리",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "생존 전문가 테두리",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "주입용 약물",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "전문가용 전술 배낭",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "실험체 말풍선",
+      "chance": 0.5,
+      "equip": true
+    },
+    {
+      "name": "가정교사 공무원 스킨",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "레이디 마담 스킨",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "녹슨 장미 테두리",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "파티용 드레스 테두리",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "말린 장미 회랑",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "고귀한 예법",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "저택의 비밀 명부",
+      "chance": 0.5,
+      "equip": true
+    },
+    {
+      "name": "메이드 스파이 스킨",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "호스트 도굴꾼 스킨",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "메이드의 해골",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "저택에서의 추억",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "연구원 간호사 스킨",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "실험체 도둑 스킨",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "잃어버린 연구 보고서 테두리",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "실험체 식별표",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "Butterfly corp. 사원증",
+      "chance": 0.5,
+      "equip": true
+    },
+    {
+      "name": "개조 실험체 짐승인간 스킨",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "복제 사이보그 경찰 스킨",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "42시티의 흑막 과학자 스킨",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "개조된 날개 명패",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "개조된 발톱 명패",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "사이보그 테두리",
+      "chance": 0.7,
+      "equip": true
+    },
+    {
+      "name": "Butterfly corp. 간부 지갑",
+      "chance": 0.5,
+      "equip": true
+    },
+    {
+      "name": "신비한 합창",
+      "chance": 0.5,
+      "equip": true
+    },
+    {
+      "name": "마법의 염색약",
+      "chance": 5,
+      "equip": false
+    },
+    {
+      "name": "깜짝 엽서",
+      "chance": 5,
+      "equip": false
+    },
+    {
+      "name": "징벌의 엽서",
+      "chance": 5,
+      "equip": false
+    },
+    {
+      "name": "주사위 엽서",
+      "chance": 5,
+      "equip": false
+    },
+    {
+      "name": "4티어 스킬 변경권",
+      "chance": 5,
+      "equip": false
+    },
+    {
+      "name": "4티어 카드",
+      "chance": 5,
+      "equip": false
+    },
+    {
+      "name": "3티어 카드",
+      "chance": 5,
+      "equip": false
+    },
+    {
+      "name": "돌연변이 DNA",
+      "chance": 6.2,
+      "equip": false
+    },
+    {
+      "name": "나비 문양 엽서",
+      "chance": 6.2,
+      "equip": false
+    },
+    {
+      "name": "에뮬레이션 엽서",
+      "chance": 6,
+      "equip": false
+    }
+  ]
+}

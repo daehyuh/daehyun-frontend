@@ -55,3 +55,15 @@ export const RED_JOB_NAMES = new Set([
     "사기꾼",
     "청부업자"
 ]);
+
+export const JOGYEOL_JOB_NAMES = new Set([
+    "경찰",
+    "자경단원",
+    "요원",
+    "기자",
+    "사립탐정",
+    "심리학자",
+    "공무원",
+    "파파라치",
+    "최면술사"
+]);

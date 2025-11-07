@@ -12,7 +12,13 @@ import {
     Text,
     TitleItemContainer
 } from "@/components";
-import {JOB_DEFINITIONS, JobDefinition, JobGender, RED_JOB_NAMES} from "./jobData";
+import {
+    JOB_DEFINITIONS,
+    JobDefinition,
+    JobGender,
+    JOGYEOL_JOB_NAMES,
+    RED_JOB_NAMES
+} from "./jobData";
 
 const ResultList = styled.ul`
     list-style: none;
@@ -43,6 +49,7 @@ const HANGUL_FINAL_CONSONANT = 28;
 type JobMatchResult = JobDefinition & {
     displayName: string;
     isRed: boolean;
+    isJogyeol: boolean;
 };
 
 const genderLabel: Record<JobGender, string> = {
@@ -102,12 +109,27 @@ function JobReceiveCalculator() {
             })
             .map<JobMatchResult>((job) => {
                 const needsGenderSuffix = jobGenderVariants[job.name]?.size > 1;
-                const displayName = needsGenderSuffix ? `${job.name} (${genderLabel[job.gender]})` : job.name;
+                const isJogyeol = JOGYEOL_JOB_NAMES.has(job.name);
+                const suffixes: string[] = [];
+                if (needsGenderSuffix) {
+                    suffixes.push(genderLabel[job.gender]);
+                }
+                if (isJogyeol) {
+                    suffixes.push("조결직");
+                }
+                const displayName = suffixes.length ? `${job.name} (${suffixes.join(', ')})` : job.name;
                 return {
                     ...job,
                     displayName,
-                    isRed: RED_JOB_NAMES.has(job.name)
+                    isRed: RED_JOB_NAMES.has(job.name),
+                    isJogyeol
                 };
+            })
+            .sort((a, b) => {
+                if (a.isJogyeol === b.isJogyeol) {
+                    return a.name.localeCompare(b.name);
+                }
+                return a.isJogyeol ? -1 : 1;
             });
 
         setError(null);

@@ -35,7 +35,7 @@ const HelperParagraph = styled.p`
 `;
 
 const DEFAULT_MALE_WEIGHT = 3;
-the const DEFAULT_FEMALE_WEIGHT = 4;
+const DEFAULT_FEMALE_WEIGHT = 4;
 const HANGUL_BASE_CODE = 0xAC00;
 const HANGUL_LAST_CODE = 0xD7A3;
 const HANGUL_FINAL_CONSONANT = 28;
@@ -164,7 +164,7 @@ function JobReceiveCalculator() {
                         <Text fontWeight={'700'}>{resultHeader}</Text>
                         {!hasSearched && (
                             <HelperParagraph>
-                                기본 남/녀 가중치는 1과 2입니다. 필요하면 숫자를 바꾼 뒤 다시 계산하세요.
+                                기본 남/녀 가중치는 3과 4입니다. 필요하면 숫자를 바꾼 뒤 다시 계산하세요.
                             </HelperParagraph>
                         )}
                         {hasSearched && matchedJobs.length === 0 && (

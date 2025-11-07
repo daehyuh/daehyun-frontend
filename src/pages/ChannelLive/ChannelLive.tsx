@@ -8,7 +8,12 @@ type RawChannel = {
     user_count: number;
 };
 
-const CHANNEL_API_ENDPOINT = "https://mafia42.com/php/channels/channel_ko.php";
+const CHANNEL_API_ENDPOINT = "/api/mafia-channels";
+
+type ProxyResponse = {
+    success: boolean;
+    data: RawChannel[];
+};
 
 const CHANNEL_NAME_MAP: Record<string, string> = {
     "0": "초보채널",
@@ -33,10 +38,16 @@ async function fetchLiveChannels(): Promise<ChannelType[]> {
         throw new Error("Failed to fetch channel data");
     }
 
-    const json: RawChannel[] = await response.json();
+    const json: ProxyResponse = await response.json();
+
+    if (!json.success || !Array.isArray(json.data)) {
+        throw new Error("Invalid proxy response");
+    }
+
+    const rawChannels = json.data;
     let total = 0;
 
-    const channels = json.map((channel) => {
+    const channels = rawChannels.map((channel) => {
         total += channel.user_count;
         return {
             channel_name: CHANNEL_NAME_MAP[channel.channel_id] ?? "알 수 없음",

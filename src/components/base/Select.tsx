@@ -62,6 +62,8 @@ const StyledSelect = styled(ReactSelect)<StyledSelectProps>`
         border: 1px solid ${({theme}) => theme.colors.border};
         border-radius: ${({theme}) => theme.radii.md};
         box-shadow: ${({theme}) => theme.shadows.soft};
+        position: absolute;
+        z-index: 50;
     }
 
     .Select__menu-list {
@@ -98,5 +100,3 @@ function Select<T>({value, options, onChange, ...styles}: SelectProps<T>) {
 
 export type {SelectOptionType}
 export default Select
-
-

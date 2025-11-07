@@ -9,9 +9,9 @@ function ResultContainer({children}: ResultContainerProps) {
     return <Container
         fullWidth
         align={'centerLeft'}
-        backgroundColor={'#3a3a3c'}
-        padding={'20px'}
-        borderRadius={'4px'}
+        variant={'surface'}
+        padding={'24px'}
+        borderRadius={'16px'}
         gap={'20px'}>
         {children}
     </Container>

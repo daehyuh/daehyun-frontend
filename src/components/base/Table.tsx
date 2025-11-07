@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, {useTheme} from "styled-components";
 import {Container} from "@/components";
 import {Property} from "csstype";
 import {ContainerProps} from "@components/base/Container";
@@ -17,9 +17,10 @@ type StyledTableProps = {
 }
 
 const StyledTableContainer = styled(Container)`
-    overflow-y: auto; /* 세로 스크롤 */
-    overflow-x: hidden; /* 가로 스크롤 숨기기 */
-    // white-space: nowrap;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: ${({theme}) => theme.radii.lg};
+    background: ${({theme}) => theme.colors.surface};
 `
 
 const StyledTable = styled.table<StyledTableProps>`
@@ -33,11 +34,11 @@ const StyledTable = styled.table<StyledTableProps>`
             columnWidths?.map((width, index) => `& th:nth-child(${index + 1}), & td:nth-child(${index + 1}) {width: ${width};}`)
     }
     & tr:nth-child(odd) {
-        background-color: ${({oddBackgroundColor}) => oddBackgroundColor};
+        background-color: ${({oddBackgroundColor, theme}) => oddBackgroundColor ?? theme.colors.surfaceMuted};
     }
 
     & tr:nth-child(even) {
-        background-color: ${({evenBackgroundColor}) => evenBackgroundColor};
+        background-color: ${({evenBackgroundColor, theme}) => evenBackgroundColor ?? theme.colors.surface};
     }
 
     ${({useRankColor}) => useRankColor && `
@@ -66,33 +67,42 @@ type StyledTableHeaderProps = {
 }
 
 const StyledTableHead = styled.thead<StyledTableHeaderProps>`
-    color: ${({headerColor}) => headerColor};
-    background-color: ${({headerBackgroundColor}) => headerBackgroundColor};
-    border-bottom: ${({headerBorderBottom}) => headerBorderBottom};
+    color: ${({headerColor, theme}) => headerColor ?? theme.colors.textPrimary};
+    background-color: ${({headerBackgroundColor, theme}) => headerBackgroundColor ?? theme.colors.surfaceElevated};
+    border-bottom: ${({headerBorderBottom, theme}) => headerBorderBottom ?? `2px solid ${theme.colors.accent}`};
 
     & th {
-        padding: ${({headerPadding}) => headerPadding};
+        padding: ${({headerPadding}) => headerPadding ?? '12px 8px'};
+        ${({theme}) => `
+            font-weight: ${theme.typography.weights.medium};
+            font-size: ${theme.typography.sizes.sm};
+        `}
     }
-
 `
 
 function Table({
                    children,
                    columnWidths,
                    useRankColor,
-                   oddBackgroundColor = '#1e1e1e',
-                   evenBackgroundColor = '#2a2a2a',
-                   border = '1px solid #444',
+                   oddBackgroundColor,
+                   evenBackgroundColor,
                    maxHeight = '700px',
                    headers,
-                   headerBackgroundColor = '#333',
-                   headerColor = '#fff',
-                   headerPadding = '12px 8px',
-                   headerBorderBottom = '2px solid #aa0000'
-                   ,
+                   headerBackgroundColor,
+                   headerColor,
+                   headerPadding,
+                   headerBorderBottom,
                    ...styles
                }: TableProps) {
-    return <StyledTableContainer noAlign {...styles} border={border} maxHeight={maxHeight}>
+    const theme = useTheme();
+    const resolvedBorder = styles.border ?? `1px solid ${theme.colors.border}`;
+
+    return <StyledTableContainer
+        noAlign
+        {...styles}
+        border={resolvedBorder}
+        maxHeight={maxHeight}
+    >
         <StyledTable columnWidths={columnWidths}
                      oddBackgroundColor={oddBackgroundColor}
                      evenBackgroundColor={evenBackgroundColor}

@@ -25,6 +25,7 @@ type StyledContainerProps = {
     minHeight?: Property.MinHeight
     maxHeight?: Property.MaxHeight
     overflow?: Property.Overflow
+    variant?: 'transparent' | 'surface' | 'muted'
 }
 
 const StyledContainer = styled.div<StyledContainerProps>`
@@ -35,14 +36,34 @@ const StyledContainer = styled.div<StyledContainerProps>`
     width: ${({width, fullWidth}) => fullWidth ? '100%' : width ? width : 'fit-content'};
     max-width: 100%;
     flex-direction: ${({flexDirection}) => flexDirection ?? 'column'};
-    background: ${({background}) => background};
-    background-color: ${({backgroundColor}) => backgroundColor};
-    border: ${({border}) => border};
-    border-radius: ${({borderRadius}) => borderRadius};
-    padding: ${({padding}) => padding};
+    background: ${({background, variant, theme}) => background ?? (variant === 'surface'
+        ? theme.colors.surface
+        : variant === 'muted'
+            ? theme.colors.surfaceMuted
+            : undefined)};
+    background-color: ${({backgroundColor, background, variant, theme}) => background
+        ? undefined
+        : backgroundColor ?? (variant === 'surface'
+            ? theme.colors.surface
+            : variant === 'muted'
+                ? theme.colors.surfaceMuted
+                : undefined)};
+    border: ${({border, variant, theme}) => border ?? ((variant === 'surface' || variant === 'muted')
+        ? `1px solid ${theme.colors.border}`
+        : undefined)};
+    border-radius: ${({borderRadius, variant, theme}) => borderRadius ?? (variant && variant !== 'transparent'
+        ? theme.radii.lg
+        : undefined)};
+    padding: ${({padding, variant, theme}) => padding ?? (variant === 'surface'
+        ? theme.spacing.lg
+        : variant === 'muted'
+            ? theme.spacing.md
+            : undefined)};
     margin: ${({margin}) => margin};
     gap: ${({gap}) => gap};
-    box-shadow: ${({boxShadow}) => boxShadow};
+    box-shadow: ${({boxShadow, variant, theme}) => boxShadow ?? (variant && variant !== 'transparent'
+        ? theme.shadows.soft
+        : undefined)};
     min-height: ${({minHeight}) => minHeight};
     max-height: ${({maxHeight}) => maxHeight};
     overflow: ${({overflow}) => overflow};

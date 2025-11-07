@@ -14,10 +14,11 @@ type StyledContentLayoutProps = {
 const StyledContentLayout = styled.div<StyledContentLayoutProps>`
     display: flex;
     flex-direction: column;
-    align-items: start;
-    width: ${({width}) => width ?? '88%'};
-    gap: ${({gap}) => gap};
-`
+    align-items: stretch;
+    width: 100%;
+    max-width: ${({width}) => width ?? '100%'};
+    gap: ${({gap, theme}) => gap ?? theme.spacing.lg};
+`;
 
 function ContentLayout({children, width, gap}: ContentBoxProps) {
     return (

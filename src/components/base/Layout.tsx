@@ -10,7 +10,8 @@ type LayoutProps = {
 type StyledLayoutProps = {
     scrollable?: boolean,
     padding?: Property.Padding,
-    align?: Align
+    align?: Align,
+    gap?: Property.Gap
 }
 
 const StyledLayout = styled.div<StyledLayoutProps>`
@@ -18,10 +19,12 @@ const StyledLayout = styled.div<StyledLayoutProps>`
     flex-direction: column;
     width: 100%;
     box-sizing: border-box;
-    overflow-y: ${({scrollable}) => scrollable ? 'auto' : 'hidden'};
+    position: relative;
+    overflow-y: ${({scrollable}) => scrollable ? 'auto' : 'visible'};
     padding: ${({padding}) => padding};
+    gap: ${({gap, theme}) => gap ?? theme.spacing.lg};
     height: ${({scrollable}) => scrollable && '100%'};
-    ${({align}) => alignToStyle('column', align ?? 'center')}
+    ${({align}) => alignToStyle('column', align ?? 'centerLeft')}
 `
 
 function Layout({

@@ -55,7 +55,10 @@ function ChannelLive() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [updatedAt, setUpdatedAt] = useState<string>("");
-    const totalUserCount = useMemo(() => channels.reduce((sum, channel) => sum + channel.user_count, 0), [channels]);
+    const totalUserCount = useMemo(
+        () => channels.reduce((sum, channel) => sum + Number(channel.user_count ?? 0), 0),
+        [channels]
+    );
 
     const loadChannels = useCallback(async () => {
         try {

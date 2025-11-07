@@ -18,6 +18,7 @@ import Ads from "../components/Ads";
 import Channel from "../pages/Channel/Channel";
 import MarkdownPage from "../pages/Common/MarkdownPage";
 import GuildColorRank from "@/pages/GuildColorRank/GuildColorRank";
+import JobReceiveCalculator from "@/pages/JobReceiveCalculator/JobReceiveCalculator";
 
 import styled from 'styled-components';
 import AuthButton from "@/components/AuthButton";
@@ -86,6 +87,7 @@ function App() {
         {hrefs: ["/출석보상"], title: "출석보상 계산기", page: <DailyReward/>},
         {hrefs: ["/환율"], title: "환율 계산기", page: <Exchange/>},
         {hrefs: ["/권엽"], title: "권엽 계산기", page: <Discipline/>},
+        {hrefs: ["/직플받"], title: "직플받 계산기", page: <JobReceiveCalculator/>},
         {
             hide: true,
             hrefs: ["/이용약관"],

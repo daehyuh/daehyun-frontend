@@ -44,23 +44,10 @@ async function fetchLiveChannels(): Promise<ChannelType[]> {
         throw new Error("Invalid proxy response");
     }
 
-    const rawChannels = json.data;
-    let total = 0;
-
-    const channels = rawChannels.map((channel) => {
-        total += channel.user_count;
-        return {
-            channel_name: CHANNEL_NAME_MAP[channel.channel_id] ?? "알 수 없음",
-            user_count: channel.user_count
-        };
-    });
-
-    channels.push({
-        channel_name: "전체 유저",
-        user_count: total
-    });
-
-    return channels;
+    return json.data.map((channel) => ({
+        channel_name: CHANNEL_NAME_MAP[channel.channel_id] ?? "알 수 없음",
+        user_count: channel.user_count
+    }));
 }
 
 function ChannelLive() {
@@ -68,10 +55,7 @@ function ChannelLive() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [updatedAt, setUpdatedAt] = useState<string>("");
-
-    const totalUserCount = useMemo(() => {
-        return channels.length > 0 ? channels[channels.length - 1]?.user_count ?? 0 : 0;
-    }, [channels]);
+    const totalUserCount = useMemo(() => channels.reduce((sum, channel) => sum + channel.user_count, 0), [channels]);
 
     const loadChannels = useCallback(async () => {
         try {
@@ -97,10 +81,9 @@ function ChannelLive() {
         <Layout align={'topLeft'}>
             <ContentLayout gap={'24px'}>
                 <CategoryTitle title={"실시간 채널 동접"} description={'서버에서 직접 불러온 데이터를 15초마다 새로고침합니다.'}/>
-                <Container variant={'surface'} gap={'12px'} fullWidth>
-                    <Text fontSize={'1.5rem'} fontWeight={700}>{totalUserCount.toLocaleString()}명</Text>
-                    <Text color={'#A4A9C3'} fontSize={'0.9rem'}>
-                        전체 채널 합산 · {isLoading ? '조회를 갱신하는 중입니다…' : `마지막 갱신 ${updatedAt || '-'}`}
+                <Container variant={'surface'} gap={'12px'} fullWidth align={'centerLeft'}>
+                    <Text fontSize={'1.1rem'} fontWeight={700}>
+                        전체 유저 {totalUserCount.toLocaleString()} 명
                     </Text>
                     <Container flexDirection={'row'} gap={'12px'}>
                         <button
@@ -116,7 +99,7 @@ function ChannelLive() {
                             onClick={loadChannels}
                             disabled={isLoading}
                         >
-                            새로고침
+                            {isLoading ? '갱신 중...' : `마지막 ${updatedAt || '-'}`}
                         </button>
                     </Container>
                 </Container>
@@ -132,7 +115,6 @@ function ChannelLive() {
                         <ChannelList
                             key={`${channel.channel_name}-${index}`}
                             channel={channel}
-                            fixedColor={channel.channel_name === '전체 유저' ? '#0763D3' : undefined}
                         />
                     ))}
                 </Container>

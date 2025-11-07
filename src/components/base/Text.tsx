@@ -20,10 +20,12 @@ const StyledTitle = styled.span<StyledTextProps>`
     display: inline-block;
     width: ${({width}) => width};
     text-align: ${({textAlign}) => textAlign};
-    color: ${({color}) => color ?? '#EAEAEA'};
+    color: ${({color, theme}) => color ?? theme.colors.textPrimary};
     font: ${({font}) => font};
-    font-size: ${({fontSize}) => fontSize};
-    font-weight: ${({fontWeight}) => fontWeight};
+    font-size: ${({fontSize, theme}) => fontSize ?? theme.typography.sizes.base};
+    font-weight: ${({fontWeight, theme}) => fontWeight ?? theme.typography.weights.medium};
+    letter-spacing: -0.01em;
+    line-height: ${({theme}) => theme.typography.lineHeights.relaxed};
     white-space: ${({whiteSpace}) => whiteSpace};
 `
 

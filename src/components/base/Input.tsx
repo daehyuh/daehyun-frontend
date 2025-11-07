@@ -28,18 +28,14 @@ type StyledInputProps = {
 const StyledInputContainer = styled(Container)<StyledInputContainerProps>`
     flex-direction: row;
     justify-content: center;
-    background-color: #3a3a3c;
-    width: ${({width}) => width ?? undefined};
-    border-width: ${({isFocused}) => isFocused ? '2px' : '1px'};
-    border-style: solid;
-    border-color: ${({
-                         isFocused,
-                         focusedBorderColor,
-                         borderColor
-                     }) => isFocused ? focusedBorderColor ?? '#EAEAEA' : (borderColor ?? '#7c7c7d')};
-    padding: ${({padding}) => padding ?? '8px 12px'};
-    border-radius: ${({borderRadius}) => borderRadius ?? '4px'};
-    margin: ${({isFocused}) => isFocused ? 0 : '1px'};
+    width: ${({width}) => width ?? 'auto'};
+    background-color: ${({backgroundColor, theme}) => backgroundColor ?? theme.colors.surfaceMuted};
+    border: ${({isFocused, focusedBorderColor, borderColor, theme}) => isFocused
+            ? `1px solid ${focusedBorderColor ?? theme.colors.accent}`
+            : `1px solid ${borderColor ?? theme.colors.border}`};
+    padding: ${({padding, theme}) => padding ?? `${theme.spacing.xs} ${theme.spacing.md}`};
+    border-radius: ${({borderRadius, theme}) => borderRadius ?? theme.radii.md};
+    transition: border-color ${({theme}) => theme.transitions.default}, background-color ${({theme}) => theme.transitions.default};
 `
 
 const StyledInput = styled.input<StyledInputProps>`
@@ -48,19 +44,20 @@ const StyledInput = styled.input<StyledInputProps>`
     background-color: transparent;
     border: none;
     padding: 0;
-    color: ${({color}) => color ?? '#EAEAEA'};
+    color: ${({color, theme}) => color ?? theme.colors.textPrimary};
     outline: none;
+    font-size: ${({theme}) => theme.typography.sizes.base};
 
     &::placeholder {
-        color: ${({placeholderColor}) => placeholderColor ?? '#7C7C7D'};
+        color: ${({placeholderColor, theme}) => placeholderColor ?? theme.colors.textSecondary};
     }
 ;
 `
 
-function Input({type = 'text', width,  value, placeholder, onChange}: InputProps) {
+function Input({type = 'text', width, value, placeholder, onChange, ...styles}: InputProps) {
     const [isFocused, setIsFocused] = React.useState(false)
 
-    return <StyledInputContainer isFocused={isFocused} width={width}>
+    return <StyledInputContainer isFocused={isFocused} width={width} {...styles}>
         <StyledInput
             type={type}
             placeholder={placeholder}

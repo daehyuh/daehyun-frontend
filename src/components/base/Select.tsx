@@ -21,48 +21,63 @@ type StyledSelectProps = {
 const StyledSelect = styled(ReactSelect)<StyledSelectProps>`
     flex: 1;
     width: ${({width}) => width ?? '60%'};
-    color: #EAEAEA;
-    background-color: #3a3a3c;
-    border: 1px solid #7c7c7d;
-    border-radius: 4px;
-    padding: 4px 12px;
-    cursor: pointer;
-    caret-color: transparent;
-    
+    font-size: ${({theme}) => theme.typography.sizes.sm};
+
+    .Select__control {
+        background-color: ${({theme}) => theme.colors.surfaceMuted};
+        border: 1px solid ${({theme}) => theme.colors.border};
+        border-radius: ${({theme}) => theme.radii.md};
+        padding: 0 ${({theme}) => theme.spacing.sm};
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        transition: border ${({theme}) => theme.transitions.default}, box-shadow ${({theme}) => theme.transitions.default};
+        cursor: pointer;
+    }
+
+    .Select__control--is-focused {
+        border-color: ${({theme}) => theme.colors.accent};
+        box-shadow: 0 0 0 1px ${({theme}) => theme.colors.accent};
+    }
+
+    .Select__value-container {
+        padding: 0;
+    }
+
+    .Select__single-value {
+        color: ${({theme}) => theme.colors.textPrimary};
+    }
+
+    .Select__placeholder {
+        color: ${({theme}) => theme.colors.textSecondary};
+    }
+
+    .Select__indicator {
+        color: ${({theme}) => theme.colors.textSecondary};
+    }
+
     .Select__menu {
-        color: #3c3d3e;
-        left: 0;
-        width: 100%;
-        background-color: #3A3A3C;
-        padding: 4px 4px;
-        border: 1px solid #7c7c7d;
-        border-bottom-left-radius: 4px;
-        border-bottom-right-radius: 4px;
-        z-index: 100;
-       
+        margin-top: ${({theme}) => theme.spacing.xs};
+        background-color: ${({theme}) => theme.colors.surface};
+        border: 1px solid ${({theme}) => theme.colors.border};
+        border-radius: ${({theme}) => theme.radii.md};
+        box-shadow: ${({theme}) => theme.shadows.soft};
     }
-    
+
     .Select__menu-list {
-        overflow-y: scroll;
-        max-height: 160px;
+        max-height: 200px;
     }
-    
+
     .Select__option {
-        padding: 8px 4px 4px 4px;
-        color: #DCDCDC;
+        padding: ${({theme}) => theme.spacing.sm};
+        color: ${({theme}) => theme.colors.textSecondary};
+        border-radius: ${({theme}) => theme.radii.sm};
     }
-    
-    .Select__option: hover {
-        background-color: #4a4a4a;
-        border-radius: 4px;
-        border-bottom: none;
-        max-height: 100px;
-    }
-    
-    
-    .Select__indicator-separator {
-        height: 1px;
-        background-color: blue;
+
+    .Select__option--is-focused,
+    .Select__option--is-selected {
+        background-color: ${({theme}) => theme.colors.surfaceHighlight};
+        color: ${({theme}) => theme.colors.textPrimary};
     }
 `
 
@@ -83,6 +98,5 @@ function Select<T>({value, options, onChange, ...styles}: SelectProps<T>) {
 
 export type {SelectOptionType}
 export default Select
-
 
 

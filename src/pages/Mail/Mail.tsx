@@ -188,19 +188,6 @@ function Mail() {
                             <Text>(수수료 포함 환율)</Text>
                         </Container>
                     </TitleItemContainer>
-                    <TitleItemContainer title={"필요 현금"} width={'180px'}>
-                        <Text>총 {mailResult.neededCash.toLocaleString()}원</Text>
-                    </TitleItemContainer>
-                    <TitleItemContainer title={"구매 할 패키지"} width={'180px'} align={'topLeft'}>
-                        <Container gap={'20px'}>
-                            {mailResult.packages.map((item, index) => (
-                                <Container key={index} gap={'4px'} align={'centerLeft'}>
-                                    <Text>{item.luna.toString()} 루나 패키지 {item.count.toLocaleString()}개</Text>
-                                    <Text>({item.totalPrice.toLocaleString()} 원)</Text>
-                                </Container>
-                            ))}
-                        </Container>
-                    </TitleItemContainer>
                 </ResultContainer>
                 <Text color={"#fc7373"} fontWeight={'bold'}>※안드로이드와 아이폰의 루나 가격이 다릅니다※</Text>
                 <Divider/>

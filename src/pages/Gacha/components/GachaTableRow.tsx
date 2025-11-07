@@ -1,8 +1,7 @@
 import React from "react";
 import {Property} from "csstype";
-import RankUser from "@/constant/RankUser";
 import styled from "styled-components";
-import {CheckBox, Container, Input, Text} from "@/components";
+import {CheckBox, Container} from "@/components";
 import {GachaProbabilityItem} from "@/pages/Gacha/Gacha";
 
 type GachaTableRowProps = {
@@ -20,13 +19,13 @@ type StyledTableRowProps = {
 }
 
 const StyledTableRow = styled.tr<StyledTableRowProps>`
-    border-bottom: 1px solid ${({borderBottomColor}) => borderBottomColor};
-    transition: background-color 0.2s;
-    color: ${({color}) => color};
-    height: ${({height}) => height};
+    border-bottom: 1px solid ${({borderBottomColor, theme}) => borderBottomColor ?? theme.colors.border};
+    transition: background-color ${({theme}) => theme.transitions.default};
+    color: ${({color, theme}) => color ?? theme.colors.textPrimary};
+    height: ${({height}) => height ?? '50px'};
 
     &:hover {
-        background-color: ${({hoverBackgroundColor}) => hoverBackgroundColor};
+        background-color: ${({hoverBackgroundColor, theme}) => hoverBackgroundColor ?? theme.colors.surfaceHighlight};
     }
 `
 
@@ -34,10 +33,10 @@ const GachaTableRow = ({
                            index,
                            item,
                            value,
-                           borderBottomColor = '#444',
-                           hoverBackgroundColor = '#222',
-                           color = 'white',
-                           height = '50px',
+                           borderBottomColor,
+                           hoverBackgroundColor,
+                           color,
+                           height,
                            onChecked,
                        }: GachaTableRowProps) => {
 

@@ -1,45 +1,131 @@
 import React from "react";
 import styled from "styled-components";
-import {Container, Text} from "@components/index";
+import {Link} from "react-router-dom";
 
-
-const StyledFooter = styled.div`
-    padding: 2rem 0;
-    margin-inline: auto;
-    font-style: normal;
+const FooterWrapper = styled.footer`
+    width: 100%;
+    border-radius: ${({theme}) => theme.radii.lg};
+    border: 1px solid ${({theme}) => theme.colors.border};
+    background: ${({theme}) => theme.colors.surfaceMuted};
+    padding: clamp(24px, 4vw, 48px);
+    box-shadow: ${({theme}) => theme.shadows.soft};
     display: flex;
-    align-items: center;
-    justify-content: space-around;
-    width: 100%; /* 부모 요소가 뷰포트 전체를 차지하게 설정 */
-    color: gray;
-`
+    flex-direction: column;
+    gap: ${({theme}) => theme.spacing.lg};
+`;
 
-const StyledA = styled.a`
-    color: gray;
+const FooterGrid = styled.div`
+    display: grid;
+    gap: ${({theme}) => theme.spacing.lg};
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+
+    @media (min-width: ${({theme}) => theme.breakpoints.md}px) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+`;
+
+const FooterSection = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: ${({theme}) => theme.spacing.sm};
+`;
+
+const FooterHeading = styled.p`
+    margin: 0;
+    font-size: ${({theme}) => theme.typography.sizes.xs};
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: ${({theme}) => theme.colors.textSecondary};
+`;
+
+const FooterBrand = styled.span`
+    font-size: ${({theme}) => theme.typography.sizes.xl};
+    font-weight: ${({theme}) => theme.typography.weights.semibold};
+    color: ${({theme}) => theme.colors.textPrimary};
+`;
+
+const FooterLink = styled(Link)`
+    color: ${({theme}) => theme.colors.textPrimary};
     text-decoration: none;
-    margin-top: 10px; /* 원하는 값으로 설정 */
-    margin-bottom: 10px; /* 원하는 값으로 설정 */
+    font-size: ${({theme}) => theme.typography.sizes.sm};
+    display: inline-flex;
+    align-items: center;
+    gap: ${({theme}) => theme.spacing.xs};
+    transition: color ${({theme}) => theme.transitions.default};
 
     &:hover {
-        color: white;
+        color: ${({theme}) => theme.colors.accent};
     }
-`
+`;
+
+const ExternalLink = styled.a`
+    color: ${({theme}) => theme.colors.textPrimary};
+    text-decoration: none;
+    font-size: ${({theme}) => theme.typography.sizes.sm};
+    display: inline-flex;
+    align-items: center;
+    gap: ${({theme}) => theme.spacing.xs};
+
+    &:hover {
+        color: ${({theme}) => theme.colors.accent};
+    }
+`;
+
+const ContactList = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: ${({theme}) => theme.spacing.xs};
+`;
+
+const FooterLegal = styled.div`
+    border-top: 1px solid ${({theme}) => theme.colors.borderMuted};
+    padding-top: ${({theme}) => theme.spacing.md};
+    display: flex;
+    flex-direction: column;
+    gap: ${({theme}) => theme.spacing.xs};
+    font-size: ${({theme}) => theme.typography.sizes.xs};
+    color: ${({theme}) => theme.colors.textSubtle};
+
+    @media (min-width: ${({theme}) => theme.breakpoints.md}px) {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+`;
 
 function Footer() {
     return (
-        <StyledFooter>
-            <Container gap={'10px'} align={'centerLeft'}>
-                <Text color={'gray'}>대현닷컴 © 2021</Text>
-                {/* <Text color={'gray'}>쓰리이디엇츠 · 대표 강대현</Text> */}
-                {/* <Text color={'gray'}>사업자 등록번호 868-18-02199</Text> */}
-                <Text color={'gray'}>문의 · rkdeown10@naver.com</Text>
-                <Text color={'gray'}>010-7712-2413</Text>
-            </Container>
-            <Container gap={'10px'} align={'topLeft'}>
-                <StyledA href="이용약관">이용약관</StyledA>
-                <StyledA href="개인정보처리방침">개인정보 처리방침</StyledA>
-            </Container>
-        </StyledFooter>
+        <FooterWrapper>
+            <FooterGrid>
+                <FooterSection>
+                    <FooterBrand>대현닷컴</FooterBrand>
+                    <FooterHeading>연락처</FooterHeading>
+                    <ContactList>
+                        <ExternalLink href="mailto:rkdeown10@naver.com">rkdeown10@naver.com</ExternalLink>
+                        <ExternalLink href="tel:01077122413">010-7712-2413</ExternalLink>
+                    </ContactList>
+                </FooterSection>
+
+                <FooterSection>
+                    <FooterHeading>정책</FooterHeading>
+                    <FooterLink to="/이용약관">이용약관</FooterLink>
+                    <FooterLink to="/개인정보처리방침">개인정보 처리방침</FooterLink>
+                </FooterSection>
+
+                <FooterSection>
+                    <FooterHeading>광고/제휴</FooterHeading>
+                    <ContactList>
+                        <ExternalLink href="https://open.kakao.com/o/sWIax8Vc" target="_blank" rel="noreferrer">
+                            카카오톡 오픈채팅
+                        </ExternalLink>
+                    </ContactList>
+                </FooterSection>
+            </FooterGrid>
+
+            <FooterLegal>
+                <span>© {new Date().getFullYear()} 대현닷컴. All rights reserved.</span>
+            </FooterLegal>
+        </FooterWrapper>
     );
 }
 

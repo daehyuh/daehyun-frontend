@@ -15,6 +15,7 @@ import ColorRank from "../pages/ColorRank/ColorRank";
 import LimitCheck from "../pages/LimitCheck/LimitCheck";
 import Header from "../components/Header";
 import Ads from "../components/Ads";
+import GoogleAdSense from "../components/GoogleAdSense";
 import Channel from "../pages/Channel/Channel";
 import MarkdownPage from "../pages/Common/MarkdownPage";
 import GuildColorRank from "@/pages/GuildColorRank/GuildColorRank";
@@ -23,30 +24,112 @@ import JobReceiveCalculator from "@/pages/JobReceiveCalculator/JobReceiveCalcula
 import styled from 'styled-components';
 import AuthButton from "@/components/AuthButton";
 
+const ADSENSE_SLOTS = {
+    inline: import.meta.env.VITE_ADSENSE_SLOT_INLINE,
+    rail: import.meta.env.VITE_ADSENSE_SLOT_RAIL
+};
 
-const StyledA = styled.a`
-    margin-top: 20px;
-    margin-bottom: 20px;
-    font-size: 20px;
-    background-color: #1e1e1e;
+const SHOW_AD_LAYOUT = import.meta.env.VITE_SHOW_AD_LAYOUT === 'true';
+
+const Viewport = styled.div`
     width: 100%;
-    /* a태그 색 */
-    color: #EAEAEA;
-    text-Align: center;
-    font-weight: bold;
-    display: flex;
-    justify-Content: center;`
-
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
+    min-height: 100vh;
+    padding: clamp(28px, 4vw, 56px) clamp(18px, 4vw, 56px);
+    background: ${({theme}) => theme.colors.background};
 `;
 
-const ContentWrapper = styled.div`
-  max-width: 1200px;
-  width: 100%;
+const Shell = styled.div`
+    width: 100%;
+    max-width: ${({theme}) => theme.layout.gridMaxWidth};
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: ${({theme}) => theme.spacing.xl};
+`;
+
+const ContentGrid = styled.div<{ $hasRail: boolean }>`
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: ${({theme}) => theme.spacing.xl};
+    width: 100%;
+
+    @media (min-width: ${({theme}) => theme.breakpoints.lg}px) {
+        grid-template-columns: ${({$hasRail, theme}) => $hasRail
+                ? `minmax(0, 1fr) ${theme.layout.adRailWidth}`
+                : 'minmax(0, 1fr)'};
+    }
+`;
+
+const PrimaryColumn = styled.main`
+    display: flex;
+    flex-direction: column;
+    gap: ${({theme}) => theme.spacing.xl};
+`;
+
+const PageSurface = styled.section`
+    width: 100%;
+    border-radius: ${({theme}) => theme.radii.lg};
+    border: 1px solid ${({theme}) => theme.colors.border};
+    background: ${({theme}) => theme.colors.surface};
+    padding: clamp(20px, 3vw, 40px);
+    box-shadow: ${({theme}) => theme.shadows.soft};
+    backdrop-filter: blur(10px);
+`;
+
+const InlineAdsSection = styled.section`
+    border-radius: ${({theme}) => theme.radii.md};
+    border: 1px dashed ${({theme}) => theme.colors.border};
+    background: ${({theme}) => theme.colors.surfaceMuted};
+    padding: ${({theme}) => theme.spacing.lg};
+    box-shadow: ${({theme}) => theme.shadows.soft};
+    display: flex;
+    flex-direction: column;
+    gap: ${({theme}) => theme.spacing.md};
+`;
+
+const SectionTitle = styled.h2`
+    margin: 0;
+    font-size: ${({theme}) => theme.typography.sizes.lg};
+    color: ${({theme}) => theme.colors.textPrimary};
+`;
+
+const AdRail = styled.aside`
+    display: none;
+
+    @media (min-width: ${({theme}) => theme.breakpoints.lg}px) {
+        display: flex;
+        flex-direction: column;
+        gap: ${({theme}) => theme.spacing.lg};
+        position: sticky;
+        top: ${({theme}) => `calc(${theme.layout.headerHeight} + ${theme.spacing.lg})`};
+    }
+`;
+
+const RailCard = styled.div`
+    border-radius: ${({theme}) => theme.radii.lg};
+    border: 1px solid ${({theme}) => theme.colors.border};
+    background: ${({theme}) => theme.colors.surfaceElevated};
+    padding: ${({theme}) => theme.spacing.lg};
+    box-shadow: ${({theme}) => theme.shadows.soft};
+    display: flex;
+    flex-direction: column;
+    gap: ${({theme}) => theme.spacing.sm};
+`;
+
+const RailTitle = styled.p`
+    margin: 0;
+    font-weight: ${({theme}) => theme.typography.weights.semibold};
+    color: ${({theme}) => theme.colors.textPrimary};
+`;
+
+const PrankOverlay = styled.div`
+    position: fixed;
+    inset: 0;
+    background-color: black;
+    z-index: ${({theme}) => theme.zIndex.modal};
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 export type PageType = {
@@ -113,50 +196,74 @@ function App() {
 
     if (showPrank) {
         return (
-            <div style={{
-                position: "fixed",
-                top: 0, left: 0,
-                width: "100vw",
-                height: "100vh",
-                backgroundColor: "black",
-                zIndex: 9999,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center"
-            }}>
+            <PrankOverlay>
                 <img
                     src="https://api.xn--vk1b177d.com/web/images/ad/%EB%A7%8C%EC%9A%B0%EC%A0%88.png"
                     alt="만우절 이벤트"
                     style={{maxWidth: "100%", maxHeight: "100%"}}
                 />
-            </div>
+            </PrankOverlay>
         );
     }
 
     return (
-        <Container>
+        <Viewport>
             <Analytics/>
-            <ContentWrapper>
+            <Shell>
                 <Header pages={pages} member_pages={member_pages}/>
-                <Routes>
-                    {
-                        member_pages.map((item) => (
-                            item.hrefs.map(href => (
-                                <Route key={href} path={href} element={item.page}/>
-                            ))
-                        ))
-                    }
-                    {
-                        pages.map((item) => (
-                            item.hrefs.map(href => (
-                                <Route key={href} path={href} element={item.page}/>
-                            ))
-                        ))
-                    }
-                </Routes>
+
+                <ContentGrid $hasRail={SHOW_AD_LAYOUT}>
+                    <PrimaryColumn>
+                        <PageSurface>
+                            <Routes>
+                                {
+                                    member_pages.map((item) => (
+                                        item.hrefs.map(href => (
+                                            <Route key={href} path={href} element={item.page}/>
+                                        ))
+                                    ))
+                                }
+                                {
+                                    pages.map((item) => (
+                                        item.hrefs.map(href => (
+                                            <Route key={href} path={href} element={item.page}/>
+                                        ))
+                                    ))
+                                }
+                            </Routes>
+                        </PageSurface>
+
+                        {SHOW_AD_LAYOUT && (
+                            <InlineAdsSection aria-label="콘텐츠와 맞물린 광고 영역">
+                                <SectionTitle>스폰서</SectionTitle>
+                                <GoogleAdSense
+                                    slotId={ADSENSE_SLOTS.inline}
+                                    label="인라인 반응형 광고"
+                                    layout="in-article"
+                                    minHeight="200px"
+                                />
+                                <Ads/>
+                            </InlineAdsSection>
+                        )}
+                    </PrimaryColumn>
+
+                    {SHOW_AD_LAYOUT && (
+                        <AdRail aria-label="사이드 광고 레일">
+                            <RailCard>
+                                <RailTitle>사이드 광고</RailTitle>
+                                <GoogleAdSense
+                                    slotId={ADSENSE_SLOTS.rail}
+                                    label="사이드 고정형 광고"
+                                    minHeight="600px"
+                                />
+                            </RailCard>
+                        </AdRail>
+                    )}
+                </ContentGrid>
+
                 <Footer/>
-            </ContentWrapper>
-        </Container>
+            </Shell>
+        </Viewport>
     );
 }
 

@@ -33,6 +33,7 @@ export const JOB_DEFINITIONS: JobDefinition[] = [
     {name: "비밀결사", gender: "female"},
     {name: "파파라치", gender: "female"},
     {name: "최면술사", gender: "female"},
+    {name: "점쟁이", gender: "female"},
     {name: "마피아", gender: "male"},
     {name: "스파이", gender: "female"},
     {name: "짐승인간", gender: "male"},
@@ -65,5 +66,6 @@ export const JOGYEOL_JOB_NAMES = new Set([
     "심리학자",
     "공무원",
     "파파라치",
-    "최면술사"
+    "최면술사",
+    "점쟁이"
 ]);

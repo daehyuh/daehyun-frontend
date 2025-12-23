@@ -1,0 +1,13 @@
+{
+  "items": [
+    { "name": "달콤한 소식 기자 스킨", "chance": 12, "equip": true },
+    { "name": "쌉쌀한 일격 건달 스킨", "chance": 12, "equip": true },
+    { "name": "실크 리본 테두리", "chance": 12, "equip": true },
+    { "name": "서리 레이스 테두리", "chance": 12, "equip": true },
+    { "name": "요정의 망토 자락", "chance": 12, "equip": true },
+    { "name": "온기가 내리는 밤", "chance": 12, "equip": true },
+    { "name": "크리스마스 물음표 스킨", "chance": 9, "equip": true },
+    { "name": "눈토끼 물음표 스킨", "chance": 9, "equip": true },
+    { "name": "요정의 포토북", "chance": 10, "equip": true }
+  ]
+}

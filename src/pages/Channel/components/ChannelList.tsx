@@ -44,13 +44,17 @@ const StyledChannelUserCount = styled.span<StyledChannelUserCountProps>`
 `
 
 const ChannelList = ({channel, fixedColor}: ChannelListProps) => {
+    const normalizedCount = typeof channel.user_count === 'number'
+        ? channel.user_count
+        : parseInt(String(channel.user_count), 10) || 0;
+
     return <StyledChannelLi>
         <StyledChannelName>{channel.channel_name}</StyledChannelName>
         <StyledChannelUserCount
             fixedColor={fixedColor}
-            userCount={channel.user_count}
+            userCount={normalizedCount}
         >
-            {channel.user_count.toLocaleString()} 명
+            {normalizedCount.toLocaleString()} 명
         </StyledChannelUserCount>
     </StyledChannelLi>
 }

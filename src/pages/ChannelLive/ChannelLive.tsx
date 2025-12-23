@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {CategoryTitle, Container, ContentLayout, Layout, Text} from "@/components";
 import ChannelList from "@/pages/Channel/components/ChannelList";
 import ChannelType from "@/constant/ChannelType";
@@ -55,13 +55,19 @@ function ChannelLive() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [updatedAt, setUpdatedAt] = useState<string>("");
-    const totalUserCount = useMemo(() => channels.reduce((sum, channel) => sum + channel.user_count, 0), [channels]);
-
+    const [totalUserCount, setTotalUserCount] = useState<number>(0);
     const loadChannels = useCallback(async () => {
         try {
             setIsLoading(true);
             const data = await fetchLiveChannels();
-            setChannels(data);
+            const normalizedChannels = data.map((channel) => ({
+                ...channel,
+                user_count: Number(channel.user_count) || 0
+            }));
+            const total = normalizedChannels.reduce((sum, channel) => sum + channel.user_count, 0);
+
+            setChannels(normalizedChannels);
+            setTotalUserCount(total);
             setUpdatedAt(new Date().toLocaleTimeString());
             setError(null);
         } catch (err) {

@@ -20,6 +20,12 @@ const HeaderRow = styled.div`
     gap: ${({theme}) => theme.spacing.sm};
     flex-wrap: wrap;
     margin-bottom: ${({theme}) => theme.spacing.md};
+
+    @media (max-width: ${({theme}) => theme.breakpoints.md}px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: ${({theme}) => theme.spacing.xs};
+    }
 `;
 
 const Pill = styled.span`
@@ -40,7 +46,8 @@ const Title = styled.h2`
     font-size: clamp(1.15rem, 2.4vw, 1.45rem);
     color: ${({theme}) => theme.colors.textPrimary};
     letter-spacing: -0.01em;
-    flex: 1;
+    flex: 1 1 100%;
+    width: 100%;
 `;
 
 const InlineLink = styled.a`
@@ -72,13 +79,13 @@ const Track = styled.div<{ $index: number }>`
 const SlideCard = styled.a<{ $clickable: boolean }>`
     min-width: 100%;
     display: grid;
-    grid-template-columns: 1.25fr 1fr;
-    gap: ${({theme}) => theme.spacing.lg};
-    align-items: stretch;
+    grid-template-columns: 1fr;
+    gap: ${({theme}) => theme.spacing.md};
+    align-items: center;
     background: ${({theme}) => theme.colors.surface};
     border: 1px solid ${({theme}) => theme.colors.border};
     border-radius: ${({theme}) => theme.radii.md};
-    padding: clamp(14px, 2vw, 20px);
+    padding: clamp(10px, 1.6vw, 16px);
     color: ${({theme}) => theme.colors.textPrimary};
     text-decoration: none;
     box-shadow: ${({theme}) => theme.shadows.soft};
@@ -93,6 +100,11 @@ const SlideCard = styled.a<{ $clickable: boolean }>`
 
     @media (max-width: ${({theme}) => theme.breakpoints.md}px) {
         grid-template-columns: 1fr;
+        padding: 0;
+        border-radius: ${({theme}) => theme.radii.md};
+        border: none;
+        background: transparent;
+        box-shadow: none;
     }
 `;
 
@@ -102,8 +114,14 @@ const Visual = styled.div`
     border-radius: ${({theme}) => theme.radii.md};
     overflow: hidden;
     background: ${({theme}) => theme.colors.surfaceMuted};
-    aspect-ratio: 16 / 7;
+    aspect-ratio: 16 / 6;
     box-shadow: ${({theme}) => theme.shadows.tight};
+
+    @media (max-width: ${({theme}) => theme.breakpoints.md}px) {
+        aspect-ratio: 16 / 9;
+        border-radius: ${({theme}) => theme.radii.lg};
+        box-shadow: none;
+    }
 `;
 
 const VisualImage = styled.img`
@@ -112,6 +130,10 @@ const VisualImage = styled.img`
     object-fit: contain;
     background: ${({theme}) => theme.colors.surfaceMuted};
     display: block;
+
+    @media (max-width: ${({theme}) => theme.breakpoints.md}px) {
+        object-fit: cover;
+    }
 `;
 
 const Ribbon = styled.span`
@@ -126,6 +148,11 @@ const Ribbon = styled.span`
     letter-spacing: 0.08em;
     text-transform: uppercase;
     backdrop-filter: blur(6px);
+
+    @media (max-width: ${({theme}) => theme.breakpoints.md}px) {
+        top: ${({theme}) => theme.spacing.md};
+        left: ${({theme}) => theme.spacing.md};
+    }
 `;
 
 const Copy = styled.div`
@@ -287,7 +314,7 @@ function HeroBillboard() {
                                     <VisualImage src={item.image} alt={item.label ?? '광고 이미지'} />
                                     <Ribbon>광고</Ribbon>
                                 </Visual>
-                                <Copy>
+                                <Copy className="sr-only">
                                     <Eyebrow>스폰서 · {index + 1} / {items.length}</Eyebrow>
                                     <Headline>{item.label ?? '스폰서 콘텐츠'}</Headline>
                                     {item.period && <Period>{item.period}</Period>}

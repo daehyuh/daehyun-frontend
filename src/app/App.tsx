@@ -21,6 +21,7 @@ import MarkdownPage from "../pages/Common/MarkdownPage";
 import GuildColorRank from "@/pages/GuildColorRank/GuildColorRank";
 import JobReceiveCalculator from "@/pages/JobReceiveCalculator/JobReceiveCalculator";
 import ChannelLive from "@/pages/ChannelLive/ChannelLive";
+import HeroBillboard from "@/components/HeroBillboard";
 
 import styled from 'styled-components';
 import AuthButton from "@/components/AuthButton";
@@ -189,7 +190,7 @@ function App() {
 
 
     const member_pages: PageType[] = [
-        {hide: true, hrefs: ["/인증"], title: "인증/유저등록", page: <AuthButton/>},
+        {hide: false, hrefs: ["/인증", "/login"], title: "구글 로그인", page: <AuthButton/>},
         {hide: true, hrefs: ["/검닉랭킹"], title: "검닉랭킹", page: <ColorRank/>},
         {hide: true, hrefs: ["/길드배경랭킹"], title: "길드배경랭킹", page: <GuildColorRank/>},
         {hide: true, hrefs: ["/전적검색"], title: "전적검색", page: <LimitCheck/>},
@@ -212,6 +213,7 @@ function App() {
         <Viewport>
             <Analytics/>
             <Shell>
+                <HeroBillboard />
                 <Header pages={pages} member_pages={member_pages}/>
 
                 <ContentGrid $hasRail={SHOW_AD_LAYOUT}>

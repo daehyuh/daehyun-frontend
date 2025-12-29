@@ -1,45 +1,11 @@
 import React, {useEffect, useMemo, useState} from "react";
 import styled from "styled-components";
 import fetchAds from "../apis/fetchAds";
+import {FALLBACK_ADS, NormalizedAd, normalizeAdsResponse} from "@/utils/ads";
 
 type AdsProps = {
     useInquiry?: boolean;
 }
-
-type RawAdPayload = {
-    id?: number | string;
-    url?: string;
-    href?: string;
-    ad?: string[];
-    ads?: string[];
-    urls?: string[];
-    startDate?: string;
-    endDate?: string;
-    title?: string;
-};
-
-type NormalizedAd = {
-    id: string;
-    image: string;
-    href?: string;
-    label?: string;
-    period?: string;
-};
-
-const FALLBACK_ADS: NormalizedAd[] = [
-    {
-        id: 'fallback-1',
-        image: 'https://placehold.co/1200x520/15161f/ffffff?text=Ad+Placement+Preview',
-        label: '스폰서 슬롯 프리뷰',
-        period: '728×90 또는 336×280 권장'
-    },
-    {
-        id: 'fallback-2',
-        image: 'https://placehold.co/1200x520/21222f/ffffff?text=Upload+Your+Creative',
-        label: '브랜드 협찬 가이드',
-        period: '고정 노출 · 6초 전환'
-    }
-];
 
 const AdsWrapper = styled.section`
     width: 100%;
@@ -62,9 +28,10 @@ const Carousel = styled.div`
 
 const CarouselImage = styled.img`
     width: 100%;
-    height: auto;
+    height: 100%;
     aspect-ratio: 16 / 7;
-    object-fit: cover;
+    object-fit: contain;
+    background: ${({theme}) => theme.colors.surfaceMuted};
     display: block;
 `;
 
@@ -169,50 +136,6 @@ const AdNote = styled.p`
     font-size: ${({theme}) => theme.typography.sizes.xs};
     color: ${({theme}) => theme.colors.textSubtle};
 `;
-
-const normalizeAdsResponse = (payload: any): NormalizedAd[] => {
-    if (!payload) return [];
-
-    const collectFromEntry = (entry: RawAdPayload | undefined): NormalizedAd[] => {
-        if (!entry) return [];
-        const sources = entry.ad ?? entry.ads ?? entry.urls ?? [];
-        if (Array.isArray(sources) && sources.length > 0) {
-            return sources.map((value, index) => {
-                const image = typeof value === 'string' ? value : value?.url;
-                const href = typeof value === 'string' ? entry.href : value?.href ?? entry.href;
-                return image ? {
-                    id: `${entry.id ?? entry.title ?? 'ad'}-${index}`,
-                    image,
-                    href,
-                    label: entry.title,
-                    period: entry.startDate && entry.endDate ? `${entry.startDate} ~ ${entry.endDate}` : undefined
-                } : null;
-            }).filter((item): item is NormalizedAd => !!item);
-        }
-
-        if (entry.url) {
-            return [{
-                id: String(entry.id ?? entry.url),
-                image: entry.url,
-                href: entry.href,
-                label: entry.title,
-                period: entry.startDate && entry.endDate ? `${entry.startDate} ~ ${entry.endDate}` : undefined
-            }];
-        }
-
-        return [];
-    };
-
-    if (Array.isArray(payload?.data)) {
-        return payload.data.flatMap((item: RawAdPayload) => collectFromEntry(item));
-    }
-
-    if (Array.isArray(payload)) {
-        return payload.flatMap((item: RawAdPayload) => collectFromEntry(item));
-    }
-
-    return collectFromEntry(payload);
-};
 
 function Ads({useInquiry = true}: AdsProps) {
     const [ads, setAds] = useState<NormalizedAd[]>([]);

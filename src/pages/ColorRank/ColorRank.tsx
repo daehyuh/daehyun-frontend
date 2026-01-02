@@ -6,7 +6,6 @@ import Table from "@components/base/Table";
 import CommonTableRow from "@/pages/ColorRank/components/ColorRankTableRow";
 import {useRankSearch} from "@/hooks/useRankSearch";
 import RankUser from "@/constant/RankUser";
-import FeatureGate from "@/components/FeatureGate";
 
 const Card = styled(Container)`
     width: 100%;

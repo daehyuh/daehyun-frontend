@@ -81,25 +81,10 @@ const StyledLink = styled(Link)<StyledLinkProps>`
     `}
 `;
 
-const getAccessToken = (): string | null => {
-    if (typeof document === 'undefined') return null;
-    return document.cookie
-        .split(';')
-        .map((c) => c.trim())
-        .find((c) => c.startsWith('accessToken='))?.split('=')[1] ?? null;
-};
-
 function HeaderItemLink({path, hrefs, title, variant = 'primary', fullWidth, requiresAuth = false, onNavigate}: HeaderItemLinkProps) {
     const isActive = hrefs.some(e => e === path);
-    const hasToken = Boolean(getAccessToken());
 
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        if (requiresAuth && !hasToken) {
-            e.preventDefault();
-            window.alert("구글 로그인 후 이용 가능합니다.");
-            window.location.href = "/login";
-            return;
-        }
         onNavigate?.();
     };
 

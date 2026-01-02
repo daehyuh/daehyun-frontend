@@ -189,43 +189,6 @@ const SectionTitle = styled.h3`
     color: ${({theme}) => theme.colors.textPrimary};
 `;
 
-const FeatureCallout = styled.div`
-    display: grid;
-    gap: ${({theme}) => theme.spacing.sm};
-    padding: ${({theme}) => theme.spacing.md};
-    border-radius: ${({theme}) => theme.radii.lg};
-    border: 1px solid ${({theme}) => theme.colors.border};
-    background: ${({theme}) => theme.gradients.panel};
-    box-shadow: ${({theme}) => theme.shadows.soft};
-`;
-
-const FeatureLabel = styled.span`
-    font-size: ${({theme}) => theme.typography.sizes.sm};
-    color: ${({theme}) => theme.colors.textSecondary};
-`;
-
-const FeatureGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: ${({theme}) => theme.spacing.sm};
-    width: 100%;
-    max-width: 820px;
-    margin: 0 auto;
-
-    @media (max-width: 560px) {
-        grid-template-columns: 1fr;
-    }
-`;
-
-const FeatureCard = styled.div`
-    padding: ${({theme}) => theme.spacing.md};
-    border-radius: ${({theme}) => theme.radii.md};
-    border: 1px solid ${({theme}) => theme.colors.border};
-    background: ${({theme}) => theme.colors.surfaceMuted};
-    display: grid;
-    gap: ${({theme}) => theme.spacing.xs};
-`;
-
 const Divider = styled.hr`
     border: none;
     border-top: 1px solid ${({theme}) => theme.colors.border};
@@ -242,6 +205,15 @@ const InsightCard = styled.div`
     box-shadow: ${({theme}) => theme.shadows.soft};
 `;
 
+const InsightHeadline = styled.div`
+    display: flex;
+    align-items: center;
+    gap: ${({theme}) => theme.spacing.sm};
+    font-size: ${({theme}) => theme.typography.sizes.lg};
+    font-weight: ${({theme}) => theme.typography.weights.bold};
+    color: ${({theme}) => theme.colors.textPrimary};
+`;
+
 const InsightGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -256,12 +228,31 @@ const InsightItem = styled.div`
 const InsightLabel = styled.span`
     color: ${({theme}) => theme.colors.textSecondary};
     font-size: ${({theme}) => theme.typography.sizes.sm};
+    font-weight: ${({theme}) => theme.typography.weights.semibold};
 `;
 
 const InsightValue = styled.span`
     color: ${({theme}) => theme.colors.textPrimary};
     font-weight: ${({theme}) => theme.typography.weights.semibold};
     font-size: ${({theme}) => theme.typography.sizes.lg};
+`;
+
+const ColorSwatch = styled.div<{ $color: string }>`
+    display: inline-flex;
+    align-items: center;
+    gap: ${({theme}) => theme.spacing.xs};
+    padding: ${({theme}) => `${theme.spacing.xs} ${theme.spacing.sm}`};
+    border-radius: ${({theme}) => theme.radii.md};
+    border: 1px solid ${({theme}) => theme.colors.border};
+    background: ${({theme}) => theme.colors.surfaceMuted};
+`;
+
+const Square = styled.span<{ $color: string }>`
+    width: 20px;
+    height: 20px;
+    border-radius: ${({theme}) => theme.radii.xs};
+    background: ${({$color}) => $color};
+    border: 1px solid rgba(0,0,0,0.4);
 `;
 
 const getAccessToken = (): string | null => {
@@ -507,28 +498,6 @@ function AuthSection() {
                     로그인하면 검닉/길드 배경 랭킹, 획초 체크, 실시간 동접 등 멤버 기능이 활성화됩니다.
                 </Subtext>
 
-                <FeatureCallout>
-                    <FeatureLabel>로그인하면 활성화되는 기능</FeatureLabel>
-                    <FeatureGrid>
-                        <FeatureCard>
-                            <strong>검닉 · 길드 배경 랭킹</strong>
-                            <Helper>검닉 랭킹과 길드 배경 랭킹을 실시간으로 확인.</Helper>
-                        </FeatureCard>
-                        <FeatureCard>
-                            <strong>획초 체크</strong>
-                            <Helper>내 오늘 경기 수·전적을 바로 조회해 획초 여부를 확인.</Helper>
-                        </FeatureCard>
-                        <FeatureCard>
-                            <strong>실시간 동접</strong>
-                            <Helper>라이브 접속 현황을 빠르게 확인.</Helper>
-                        </FeatureCard>
-                        <FeatureCard>
-                            <strong>계정 동기화·게스트 등록</strong>
-                            <Helper>닉네임/코드로 계정을 연동하고 게스트를 등록.</Helper>
-                        </FeatureCard>
-                    </FeatureGrid>
-                </FeatureCallout>
-
                 <ButtonRow>
                     {!isLoggedIn && (
                         <ActionButton onClick={handleLogin} disabled={isLoading}>
@@ -561,26 +530,39 @@ function AuthSection() {
                 )}
             </Card>
 
-            {isLoggedIn && (
-                <InsightCard>
-                    <SectionTitle>내 정보 요약</SectionTitle>
-                    <Helper>검닉/길드 랭킹과 오늘 경기 기록을 한눈에 확인하세요.</Helper>
-                    {insightLoading && <Helper>불러오는 중...</Helper>}
-                    {insightError && <Status $tone="danger">{insightError}</Status>}
-                    {insight && (
+            <InsightCard>
+                <InsightHeadline>
+                    내 닉네임: {insight?.nickname ?? profile?.name ?? '로그인하면 확인됩니다'}
+                </InsightHeadline>
+                <SectionTitle>내 정보 요약</SectionTitle>
+                <Helper>검닉/길드 랭킹과 오늘 경기 기록을 한눈에 확인하세요.</Helper>
+                {insightLoading && <Helper>불러오는 중...</Helper>}
+                {insightError && <Status $tone="danger">{insightError}</Status>}
+                {isLoggedIn ? (
+                    insight ? (
                         <InsightGrid>
                             <InsightItem>
                                 <InsightLabel>닉네임 랭킹</InsightLabel>
                                 <InsightValue>{insight.nicknameRank ? `${insight.nicknameRank}위` : '정보 없음'}</InsightValue>
-                                {insight.nicknameColor && <Helper>닉네임 색상: {insight.nicknameColor}</Helper>}
+                                {insight.nicknameColor && (
+                                    <ColorSwatch $color={insight.nicknameColor}>
+                                        <Square $color={insight.nicknameColor} aria-hidden />
+                                        <span>닉네임 색상: {insight.nicknameColor}</span>
+                                    </ColorSwatch>
+                                )}
                             </InsightItem>
                             <InsightItem>
                                 <InsightLabel>길드 배경 랭킹</InsightLabel>
                                 <InsightValue>{insight.guildBackgroundRank ? `${insight.guildBackgroundRank}위` : '정보 없음'}</InsightValue>
-                                {insight.guildBackgroundColor && <Helper>배경 색: {insight.guildBackgroundColor}</Helper>}
+                                {insight.guildBackgroundColor && (
+                                    <ColorSwatch $color={insight.guildBackgroundColor}>
+                                        <Square $color={insight.guildBackgroundColor} aria-hidden />
+                                        <span>배경 색상: {insight.guildBackgroundColor}</span>
+                                    </ColorSwatch>
+                                )}
                             </InsightItem>
                             <InsightItem>
-                                <InsightLabel>오늘 경기 수</InsightLabel>
+                                <InsightLabel>오늘 게임 횟수</InsightLabel>
                                 <InsightValue>{insight.todayGames ?? '정보 없음'}</InsightValue>
                                 <Helper>승 {insight.todayWinDelta ?? 0} / 패 {insight.todayLoseDelta ?? 0}</Helper>
                             </InsightItem>
@@ -589,9 +571,13 @@ function AuthSection() {
                                 <InsightValue>{insight.isTodayLimit ? '획초' : '미획초'}</InsightValue>
                             </InsightItem>
                         </InsightGrid>
-                    )}
-                </InsightCard>
-            )}
+                    ) : (
+                        <Helper>내 정보 데이터를 불러올 수 없습니다. 상태 새로고침을 눌러주세요.</Helper>
+                    )
+                ) : (
+                    <Helper>로그인하면 내 랭킹과 색상, 오늘 게임 기록을 확인할 수 있습니다.</Helper>
+                )}
+            </InsightCard>
 
             <Card>
                 <SectionTitle>계정 동기화</SectionTitle>

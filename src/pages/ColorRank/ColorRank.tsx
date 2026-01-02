@@ -10,23 +10,12 @@ import FeatureGate from "@/components/FeatureGate";
 
 const Card = styled(Container)`
     width: 100%;
-    background: linear-gradient(160deg, rgba(255, 95, 109, 0.16), rgba(91, 192, 248, 0.12));
-    border: 1px solid ${({theme}) => theme.colors.accent};
+    background: ${({theme}) => theme.colors.surface};
+    border: 1px solid ${({theme}) => theme.colors.border};
     border-radius: ${({theme}) => theme.radii.lg};
     padding: ${({theme}) => theme.spacing.lg};
-    box-shadow: 0 12px 30px rgba(255, 95, 109, 0.15), ${({theme}) => theme.shadows.soft};
+    box-shadow: ${({theme}) => theme.shadows.soft};
     gap: ${({theme}) => theme.spacing.md};
-    position: relative;
-    overflow: hidden;
-
-    &::before {
-        content: '';
-        position: absolute;
-        inset: -40%;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 50%);
-        opacity: 0.6;
-        pointer-events: none;
-    }
 `;
 
 const ControlBar = styled.div`

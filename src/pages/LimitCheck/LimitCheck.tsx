@@ -63,6 +63,8 @@ const StatsGrid = styled.div`
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: ${({theme}) => theme.spacing.md};
     width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
 
     @media (max-width: 640px) {
         grid-template-columns: 1fr;
@@ -75,7 +77,9 @@ const StatCard = styled(Container)`
     border-radius: ${({theme}) => theme.radii.md};
     padding: ${({theme}) => theme.spacing.md};
     gap: ${({theme}) => theme.spacing.xs};
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
+    width: 100%;
 `;
 
 const StatLabel = styled(Text)`

@@ -77,6 +77,7 @@ function GuildColorRank() {
                     </ControlBar>
 
                     <NoteText>길드 배경 색상과 GP를 함께 확인해 보세요.</NoteText>
+                    <NoteText>검배경으로 인정되면 점수 앞에 ✅가 붙어요.</NoteText>
                     {error && (
                         <MessageBox $tone="error" role="alert">
                             <Text>{error}</Text>

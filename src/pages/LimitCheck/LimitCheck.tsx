@@ -65,6 +65,7 @@ const StatsGrid = styled.div`
     width: 100%;
     max-width: 900px;
     margin: 0 auto;
+    grid-auto-rows: 1fr;
 
     @media (max-width: 640px) {
         grid-template-columns: 1fr;
@@ -80,6 +81,8 @@ const StatCard = styled(Container)`
     align-items: center;
     text-align: center;
     width: 100%;
+    min-height: 150px;
+    justify-content: center;
 `;
 
 const StatLabel = styled(Text)`

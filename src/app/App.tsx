@@ -155,6 +155,7 @@ export type PageType = {
 
 function App() {
     const [showPrank, setShowPrank] = useState(false);
+    const [hasAds, setHasAds] = useState(false);
     
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -253,7 +254,7 @@ function App() {
                 <HeroBillboard />
                 <Footer/>
 
-                {SHOW_AD_LAYOUT && (
+                {SHOW_AD_LAYOUT && hasAds && (
                     <AdsRow aria-label="푸터 위 스폰서 광고 영역">
                         <InlineAdsSection>
                             <SectionTitle>스폰서 보드</SectionTitle>
@@ -265,7 +266,7 @@ function App() {
                                 layout="in-article"
                                 minHeight="200px"
                             />
-                            <Ads/>
+                            <Ads onAvailabilityChange={setHasAds}/>
                         </InlineAdsSection>
 
                         <AdRail>

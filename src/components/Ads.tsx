@@ -1,10 +1,11 @@
 import React, {useEffect, useMemo, useState} from "react";
 import styled from "styled-components";
 import fetchAds from "../apis/fetchAds";
-import {FALLBACK_ADS, NormalizedAd, normalizeAdsResponse} from "@/utils/ads";
+import {NormalizedAd, normalizeAdsResponse} from "@/utils/ads";
 
 type AdsProps = {
     useInquiry?: boolean;
+    onAvailabilityChange?: (available: boolean) => void;
 }
 
 const AdsWrapper = styled.section`
@@ -137,29 +138,28 @@ const AdNote = styled.p`
     color: ${({theme}) => theme.colors.textSubtle};
 `;
 
-function Ads({useInquiry = true}: AdsProps) {
+function Ads({useInquiry = true, onAvailabilityChange}: AdsProps) {
     const [ads, setAds] = useState<NormalizedAd[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const hasCustomAds = useMemo(() => ads.length > 0, [ads]);
+    const hasAds = useMemo(() => ads.length > 0, [ads]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetchAds();
                 const normalized = normalizeAdsResponse(response);
-                if (normalized.length > 0) {
-                    setAds(normalized);
-                }
+                setAds(normalized);
             } catch (error) {
                 console.warn('광고 데이터를 불러오지 못했습니다.', error);
+                setAds([]);
             }
         };
 
         fetchData();
     }, []);
 
-    const items = useMemo(() => (ads.length > 0 ? ads : FALLBACK_ADS), [ads]);
-    const activeAd = items[currentIndex % items.length];
+    const items = useMemo(() => ads, [ads]);
+    const activeAd = items[currentIndex % Math.max(items.length, 1)];
 
     useEffect(() => {
         if (items.length <= 1) return;
@@ -177,9 +177,11 @@ function Ads({useInquiry = true}: AdsProps) {
     const goPrev = () => goTo(currentIndex - 1);
     const goNext = () => goTo(currentIndex + 1);
 
-    if (!hasCustomAds && FALLBACK_ADS.length === 0) {
-        return null;
-    }
+    useEffect(() => {
+        onAvailabilityChange?.(hasAds);
+    }, [hasAds, onAvailabilityChange]);
+
+    if (!hasAds) return null;
 
     return (
         <AdsWrapper>

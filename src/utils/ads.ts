@@ -36,20 +36,8 @@ export const toAbsoluteHref = (href?: string): string | undefined => {
     return `${DEFAULT_LINK_PROTOCOL}${trimmed.replace(/^\/+/, '')}`;
 };
 
-export const FALLBACK_ADS: NormalizedAd[] = [
-    {
-        id: 'fallback-1',
-        image: 'https://placehold.co/1200x520/15161f/ffffff?text=Ad+Placement+Preview',
-        label: '스폰서 슬롯 프리뷰',
-        period: '728×90 또는 336×280 권장'
-    },
-    {
-        id: 'fallback-2',
-        image: 'https://placehold.co/1200x520/21222f/ffffff?text=Upload+Your+Creative',
-        label: '브랜드 협찬 가이드',
-        period: '고정 노출 · 6초 전환'
-    }
-];
+// Intentionally empty: we should not show preview ads when the API returns no data.
+export const FALLBACK_ADS: NormalizedAd[] = [];
 
 export const normalizeAdsResponse = (payload: any): NormalizedAd[] => {
     if (!payload) return [];
@@ -58,17 +46,21 @@ export const normalizeAdsResponse = (payload: any): NormalizedAd[] => {
         if (!entry) return [];
         const sources = entry.ad ?? entry.ads ?? entry.urls ?? [];
         if (Array.isArray(sources) && sources.length > 0) {
-            return sources.map((value, index) => {
-                const image = toAbsoluteUrl(typeof value === 'string' ? value : value?.url);
-                const href = toAbsoluteHref(typeof value === 'string' ? entry.href : value?.href ?? entry.href);
-                return image ? {
-                    id: `${entry.id ?? entry.title ?? 'ad'}-${index}`,
-                    image,
-                    href,
-                    label: entry.title,
-                    period: entry.startDate && entry.endDate ? `${entry.startDate} ~ ${entry.endDate}` : undefined
-                } : null;
-            }).filter((item): item is NormalizedAd => !!item);
+            return sources
+                .map((value, index) => {
+                    const image = toAbsoluteUrl(typeof value === 'string' ? value : value?.url);
+                    const href = toAbsoluteHref(typeof value === 'string' ? entry.href : value?.href ?? entry.href);
+                    return image
+                        ? {
+                            id: `${entry.id ?? entry.title ?? 'ad'}-${index}`,
+                            image,
+                            href,
+                            label: entry.title,
+                            period: entry.startDate && entry.endDate ? `${entry.startDate} ~ ${entry.endDate}` : undefined,
+                        }
+                        : null;
+                })
+                .filter((item): item is NormalizedAd => !!item);
         }
 
         if (entry.url) {
@@ -77,7 +69,7 @@ export const normalizeAdsResponse = (payload: any): NormalizedAd[] => {
                 image: toAbsoluteUrl(entry.url) ?? entry.url,
                 href: toAbsoluteHref(entry.href),
                 label: entry.title,
-                period: entry.startDate && entry.endDate ? `${entry.startDate} ~ ${entry.endDate}` : undefined
+                period: entry.startDate && entry.endDate ? `${entry.startDate} ~ ${entry.endDate}` : undefined,
             }];
         }
 

@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from "react";
 import styled from "styled-components";
 import fetchAds from "@/apis/fetchAds";
-import {FALLBACK_ADS, NormalizedAd, normalizeAdsResponse} from "@/utils/ads";
+import {NormalizedAd, normalizeAdsResponse} from "@/utils/ads";
 
 const Billboard = styled.section`
     position: relative;
@@ -258,8 +258,9 @@ function HeroBillboard() {
         fetchData();
     }, []);
 
-    const items = useMemo(() => (ads.length > 0 ? ads : FALLBACK_ADS), [ads]);
-    const activeAd = items[currentIndex % items.length];
+    const items = useMemo(() => ads, [ads]);
+    const hasAds = items.length > 0;
+    const activeAd = hasAds ? items[currentIndex % items.length] : null;
 
     useEffect(() => {
         if (items.length <= 1 || isPaused) return;
@@ -271,11 +272,16 @@ function HeroBillboard() {
     }, [items.length, isPaused]);
 
     const goTo = (index: number) => {
+        if (items.length === 0) return;
         setCurrentIndex((index + items.length) % items.length);
     };
 
     const goPrev = () => goTo(currentIndex - 1);
     const goNext = () => goTo(currentIndex + 1);
+
+    if (!hasAds || !activeAd) {
+        return null;
+    }
 
     const isClickable = Boolean(activeAd.href);
 

@@ -250,6 +250,10 @@ function Header({pages, member_pages}: HeaderProps) {
     const {pathname} = useLocation();
     const path = decodeURIComponent(pathname);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [hasToken, setHasToken] = useState<boolean>(() => {
+        if (typeof document === 'undefined') return false;
+        return document.cookie.includes('accessToken=');
+    });
 
     const memberPages = member_pages.filter(item => !item.hide);
     const primaryPages = pages.filter(item => !item.hide);
@@ -259,6 +263,16 @@ function Header({pages, member_pages}: HeaderProps) {
     useEffect(() => {
         setIsMobileMenuOpen(false);
     }, [path]);
+
+    useEffect(() => {
+        const syncToken = () => {
+            if (typeof document === 'undefined') return;
+            setHasToken(document.cookie.includes('accessToken='));
+        };
+        syncToken();
+        const interval = setInterval(syncToken, 2000);
+        return () => clearInterval(interval);
+    }, []);
 
     useEffect(() => {
         if (typeof document === 'undefined') return;
@@ -321,13 +335,22 @@ function Header({pages, member_pages}: HeaderProps) {
                 </DesktopNav>
 
                 <Actions>
-                    {loginPage && (
+                    {loginPage && !hasToken && (
                         <GoogleButton href={loginPage.hrefs[0]} onClick={(e) => {
                             e.preventDefault();
                             startGoogleLogin();
                         }}>
                             <GoogleLogo/>
                             <span>Google로 로그인</span>
+                        </GoogleButton>
+                    )}
+                    {hasToken && (
+                        <GoogleButton href={`${loginPage?.hrefs[0] ?? '/'}`} onClick={(e) => {
+                            e.preventDefault();
+                            window.location.href = `${loginPage?.hrefs[0] ?? '/'}`;
+                        }}>
+                            <GoogleLogo/>
+                            <span>로그아웃</span>
                         </GoogleButton>
                     )}
                     <MobileMenuButton

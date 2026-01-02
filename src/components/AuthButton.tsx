@@ -216,13 +216,18 @@ const InsightHeadline = styled.div`
 
 const InsightGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: ${({theme}) => theme.spacing.md};
 `;
 
 const InsightItem = styled.div`
     display: grid;
     gap: ${({theme}) => theme.spacing.xs};
+    padding: ${({theme}) => theme.spacing.md};
+    border: 1px solid ${({theme}) => theme.colors.border};
+    border-radius: ${({theme}) => theme.radii.md};
+    background: ${({theme}) => theme.colors.surfaceMuted};
+    box-shadow: ${({theme}) => theme.shadows.soft};
 `;
 
 const InsightLabel = styled.span`
@@ -532,7 +537,7 @@ function AuthSection() {
 
             <InsightCard>
                 <InsightHeadline>
-                    내 닉네임: {insight?.nickname ?? profile?.name ?? '로그인하면 확인됩니다'}
+                    내 닉네임: {insight?.nickname ?? '로그인하면 확인됩니다'}
                 </InsightHeadline>
                 <SectionTitle>내 정보 요약</SectionTitle>
                 <Helper>검닉/길드 랭킹과 오늘 경기 기록을 한눈에 확인하세요.</Helper>

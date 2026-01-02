@@ -322,7 +322,7 @@ function AuthSection() {
 
             setInsightLoading(true);
             setInsightError(null);
-            const nicknameVal = data.user?.name ?? data.record?.NICKNAME ?? data.record?.nickname ?? "";
+            const nicknameVal = data.record?.NICKNAME ?? data.record?.nickname ?? data.user?.name ?? "";
             setInsight({
                 nickname: nicknameVal,
                 nicknameColor: data.nicknameColor ? `#${data.nicknameColor}` : undefined,

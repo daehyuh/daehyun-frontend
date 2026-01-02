@@ -60,9 +60,13 @@ const MessageBox = styled(Container)<{ $tone?: "error" | "info" }>`
 
 const StatsGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: ${({theme}) => theme.spacing.md};
     width: 100%;
+
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+    }
 `;
 
 const StatCard = styled(Container)`
@@ -77,6 +81,7 @@ const StatCard = styled(Container)`
 const StatLabel = styled(Text)`
     color: ${({theme}) => theme.colors.textSecondary};
     font-size: ${({theme}) => theme.typography.sizes.sm};
+    font-weight: ${({theme}) => theme.typography.weights.semibold};
 `;
 
 const StatValue = styled(Text)`
@@ -94,7 +99,7 @@ const StatusPill = styled.span<{ $positive: boolean }>`
     display: inline-flex;
     align-items: center;
     gap: ${({theme}) => theme.spacing.xs};
-    padding: 8px 12px;
+    padding: 10px 14px;
     border-radius: ${({theme}) => theme.radii.pill};
     font-weight: ${({theme}) => theme.typography.weights.semibold};
     background: ${({$positive}) => $positive ? "rgba(91, 228, 155, 0.12)" : "rgba(255, 107, 107, 0.12)"};

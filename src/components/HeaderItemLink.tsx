@@ -6,14 +6,15 @@ type HeaderItemLinkProps = {
     path: string;
     hrefs: string[];
     title?: string;
-    variant?: 'primary' | 'secondary';
+    variant?: 'primary' | 'secondary' | 'premium';
     fullWidth?: boolean;
+    requiresAuth?: boolean;
     onNavigate?: () => void;
 }
 
 type StyledLinkProps = {
     $isActive: boolean;
-    $variant: 'primary' | 'secondary';
+    $variant: 'primary' | 'secondary' | 'premium';
     $fullWidth?: boolean;
 }
 
@@ -36,22 +37,40 @@ const StyledLink = styled(Link)<StyledLinkProps>`
         justify-content: flex-start;
     `}
 
-    ${({theme, $variant}) => $variant === 'primary' ? css`
-        background: ${theme.colors.surfaceMuted};
-        &:hover {
-            background: ${theme.colors.surfaceElevated};
+    ${({theme, $variant}) => {
+        if ($variant === 'premium') {
+            return css`
+                background: linear-gradient(135deg, rgba(255, 95, 109, 0.18), rgba(91, 192, 248, 0.12));
+                border-color: ${theme.colors.accent};
+                box-shadow: 0 0 18px rgba(255, 95, 109, 0.28);
+                color: ${theme.colors.textPrimary};
+                font-weight: ${theme.typography.weights.semibold};
+                &:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 0 22px rgba(255, 95, 109, 0.4);
+                }
+            `;
+        }
+        if ($variant === 'primary') {
+            return css`
+                background: ${theme.colors.surfaceMuted};
+                &:hover {
+                    background: ${theme.colors.surfaceElevated};
+                    border-color: ${theme.colors.border};
+                    transform: translateY(-1px);
+                }
+            `;
+        }
+        return css`
+            background: transparent;
             border-color: ${theme.colors.border};
-            transform: translateY(-1px);
-        }
-    ` : css`
-        background: transparent;
-        border-color: ${theme.colors.border};
-        color: ${theme.colors.textSecondary};
-        &:hover {
-            color: ${theme.colors.textPrimary};
-            background: rgba(255, 255, 255, 0.04);
-        }
-    `}
+            color: ${theme.colors.textSecondary};
+            &:hover {
+                color: ${theme.colors.textPrimary};
+                background: rgba(255, 255, 255, 0.04);
+            }
+        `;
+    }}
 
     ${({$isActive, theme}) => $isActive && css`
         border-color: ${theme.colors.accent};
@@ -62,8 +81,27 @@ const StyledLink = styled(Link)<StyledLinkProps>`
     `}
 `;
 
-function HeaderItemLink({path, hrefs, title, variant = 'primary', fullWidth, onNavigate}: HeaderItemLinkProps) {
+const getAccessToken = (): string | null => {
+    if (typeof document === 'undefined') return null;
+    return document.cookie
+        .split(';')
+        .map((c) => c.trim())
+        .find((c) => c.startsWith('accessToken='))?.split('=')[1] ?? null;
+};
+
+function HeaderItemLink({path, hrefs, title, variant = 'primary', fullWidth, requiresAuth = false, onNavigate}: HeaderItemLinkProps) {
     const isActive = hrefs.some(e => e === path);
+    const hasToken = Boolean(getAccessToken());
+
+    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        if (requiresAuth && !hasToken) {
+            e.preventDefault();
+            window.alert("구글 로그인 후 이용 가능합니다.");
+            window.location.href = "/login";
+            return;
+        }
+        onNavigate?.();
+    };
 
     return (
         <StyledLink
@@ -71,7 +109,7 @@ function HeaderItemLink({path, hrefs, title, variant = 'primary', fullWidth, onN
             $isActive={isActive}
             $variant={variant}
             $fullWidth={fullWidth}
-            onClick={onNavigate}
+            onClick={handleClick}
         >
             {title}
         </StyledLink>

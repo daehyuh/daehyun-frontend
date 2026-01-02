@@ -72,7 +72,7 @@
     { "name": "확성기", "chance": 4, "equip": false },
     { "name": "2티어 카드", "chance": 4, "equip": false },
     { "name": "3티어 카드", "chance": 4, "equip": false },
-    { "name": "3티어 스킬 변경권", "chance": 4, "equip": false },
+    { "name": "4티어 스킬 변경권", "chance": 4, "equip": false },
     { "name": "크리스마스 확성기", "chance": 5.51, "equip": false },
     { "name": "크리스마스 기념엽서", "chance": 5.51, "equip": false },
     { "name": "산타 엽서", "chance": 5.51, "equip": false },

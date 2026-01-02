@@ -1,56 +1,127 @@
-import React, {useState, useEffect, ChangeEvent} from "react";
-import {mergeAPI} from "@apis/index";
-import RankUser from "@/constant/RankUser";
+import React, {useCallback} from "react";
+import styled from "styled-components";
 import {CategoryTitle, Container, ContentLayout, Input, Layout, Text} from "@/components";
 import Spinner from "@components/base/Spinner";
 import Table from "@components/base/Table";
 import CommonTableRow from "@/pages/ColorRank/components/ColorRankTableRow";
-import { useRankSearch } from "@/hooks/useRankSearch";
+import {useRankSearch} from "@/hooks/useRankSearch";
+import RankUser from "@/constant/RankUser";
+import FeatureGate from "@/components/FeatureGate";
 
-type ColorRankData = {
-    rankUsers?: RankUser[],
-}
+const Card = styled(Container)`
+    width: 100%;
+    background: linear-gradient(160deg, rgba(255, 95, 109, 0.16), rgba(91, 192, 248, 0.12));
+    border: 1px solid ${({theme}) => theme.colors.accent};
+    border-radius: ${({theme}) => theme.radii.lg};
+    padding: ${({theme}) => theme.spacing.lg};
+    box-shadow: 0 12px 30px rgba(255, 95, 109, 0.15), ${({theme}) => theme.shadows.soft};
+    gap: ${({theme}) => theme.spacing.md};
+    position: relative;
+    overflow: hidden;
 
-type ColorRankSearchData = {
-    searchItems: string,
-    filteredItems: RankUser[],
-}
+    &::before {
+        content: '';
+        position: absolute;
+        inset: -40%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 50%);
+        opacity: 0.6;
+        pointer-events: none;
+    }
+`;
+
+const ControlBar = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: ${({theme}) => theme.spacing.sm};
+`;
+
+const NoteText = styled(Text)`
+    color: ${({theme}) => theme.colors.textSecondary};
+    font-size: ${({theme}) => theme.typography.sizes.sm};
+`;
+
+const MessageBox = styled(Container)<{ $tone?: "error" | "empty" }>`
+    width: 100%;
+    padding: ${({theme}) => theme.spacing.md};
+    border-radius: ${({theme}) => theme.radii.md};
+    border: 1px solid ${({theme, $tone}) => $tone === "error" ? theme.colors.danger : theme.colors.border};
+    background: ${({theme, $tone}) => $tone === "error" ? "rgba(255,107,107,0.08)" : theme.colors.surfaceMuted};
+`;
+
+const EmptyStateText = styled(Text)`
+    color: ${({theme}) => theme.colors.textSecondary};
+    text-align: center;
+    width: 100%;
+`;
 
 function ColorRank() {
+    const fetcher = useCallback(() => import('@/apis/fetchRank').then(m => m.default()), []);
+
     const {
         loading,
+        error,
         search,
         filtered,
-        handleInputChange
+        handleInputChange,
     } = useRankSearch<RankUser>({
-        fetcher: async () => await import('@/apis/fetchRank').then(m => m.default()),
-        filterKey: "nickname"
+        fetcher,
+        filterKey: "nickname",
     });
+
+    const hasResult = filtered.length > 0;
 
     return (
         <Layout>
             <ContentLayout gap={'20px'}>
-                <CategoryTitle title="검닉 랭킹"/>
-                <Container>
-                    <Input value={search}
-                           placeholder={"유저 검색"}
-                           onChange={handleInputChange}/>
-                </Container>
-                <Text color={"#ffffff"} fontWeight={'bold'}>검닉으로 인정되면 점수앞에 ✅가 붙습니다</Text>
-                <Container fullWidth align={'center'} gap={'10px'}>
-                    {loading ? <Spinner isLoading={loading}/> :
-                        <Table fullWidth
-                               headers={["랭킹", "이름", "색상(HEX)", "점수"]}
-                               columnWidths={["15%", "35%", "25%", "25%"]}
-                               useRankColor
+                <CategoryTitle
+                    title="검닉 랭킹"
+                    description="대현닷컴 로그인 유저의 최신 검닉 점수를 보여줘요."
+                />
+
+                <Card>
+                    <ControlBar>
+                        <Input
+                            value={search}
+                            placeholder="닉네임 검색"
+                            onChange={handleInputChange}
+                            width="320px"
+                        />
+                    </ControlBar>
+
+                    <NoteText>검닉으로 인정되면 점수 앞에 ✅가 붙어요.</NoteText>
+                    {error && (
+                        <MessageBox $tone="error" role="alert">
+                            <Text>{error}</Text>
+                        </MessageBox>
+                    )}
+
+                    {loading ? (
+                        <Spinner isLoading={loading}/>
+                    ) : hasResult ? (
+                        <Table
+                            fullWidth
+                            headers={["랭킹", "닉네임", "배경 색상(HEX)", "점수"]}
+                            columnWidths={["15%", "35%", "25%", "25%"]}
+                            headerBackgroundColor="#1E202B"
+                            headerBorderBottom="2px solid #aa0000"
+                            headerColor="#F5F7FF"
+                            oddBackgroundColor="#11121A"
+                            evenBackgroundColor="#0B0D14"
+                            border="1px solid #2E313E"
+                            useRankColor
                         >
                             <tbody>
-                            {filtered.map((item, index) => (
-                                <CommonTableRow key={item.nickname} type="user" data={item} />
+                            {filtered.map((item) => (
+                                <CommonTableRow key={item.nickname} type="user" data={item}/>
                             ))}
                             </tbody>
-                        </Table>}
-                </Container>
+                        </Table>
+                    ) : (
+                        <MessageBox $tone="empty">
+                            <EmptyStateText>검색 결과가 없어요. 다른 닉네임을 입력해 보세요.</EmptyStateText>
+                        </MessageBox>
+                    )}
+                </Card>
             </ContentLayout>
         </Layout>
     );

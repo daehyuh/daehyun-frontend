@@ -56,11 +56,14 @@ const GachaTableRow = ({
             )}
         </td>
         <td>
-            <img
-                width={50}
-                src={`image/Items/${item.name.replace(': ', '')}.webp`}
-                alt={item.name.replace(': ', '')}
-            />
+            <Container fullWidth align={'center'}>
+                <img
+                    width={50}
+                    style={{display: 'block'}}
+                    src={`image/Items/${item.name.replace(': ', '')}.webp`}
+                    alt={item.name.replace(': ', '')}
+                />
+            </Container>
         </td>
         <td>{item.name}</td>
         <td>{item.chance.toFixed(3)}%</td>

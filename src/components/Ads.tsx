@@ -140,6 +140,7 @@ const AdNote = styled.p`
 function Ads({useInquiry = true}: AdsProps) {
     const [ads, setAds] = useState<NormalizedAd[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const hasCustomAds = useMemo(() => ads.length > 0, [ads]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -175,6 +176,10 @@ function Ads({useInquiry = true}: AdsProps) {
 
     const goPrev = () => goTo(currentIndex - 1);
     const goNext = () => goTo(currentIndex + 1);
+
+    if (!hasCustomAds && FALLBACK_ADS.length === 0) {
+        return null;
+    }
 
     return (
         <AdsWrapper>

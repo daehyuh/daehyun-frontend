@@ -4,6 +4,7 @@ import styled from "styled-components";
 import {PageType} from "@/app/App";
 import HeaderItemLink from "./HeaderItemLink";
 import Logo from "./base/Logo";
+import {startGoogleLogin} from "@/utils/googleLogin";
 
 type HeaderProps = {
     pages: PageType[];
@@ -58,14 +59,15 @@ const BrandCaption = styled.span`
 const DesktopNav = styled.nav`
     flex: 1;
     display: none;
-    justify-content: center;
+    flex-direction: column;
+    gap: ${({theme}) => theme.spacing.xs};
 
     @media (min-width: ${({theme}) => theme.breakpoints.lg}px) {
         display: flex;
     }
 `;
 
-const DesktopList = styled.div`
+const NavRow = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: ${({theme}) => theme.spacing.sm};
@@ -77,16 +79,6 @@ const Actions = styled.div`
     display: flex;
     align-items: center;
     gap: ${({theme}) => theme.spacing.sm};
-`;
-
-const MemberCluster = styled.div`
-    display: none;
-    align-items: center;
-    gap: ${({theme}) => theme.spacing.sm};
-
-    @media (min-width: ${({theme}) => theme.breakpoints.md}px) {
-        display: flex;
-    }
 `;
 
 const MobileMenuButton = styled.button`
@@ -215,6 +207,31 @@ const CloseButton = styled.button`
     color: ${({theme}) => theme.colors.textPrimary};
 `;
 
+const GoogleButton = styled.a`
+    display: inline-flex;
+    align-items: center;
+    gap: ${({theme}) => theme.spacing.sm};
+    padding: ${({theme}) => `${theme.spacing.xs} ${theme.spacing.md}`};
+    border-radius: ${({theme}) => theme.radii.pill};
+    border: 1px solid ${({theme}) => theme.colors.border};
+    background: #fff;
+    color: #202124;
+    font-weight: ${({theme}) => theme.typography.weights.semibold};
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+`;
+
+const GoogleLogo = () => (
+    <svg viewBox="0 0 488 512" aria-hidden="true" focusable="false">
+        <path fill="#EA4335" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.3 0 122 24.4 164.7 64.6l-66.8 64.2C310 104.5 281.3 92.7 248 92.7c-85.8 0-155.4 69.2-155.4 155.3 0 86 69.6 155.3 155.4 155.3 79.1 0 130-45.3 136-108.6H248v-87.4h240c2.2 12.7 4 24.9 4 43.5z"/>
+    </svg>
+);
+
 const MobileSection = styled.div`
     display: flex;
     flex-direction: column;
@@ -234,8 +251,10 @@ function Header({pages, member_pages}: HeaderProps) {
     const path = decodeURIComponent(pathname);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    const primaryPages = pages.filter(item => !item.hide);
     const memberPages = member_pages.filter(item => !item.hide);
+    const primaryPages = pages.filter(item => !item.hide);
+    const loginPage = primaryPages.find(item => item.hrefs.includes('/login') || item.hrefs.includes('/인증'));
+    const generalPages = primaryPages.filter(item => item !== loginPage);
 
     useEffect(() => {
         setIsMobileMenuOpen(false);
@@ -269,30 +288,48 @@ function Header({pages, member_pages}: HeaderProps) {
                 </BrandLink>
 
                 <DesktopNav aria-label="메뉴 (데스크톱)">
-                    <DesktopList>
-                        {primaryPages.map((item, index) => (
+                    <NavRow>
+                        {loginPage && (
                             <HeaderItemLink
-                                key={item.hrefs[0] ?? index}
+                                key={loginPage.hrefs[0]}
                                 path={path}
-                                variant={'primary'}
+                                variant={'premium'}
+                                {...loginPage}
+                            />
+                        )}
+                        {memberPages.map((item, index) => (
+                            <HeaderItemLink
+                                key={item.hrefs[0] ?? `member-${index}`}
+                                path={path}
+                                variant={'premium'}
+                                requiresAuth={true}
                                 {...item}
                             />
                         ))}
-                    </DesktopList>
+                    </NavRow>
+                    <NavRow>
+                        {generalPages.map((item, index) => (
+                            <HeaderItemLink
+                                key={item.hrefs[0] ?? `general-${index}`}
+                                path={path}
+                                variant={'primary'}
+                                requiresAuth={item.requiresAuth}
+                                {...item}
+                            />
+                        ))}
+                    </NavRow>
                 </DesktopNav>
 
                 <Actions>
-                    <MemberCluster>
-                        {memberPages.map((item, index) => (
-                            <HeaderItemLink
-                                key={item.hrefs[0] ?? index}
-                                path={path}
-                                variant={'secondary'}
-                                {...item}
-                            />
-                        ))}
-                    </MemberCluster>
-
+                    {loginPage && (
+                        <GoogleButton href={loginPage.hrefs[0]} onClick={(e) => {
+                            e.preventDefault();
+                            startGoogleLogin();
+                        }}>
+                            <GoogleLogo/>
+                            <span>Google로 로그인</span>
+                        </GoogleButton>
+                    )}
                     <MobileMenuButton
                         type="button"
                         aria-label="전체 메뉴 열기"
@@ -305,31 +342,42 @@ function Header({pages, member_pages}: HeaderProps) {
             </HeaderSurface>
 
             <NavRail>
-                <NavScroller aria-label="메뉴 내비게이션">
-                    {primaryPages.map((item, index) => (
-                        <HeaderItemLink
-                            key={item.hrefs[0] ?? index}
-                            path={path}
-                            {...item}
-                        />
-                    ))}
-                </NavScroller>
-
                 {memberPages.length > 0 && (
                     <>
-                        <RailLabel>회원 툴</RailLabel>
+                        <RailLabel>멤버 툴</RailLabel>
                         <NavScroller aria-label="회원 전용 툴">
+                            {loginPage && (
+                                <HeaderItemLink
+                                    key={loginPage.hrefs[0]}
+                                    path={path}
+                                    variant={'premium'}
+                                    {...loginPage}
+                                />
+                            )}
                             {memberPages.map((item, index) => (
                                 <HeaderItemLink
                                     key={item.hrefs[0] ?? index}
                                     path={path}
-                                    variant={'secondary'}
+                                    variant={'premium'}
+                                    requiresAuth={true}
                                     {...item}
                                 />
                             ))}
                         </NavScroller>
                     </>
                 )}
+
+                <RailLabel>일반 도구</RailLabel>
+                <NavScroller aria-label="일반 도구">
+                    {generalPages.map((item, index) => (
+                        <HeaderItemLink
+                            key={item.hrefs[0] ?? index}
+                            path={path}
+                            requiresAuth={item.requiresAuth}
+                            {...item}
+                        />
+                    ))}
+                </NavScroller>
             </NavRail>
 
             <MobileMenuOverlay $isOpen={isMobileMenuOpen} aria-hidden={!isMobileMenuOpen} onClick={closeMobileMenu}>

@@ -1,6 +1,7 @@
 import {useCallback, useEffect, useMemo, useState} from "react";
 import styled from "styled-components";
 import Input from "./base/Input";
+import {startGoogleLogin} from "@/utils/googleLogin";
 
 type StatusTone = 'info' | 'success' | 'danger';
 
@@ -11,10 +12,35 @@ type UserProfile = {
     role?: string;
 };
 
+type UserProfileResponse = {
+    user: UserProfile;
+    record?: {
+        NICKNAME?: string;
+        nickname?: string;
+    };
+    nicknameColor?: string | null;
+    nicknameRank?: number | null;
+    guildBackgroundColor?: string | null;
+    guildBackgroundRank?: number | null;
+    todayWinCount?: number | null;
+    todayLoseCount?: number | null;
+    todayTotalCount?: number | null;
+    todayLimitExceeded?: boolean | null;
+};
+
+type UserInsight = {
+    nickname: string;
+    nicknameColor?: string;
+    nicknameRank?: number;
+    guildBackgroundColor?: string;
+    guildBackgroundRank?: number;
+    todayGames?: number;
+    todayWinDelta?: number;
+    todayLoseDelta?: number;
+    isTodayLimit?: boolean;
+};
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE ?? 'https://api.xn--vk1b177d.com';
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID ?? '609416675991-2g5jqg562hursv4v09upi96q1fvrvius.apps.googleusercontent.com';
-const GOOGLE_SCOPE = 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile';
-const GOOGLE_REDIRECT_URI = `${API_BASE_URL}/login/oauth2/code/google`;
 
 const PageStack = styled.div`
     display: flex;
@@ -163,10 +189,79 @@ const SectionTitle = styled.h3`
     color: ${({theme}) => theme.colors.textPrimary};
 `;
 
+const FeatureCallout = styled.div`
+    display: grid;
+    gap: ${({theme}) => theme.spacing.sm};
+    padding: ${({theme}) => theme.spacing.md};
+    border-radius: ${({theme}) => theme.radii.lg};
+    border: 1px solid ${({theme}) => theme.colors.border};
+    background: ${({theme}) => theme.gradients.panel};
+    box-shadow: ${({theme}) => theme.shadows.soft};
+`;
+
+const FeatureLabel = styled.span`
+    font-size: ${({theme}) => theme.typography.sizes.sm};
+    color: ${({theme}) => theme.colors.textSecondary};
+`;
+
+const FeatureGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: ${({theme}) => theme.spacing.sm};
+    width: 100%;
+    max-width: 820px;
+    margin: 0 auto;
+
+    @media (max-width: 560px) {
+        grid-template-columns: 1fr;
+    }
+`;
+
+const FeatureCard = styled.div`
+    padding: ${({theme}) => theme.spacing.md};
+    border-radius: ${({theme}) => theme.radii.md};
+    border: 1px solid ${({theme}) => theme.colors.border};
+    background: ${({theme}) => theme.colors.surfaceMuted};
+    display: grid;
+    gap: ${({theme}) => theme.spacing.xs};
+`;
+
 const Divider = styled.hr`
     border: none;
     border-top: 1px solid ${({theme}) => theme.colors.border};
     margin: ${({theme}) => `${theme.spacing.sm} 0`};
+`;
+
+const InsightCard = styled.div`
+    display: grid;
+    gap: ${({theme}) => theme.spacing.sm};
+    padding: ${({theme}) => theme.spacing.lg};
+    border-radius: ${({theme}) => theme.radii.lg};
+    border: 1px solid ${({theme}) => theme.colors.border};
+    background: ${({theme}) => theme.colors.surface};
+    box-shadow: ${({theme}) => theme.shadows.soft};
+`;
+
+const InsightGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: ${({theme}) => theme.spacing.md};
+`;
+
+const InsightItem = styled.div`
+    display: grid;
+    gap: ${({theme}) => theme.spacing.xs};
+`;
+
+const InsightLabel = styled.span`
+    color: ${({theme}) => theme.colors.textSecondary};
+    font-size: ${({theme}) => theme.typography.sizes.sm};
+`;
+
+const InsightValue = styled.span`
+    color: ${({theme}) => theme.colors.textPrimary};
+    font-weight: ${({theme}) => theme.typography.weights.semibold};
+    font-size: ${({theme}) => theme.typography.sizes.lg};
 `;
 
 const getAccessToken = (): string | null => {
@@ -195,6 +290,9 @@ function AuthSection() {
     const [userCode, setUserCode] = useState('');
     const [guestNickname, setGuestNickname] = useState('');
     const [hasToken, setHasToken] = useState<boolean>(() => Boolean(getAccessToken()));
+    const [insight, setInsight] = useState<UserInsight | null>(null);
+    const [insightLoading, setInsightLoading] = useState(false);
+    const [insightError, setInsightError] = useState<string | null>(null);
 
     const isLoggedIn = useMemo(() => Boolean(profile) || hasToken, [profile, hasToken]);
 
@@ -203,6 +301,7 @@ function AuthSection() {
         setHasToken(Boolean(accessToken));
         if (!accessToken) {
             setProfile(null);
+            setInsight(null);
             return;
         }
 
@@ -221,15 +320,33 @@ function AuthSection() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            const data = await response.json() as UserProfile;
-            setProfile(data);
-            setStatus({tone: 'success', message: `${data.name ?? '로그인한'} 사용자로 연결되었습니다.`});
+            const data = await response.json() as UserProfileResponse;
+            setProfile(data.user);
+            setStatus({tone: 'success', message: `${data.user?.name ?? '로그인한'} 사용자로 연결되었습니다.`});
+
+            setInsightLoading(true);
+            setInsightError(null);
+            const nicknameVal = data.user?.name ?? data.record?.NICKNAME ?? data.record?.nickname ?? "";
+            setInsight({
+                nickname: nicknameVal,
+                nicknameColor: data.nicknameColor ? `#${data.nicknameColor}` : undefined,
+                nicknameRank: data.nicknameRank ?? undefined,
+                guildBackgroundColor: data.guildBackgroundColor ? `#${data.guildBackgroundColor}` : undefined,
+                guildBackgroundRank: data.guildBackgroundRank ?? undefined,
+                todayGames: data.todayTotalCount ?? undefined,
+                todayWinDelta: data.todayWinCount ?? undefined,
+                todayLoseDelta: data.todayLoseCount ?? undefined,
+                isTodayLimit: data.todayLimitExceeded ?? undefined,
+            });
         } catch (error) {
             console.error("Error fetching user data:", error);
             setProfile(null);
+            setInsight(null);
             setStatus({tone: 'danger', message: '로그인이 만료되었어요. 다시 로그인해주세요.'});
+            setInsightError("내 정보 요약을 불러오지 못했습니다.");
         } finally {
             setIsLoading(false);
+            setInsightLoading(false);
         }
     }, []);
 
@@ -284,27 +401,7 @@ function AuthSection() {
         }
     }, [exchangeCode, loadProfile]);
 
-    const handleLogin = () => {
-        const state = typeof crypto !== 'undefined' && 'randomUUID' in crypto
-            ? crypto.randomUUID()
-            : String(Date.now());
-
-        if (typeof sessionStorage !== 'undefined') {
-            sessionStorage.setItem('google_oauth_state', state);
-        }
-
-        const params = new URLSearchParams({
-            client_id: GOOGLE_CLIENT_ID,
-            redirect_uri: GOOGLE_REDIRECT_URI,
-            response_type: 'code',
-            scope: GOOGLE_SCOPE,
-            access_type: 'offline',
-            prompt: 'consent',
-            state
-        });
-
-        window.location.href = `https://accounts.google.com/o/oauth2/auth?${params.toString()}`;
-    };
+    const handleLogin = () => startGoogleLogin();
 
     const handleLogout = () => {
         window.location.href = `${API_BASE_URL}/core/logout`;
@@ -405,10 +502,32 @@ function AuthSection() {
         <PageStack>
             <Card>
                 <Pill>Google Login</Pill>
-                <Headline>구글로 로그인하고 대현닷컴 멤버 기능을 사용하세요.</Headline>
+                <Headline>구글로 로그인하면 멤버 전용 기능이 열려요.</Headline>
                 <Subtext>
-                    로그인 시 전적 동기화와 게스트 등록 등 멤버 전용 기능을 바로 이용할 수 있어요.
+                    로그인하면 검닉/길드 배경 랭킹, 획초 체크, 실시간 동접 등 멤버 기능이 활성화됩니다.
                 </Subtext>
+
+                <FeatureCallout>
+                    <FeatureLabel>로그인하면 활성화되는 기능</FeatureLabel>
+                    <FeatureGrid>
+                        <FeatureCard>
+                            <strong>검닉 · 길드 배경 랭킹</strong>
+                            <Helper>검닉 랭킹과 길드 배경 랭킹을 실시간으로 확인.</Helper>
+                        </FeatureCard>
+                        <FeatureCard>
+                            <strong>획초 체크</strong>
+                            <Helper>내 오늘 경기 수·전적을 바로 조회해 획초 여부를 확인.</Helper>
+                        </FeatureCard>
+                        <FeatureCard>
+                            <strong>실시간 동접</strong>
+                            <Helper>라이브 접속 현황을 빠르게 확인.</Helper>
+                        </FeatureCard>
+                        <FeatureCard>
+                            <strong>계정 동기화·게스트 등록</strong>
+                            <Helper>닉네임/코드로 계정을 연동하고 게스트를 등록.</Helper>
+                        </FeatureCard>
+                    </FeatureGrid>
+                </FeatureCallout>
 
                 <ButtonRow>
                     {!isLoggedIn && (
@@ -441,6 +560,38 @@ function AuthSection() {
                     </Status>
                 )}
             </Card>
+
+            {isLoggedIn && (
+                <InsightCard>
+                    <SectionTitle>내 정보 요약</SectionTitle>
+                    <Helper>검닉/길드 랭킹과 오늘 경기 기록을 한눈에 확인하세요.</Helper>
+                    {insightLoading && <Helper>불러오는 중...</Helper>}
+                    {insightError && <Status $tone="danger">{insightError}</Status>}
+                    {insight && (
+                        <InsightGrid>
+                            <InsightItem>
+                                <InsightLabel>닉네임 랭킹</InsightLabel>
+                                <InsightValue>{insight.nicknameRank ? `${insight.nicknameRank}위` : '정보 없음'}</InsightValue>
+                                {insight.nicknameColor && <Helper>닉네임 색상: {insight.nicknameColor}</Helper>}
+                            </InsightItem>
+                            <InsightItem>
+                                <InsightLabel>길드 배경 랭킹</InsightLabel>
+                                <InsightValue>{insight.guildBackgroundRank ? `${insight.guildBackgroundRank}위` : '정보 없음'}</InsightValue>
+                                {insight.guildBackgroundColor && <Helper>배경 색: {insight.guildBackgroundColor}</Helper>}
+                            </InsightItem>
+                            <InsightItem>
+                                <InsightLabel>오늘 경기 수</InsightLabel>
+                                <InsightValue>{insight.todayGames ?? '정보 없음'}</InsightValue>
+                                <Helper>승 {insight.todayWinDelta ?? 0} / 패 {insight.todayLoseDelta ?? 0}</Helper>
+                            </InsightItem>
+                            <InsightItem>
+                                <InsightLabel>획초 여부</InsightLabel>
+                                <InsightValue>{insight.isTodayLimit ? '획초' : '미획초'}</InsightValue>
+                            </InsightItem>
+                        </InsightGrid>
+                    )}
+                </InsightCard>
+            )}
 
             <Card>
                 <SectionTitle>계정 동기화</SectionTitle>

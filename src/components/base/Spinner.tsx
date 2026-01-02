@@ -1,4 +1,3 @@
-import styles from "@/legacy/styles/ColorRank.module.css";
 import React from "react";
 import styled from "styled-components";
 import {Property} from "csstype";

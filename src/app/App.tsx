@@ -107,6 +107,17 @@ const AdRail = styled.aside`
     }
 `;
 
+const AdsRow = styled.div`
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: ${({theme}) => theme.spacing.xl};
+    width: 100%;
+
+    @media (min-width: ${({theme}) => theme.breakpoints.lg}px) {
+        grid-template-columns: minmax(0, 1fr) ${({theme}) => theme.layout.adRailWidth};
+    }
+`;
+
 const RailCard = styled.div`
     border-radius: ${({theme}) => theme.radii.lg};
     border: 1px solid ${({theme}) => theme.colors.border};
@@ -139,6 +150,7 @@ export type PageType = {
     hrefs: string[]
     title: string
     page: ReactElement
+    requiresAuth?: boolean
 }
 
 function App() {
@@ -166,15 +178,15 @@ function App() {
     }, []);
     
     const pages: PageType[] = [
-        {hrefs: ["/상자깡", "/"], title: "상자깡 확률", page: <Gacha/>},
+        {hrefs: ["/", "/login", "/인증"], title: "구글 로그인", page: <AuthButton/>},
+        {hrefs: ["/상자깡"], title: "상자깡 확률", page: <Gacha/>},
         {hrefs: ["/티어"], title: "티어 계산기", page: <Tier/>},
         {hrefs: ["/우체통"], title: "우체통 계산기", page: <Mail/>},
         {hrefs: ["/출석보상"], title: "출석보상 계산기", page: <DailyReward/>},
         {hrefs: ["/환율"], title: "환율 계산기", page: <Exchange/>},
         {hrefs: ["/권엽"], title: "권엽 계산기", page: <Discipline/>},
         {hrefs: ["/직플받"], title: "직플받 계산기", page: <JobReceiveCalculator/>},
-        {hrefs: ["/동접"], title: "실시간 동접", page: <ChannelLive/>},
-        {
+    {
             hide: true,
             hrefs: ["/이용약관"],
             title: "이용약관",
@@ -190,10 +202,10 @@ function App() {
 
 
     const member_pages: PageType[] = [
-        {hide: false, hrefs: ["/인증", "/login"], title: "구글 로그인", page: <AuthButton/>},
-        {hide: true, hrefs: ["/검닉랭킹"], title: "검닉랭킹", page: <ColorRank/>},
-        {hide: true, hrefs: ["/길드배경랭킹"], title: "길드배경랭킹", page: <GuildColorRank/>},
-        {hide: true, hrefs: ["/전적검색"], title: "전적검색", page: <LimitCheck/>},
+        {hide: false, hrefs: ["/검닉랭킹"], title: "검닉 랭킹", page: <ColorRank/>, requiresAuth: true},
+        {hide: false, hrefs: ["/길드배경랭킹", "/길드검닉랭킹"], title: "길드 배경 랭킹", page: <GuildColorRank/>, requiresAuth: true},
+        {hide: false, hrefs: ["/획초체크", "/전적검색"], title: "획초 체크", page: <LimitCheck/>, requiresAuth: true},
+        {hide: false, hrefs: ["/동접"], title: "실시간 동접", page: <ChannelLive/>, requiresAuth: true},
         {hide: true, hrefs: ["/채널동접"], title: "채널동접", page: <Channel/>},
     ]
 
@@ -213,7 +225,6 @@ function App() {
         <Viewport>
             <Analytics/>
             <Shell>
-                <HeroBillboard />
                 <Header pages={pages} member_pages={member_pages}/>
 
                 <ContentGrid $hasRail={SHOW_AD_LAYOUT}>
@@ -236,23 +247,28 @@ function App() {
                                 }
                             </Routes>
                         </PageSurface>
-
-                        {SHOW_AD_LAYOUT && (
-                            <InlineAdsSection aria-label="콘텐츠와 맞물린 광고 영역">
-                                <SectionTitle>스폰서</SectionTitle>
-                                <GoogleAdSense
-                                    slotId={ADSENSE_SLOTS.inline}
-                                    label="인라인 반응형 광고"
-                                    layout="in-article"
-                                    minHeight="200px"
-                                />
-                                <Ads/>
-                            </InlineAdsSection>
-                        )}
                     </PrimaryColumn>
+                </ContentGrid>
 
-                    {SHOW_AD_LAYOUT && (
-                        <AdRail aria-label="사이드 광고 레일">
+                <HeroBillboard />
+                <Footer/>
+
+                {SHOW_AD_LAYOUT && (
+                    <AdsRow aria-label="푸터 위 스폰서 광고 영역">
+                        <InlineAdsSection>
+                            <SectionTitle>스폰서 보드</SectionTitle>
+                            <p style={{margin: '0', color: '#A4A9C3'}}>오늘의 광고를 스와이프해서 확인해보세요</p>
+                            <p style={{margin: '0', color: '#A4A9C3'}}>광고/제휴 카카오톡 오픈채팅</p>
+                            <GoogleAdSense
+                                slotId={ADSENSE_SLOTS.inline}
+                                label="인라인 반응형 광고"
+                                layout="in-article"
+                                minHeight="200px"
+                            />
+                            <Ads/>
+                        </InlineAdsSection>
+
+                        <AdRail>
                             <RailCard>
                                 <RailTitle>사이드 광고</RailTitle>
                                 <GoogleAdSense
@@ -262,10 +278,8 @@ function App() {
                                 />
                             </RailCard>
                         </AdRail>
-                    )}
-                </ContentGrid>
-
-                <Footer/>
+                    </AdsRow>
+                )}
             </Shell>
         </Viewport>
     );

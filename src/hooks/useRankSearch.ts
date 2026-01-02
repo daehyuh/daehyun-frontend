@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 
 interface UseRankSearchOptions<T> {
   fetcher: () => Promise<T[]>;
@@ -6,26 +6,34 @@ interface UseRankSearchOptions<T> {
   placeholder?: string;
 }
 
-export function useRankSearch<T>({ fetcher, filterKey }: UseRankSearchOptions<T>) {
+export function useRankSearch<T>({fetcher, filterKey}: UseRankSearchOptions<T>) {
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<T[]>([]);
   const [search, setSearch] = useState("");
   const [filtered, setFiltered] = useState<T[]>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await fetcher();
-        setData(result);
-        setFiltered(result);
-      } catch (e) {
-        // TODO: 에러 핸들링
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
+  const refresh = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await fetcher();
+      const safeResult = result ?? [];
+      setData(safeResult);
+      setFiltered(safeResult);
+    } catch (e) {
+      console.error(e);
+      setData([]);
+      setFiltered([]);
+      setError("랭킹을 불러오는 중 문제가 발생했습니다.");
+    } finally {
+      setLoading(false);
+    }
   }, [fetcher]);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
 
   useEffect(() => {
     if (search.length === 0) {
@@ -46,12 +54,14 @@ export function useRankSearch<T>({ fetcher, filterKey }: UseRankSearchOptions<T>
 
   return {
     loading,
+    error,
     data,
     search,
     filtered,
     handleInputChange,
+    refresh,
     setData,
     setSearch,
     setFiltered,
   };
-} 
+}

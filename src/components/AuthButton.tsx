@@ -628,7 +628,7 @@ function AuthSection() {
                         {totalUserCount ? (
                             <>
                                 <StatNumber>{totalUserCount}</StatNumber>
-                                <span>명이 선택한 대현닷컴!</span>
+                                <span>명이 선택한 마피아 서드파티 서비스 - 대현.com</span>
                             </>
                         ) : (
                             <span>{bannerFallback}</span>
@@ -711,7 +711,11 @@ function AuthSection() {
                             <InsightItem>
                                 <InsightLabel>오늘 게임 횟수</InsightLabel>
                                 <InsightValue>{insight.todayGames ?? '정보 없음'}</InsightValue>
-                                <Helper>승 {insight.todayWinDelta ?? 0} / 패 {insight.todayLoseDelta ?? 0}</Helper>
+                                <Helper>
+                                    승 {insight.todayWinDelta ?? 0}회
+                                    <br/>
+                                    패 {insight.todayLoseDelta ?? 0}회
+                                </Helper>
                             </InsightItem>
                             <InsightItem>
                                 <InsightLabel>획초 여부</InsightLabel>

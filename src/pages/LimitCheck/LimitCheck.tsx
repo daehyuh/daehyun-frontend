@@ -166,7 +166,7 @@ function LimitCheck() {
             <ContentLayout gap={'20px'}>
                 <CategoryTitle
                     title={"획초 체크"}
-                    description="오늘 플레이 기록을 백엔드에서 바로 확인해요."
+                    description="오늘 플레이 기록을 바로 확인해보세요!"
                 />
 
                 <Card>
@@ -217,6 +217,7 @@ function LimitCheck() {
                                     {isLimit ? "획초" : "미획초"}
                                 </StatusPill>
                                 <SubValue>기준: 오늘 게임수 31판 이상</SubValue>
+                                <SubValue>15초마다 새로고침합니다.</SubValue>
                             </StatCard>
                         </StatsGrid>
                     )}

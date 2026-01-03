@@ -2,6 +2,7 @@ import {useCallback, useEffect, useMemo, useState} from "react";
 import styled from "styled-components";
 import Input from "./base/Input";
 import {startGoogleLogin} from "@/utils/googleLogin";
+import fetchStatsSummary, {StatsSummaryResponse} from "@/apis/fetchStatsSummary";
 
 type StatusTone = 'info' | 'success' | 'danger';
 
@@ -260,6 +261,64 @@ const Square = styled.span<{ $color: string }>`
     border: 1px solid rgba(0,0,0,0.4);
 `;
 
+const StatBannerRow = styled.div`
+    display: flex;
+    justify-content: center;
+`;
+
+const StatBanner = styled.div`
+    display: inline-flex;
+    align-items: center;
+    gap: ${({theme}) => theme.spacing.sm};
+    padding: ${({theme}) => `${theme.spacing.sm} ${theme.spacing.md}`};
+    border-radius: ${({theme}) => theme.radii.pill};
+    border: 1px solid ${({theme}) => theme.colors.border};
+    background: ${({theme}) => theme.colors.surfaceMuted};
+    color: ${({theme}) => theme.colors.textPrimary};
+    font-weight: ${({theme}) => theme.typography.weights.semibold};
+`;
+
+const StatNumber = styled.span`
+    color: ${({theme}) => theme.colors.accent};
+    font-size: ${({theme}) => theme.typography.sizes.lg};
+    font-weight: ${({theme}) => theme.typography.weights.bold};
+`;
+
+const StatsSection = styled.section`
+    display: grid;
+    gap: ${({theme}) => theme.spacing.sm};
+`;
+
+const StatsGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: ${({theme}) => theme.spacing.sm};
+`;
+
+const StatCard = styled.div`
+    border-radius: ${({theme}) => theme.radii.md};
+    border: 1px solid ${({theme}) => theme.colors.border};
+    background: ${({theme}) => theme.colors.surface};
+    padding: ${({theme}) => theme.spacing.md};
+    display: flex;
+    flex-direction: column;
+    gap: ${({theme}) => theme.spacing.xs};
+    box-shadow: ${({theme}) => theme.shadows.soft};
+`;
+
+const StatLabel = styled.span`
+    color: ${({theme}) => theme.colors.textSecondary};
+    font-size: ${({theme}) => theme.typography.sizes.xs};
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+`;
+
+const StatValue = styled.span`
+    color: ${({theme}) => theme.colors.textPrimary};
+    font-size: ${({theme}) => theme.typography.sizes.xl};
+    font-weight: ${({theme}) => theme.typography.weights.bold};
+`;
+
 const getAccessToken = (): string | null => {
     if (typeof document === 'undefined') return null;
     return document.cookie
@@ -286,12 +345,30 @@ function AuthSection() {
     const [userCode, setUserCode] = useState('');
     const [guestNickname, setGuestNickname] = useState('');
     const [guestInstruction, setGuestInstruction] = useState<string | null>(null);
+    const [stats, setStats] = useState<StatsSummaryResponse | null>(null);
+    const [isStatsLoading, setIsStatsLoading] = useState(false);
+    const [statsError, setStatsError] = useState<string | null>(null);
     const [hasToken, setHasToken] = useState<boolean>(() => Boolean(getAccessToken()));
     const [insight, setInsight] = useState<UserInsight | null>(null);
     const [insightLoading, setInsightLoading] = useState(false);
     const [insightError, setInsightError] = useState<string | null>(null);
 
     const isLoggedIn = useMemo(() => Boolean(profile) || hasToken, [profile, hasToken]);
+
+    const loadStatsSummary = useCallback(async () => {
+        setIsStatsLoading(true);
+        setStatsError(null);
+        try {
+            const summary = await fetchStatsSummary();
+            setStats(summary);
+        } catch (error) {
+            console.error("Error fetching stats summary:", error);
+            setStats(null);
+            setStatsError('총 이용자 수를 불러오지 못했습니다.');
+        } finally {
+            setIsStatsLoading(false);
+        }
+    }, []);
 
     const loadProfile = useCallback(async () => {
         const accessToken = getAccessToken();
@@ -396,7 +473,8 @@ function AuthSection() {
         } else {
             loadProfile();
         }
-    }, [exchangeCode, loadProfile]);
+        loadStatsSummary();
+    }, [exchangeCode, loadProfile, loadStatsSummary]);
 
     const handleLogin = () => startGoogleLogin();
 
@@ -498,9 +576,53 @@ function AuthSection() {
     };
 
     const userInitial = profile?.name?.[0] ?? 'G';
+    const totalUserCount = typeof stats?.totalUserCount === 'number'
+        ? stats.totalUserCount.toLocaleString('ko-KR')
+        : null;
+    const bannerFallback = isStatsLoading
+        ? '대현닷컴 이용자 수를 불러오는 중...'
+        : statsError
+            ? '대현닷컴을 이용해주셔서 감사합니다.'
+            : null;
+    const formatCount = (value?: number | null) => typeof value === 'number'
+        ? value.toLocaleString('ko-KR')
+        : '-';
 
     return (
         <PageStack>
+            {(totalUserCount || bannerFallback) && (
+                <StatBannerRow>
+                    <StatBanner aria-live="polite">
+                        {totalUserCount ? (
+                            <>
+                                <StatNumber>{totalUserCount}</StatNumber>
+                                <span>명이 선택한 대현닷컴!</span>
+                            </>
+                        ) : (
+                            <span>{bannerFallback}</span>
+                        )}
+                    </StatBanner>
+                </StatBannerRow>
+            )}
+            {(stats || isStatsLoading || statsError) && (
+                <StatsSection aria-live="polite">
+                    <StatsGrid>
+                        <StatCard>
+                            <StatLabel>오늘 가입</StatLabel>
+                            <StatValue>{formatCount(stats?.todayUserCount)}명</StatValue>
+                        </StatCard>
+                        <StatCard>
+                            <StatLabel>오늘 추가된 계정</StatLabel>
+                            <StatValue>{formatCount(stats?.todayAccountCount)}개</StatValue>
+                        </StatCard>
+                        <StatCard>
+                            <StatLabel>전체 사용자</StatLabel>
+                            <StatValue>{formatCount(stats?.totalUserCount)}명</StatValue>
+                        </StatCard>
+                    </StatsGrid>
+                    {statsError && <Helper>{statsError}</Helper>}
+                </StatsSection>
+            )}
             <Card>
                 <Pill>Google Login</Pill>
                 <Headline>구글로 로그인하면 멤버 전용 기능이 열려요.</Headline>

@@ -62,21 +62,21 @@ function ColorRank() {
         <Layout>
             <ContentLayout gap={'20px'}>
                 <CategoryTitle
-                    title="ê²€ë‹‰ ëž­í‚¹"
-                    description="ëŒ€í˜„ë‹·ì»´ ì—°ë™ ìœ ì €ì˜ ìµœì‹  ê²€ë‹‰ ì ìˆ˜ë¥¼ ë³´ì—¬ì¤˜ìš”!"
+                    title="°Ë´Ð ·©Å·"
+                    description="´ëÇö´åÄÄ ·Î±×ÀÎ À¯ÀúÀÇ ÃÖ½Å °Ë´Ð Á¡¼ö¸¦ º¸¿©Áà¿ä."
                 />
 
                 <Card>
                     <ControlBar>
                         <Input
                             value={search}
-                            placeholder="ë‹‰ë„¤ìž„ ê²€ìƒ‰"
+                            placeholder="´Ð³×ÀÓ °Ë»ö"
                             onChange={handleInputChange}
                             width="320px"
                         />
                     </ControlBar>
 
-                    <NoteText>ê²€ë‹‰ìœ¼ë¡œ ì¸ì •ë˜ë©´ ì ìˆ˜ ì•žì— âœ…ê°€ ë¶™ì–´ìš”.</NoteText>
+                    <NoteText>°Ë´ÐÀ¸·Î ÀÎÁ¤µÇ¸é Á¡¼ö ¾Õ¿¡ ?°¡ ºÙ¾î¿ä.</NoteText>
                     {error && (
                         <MessageBox $tone="error" role="alert">
                             <Text>{error}</Text>
@@ -88,7 +88,7 @@ function ColorRank() {
                     ) : hasResult ? (
                         <Table
                             fullWidth
-                            headers={["ëž­í‚¹", "ë‹‰ë„¤ìž„", "ë°°ê²½ ìƒ‰ìƒ(HEX)", "ì ìˆ˜"]}
+                            headers={["·©Å·", "´Ð³×ÀÓ", "¹è°æ »ö»ó(HEX)", "Á¡¼ö"]}
                             columnWidths={["15%", "35%", "25%", "25%"]}
                             headerBackgroundColor="#1E202B"
                             headerBorderBottom="2px solid #aa0000"
@@ -106,7 +106,7 @@ function ColorRank() {
                         </Table>
                     ) : (
                         <MessageBox $tone="empty">
-                            <EmptyStateText>ê²€ìƒ‰ ê²°ê³¼ê°€ ì—†ì–´ìš”. ë‹¤ë¥¸ ë‹‰ë„¤ìž„ì„ ìž…ë ¥í•´ ë³´ì„¸ìš”.</EmptyStateText>
+                            <EmptyStateText>°Ë»ö °á°ú°¡ ¾ø¾î¿ä. ´Ù¸¥ ´Ð³×ÀÓÀ» ÀÔ·ÂÇØ º¸¼¼¿ä.</EmptyStateText>
                         </MessageBox>
                     )}
                 </Card>
@@ -116,3 +116,4 @@ function ColorRank() {
 }
 
 export default ColorRank;
+

@@ -259,8 +259,9 @@ function Gacha() {
     return (
         <Layout>
             <ContentLayout>
-            <CategoryTitle title={`2025 눈싸움 확률 적용`}/>
-                <CategoryTitle title={`장착템 확률 : ${totalProbability.equip.toFixed(4)}%`}/>
+            <div style={{marginBottom: 0}}>
+                <CategoryTitle title={`2025 눈싸움 확률 적용`}/>
+            </div>
                 <SimulationCard fullWidth>
                     <SimulationHeader>
                         <SimulationTitle>

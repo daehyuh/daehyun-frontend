@@ -53,7 +53,7 @@ const GachaTableStickyRow = ({
             <strong>전체 체크 박스</strong>
         </td>
         <td colSpan={2}>
-            장착템 확률: {totalProbability.equip.toFixed(4)}%
+            장착템 확률
         </td>
     </StyledTableRow>
 }

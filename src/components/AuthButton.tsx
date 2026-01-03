@@ -84,6 +84,18 @@ const Headline = styled.h2`
     color: ${({theme}) => theme.colors.textPrimary};
 `;
 
+const HeadlineRow = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: ${({theme}) => theme.spacing.xs};
+`;
+
+const HeadlineSub = styled.span`
+    font-size: ${({theme}) => theme.typography.sizes.xs};
+    color: ${({theme}) => theme.colors.textSecondary};
+`;
+
 const Subtext = styled.p`
     margin: 0;
     color: ${({theme}) => theme.colors.textSecondary};
@@ -298,64 +310,6 @@ const Square = styled.span<{ $color: string }>`
     border: 1px solid rgba(0,0,0,0.4);
 `;
 
-const StatBannerRow = styled.div`
-    display: flex;
-    justify-content: center;
-`;
-
-const StatBanner = styled.div`
-    display: inline-flex;
-    align-items: center;
-    gap: ${({theme}) => theme.spacing.sm};
-    padding: ${({theme}) => `${theme.spacing.sm} ${theme.spacing.md}`};
-    border-radius: ${({theme}) => theme.radii.pill};
-    border: 1px solid ${({theme}) => theme.colors.border};
-    background: ${({theme}) => theme.colors.surfaceMuted};
-    color: ${({theme}) => theme.colors.textPrimary};
-    font-weight: ${({theme}) => theme.typography.weights.semibold};
-`;
-
-const StatNumber = styled.span`
-    color: ${({theme}) => theme.colors.accent};
-    font-size: ${({theme}) => theme.typography.sizes.lg};
-    font-weight: ${({theme}) => theme.typography.weights.bold};
-`;
-
-const StatsSection = styled.section`
-    display: grid;
-    gap: ${({theme}) => theme.spacing.sm};
-`;
-
-const StatsGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: ${({theme}) => theme.spacing.sm};
-`;
-
-const StatCard = styled.div`
-    border-radius: ${({theme}) => theme.radii.md};
-    border: 1px solid ${({theme}) => theme.colors.border};
-    background: ${({theme}) => theme.colors.surface};
-    padding: ${({theme}) => theme.spacing.md};
-    display: flex;
-    flex-direction: column;
-    gap: ${({theme}) => theme.spacing.xs};
-    box-shadow: ${({theme}) => theme.shadows.soft};
-`;
-
-const StatLabel = styled.span`
-    color: ${({theme}) => theme.colors.textSecondary};
-    font-size: ${({theme}) => theme.typography.sizes.xs};
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-`;
-
-const StatValue = styled.span`
-    color: ${({theme}) => theme.colors.textPrimary};
-    font-size: ${({theme}) => theme.typography.sizes.xl};
-    font-weight: ${({theme}) => theme.typography.weights.bold};
-`;
-
 const GameDetail = styled(Helper)`
     margin-top: ${({theme}) => theme.spacing.sm};
     display: block;
@@ -390,7 +344,6 @@ function AuthSection() {
     const [guestNickname, setGuestNickname] = useState('');
     const [guestInstruction, setGuestInstruction] = useState<string | null>(null);
     const [stats, setStats] = useState<StatsSummaryResponse | null>(null);
-    const [isStatsLoading, setIsStatsLoading] = useState(false);
     const [statsError, setStatsError] = useState<string | null>(null);
     const [hasToken, setHasToken] = useState<boolean>(() => Boolean(getAccessToken()));
     const [insight, setInsight] = useState<UserInsight | null>(null);
@@ -398,21 +351,6 @@ function AuthSection() {
     const [insightError, setInsightError] = useState<string | null>(null);
 
     const isLoggedIn = useMemo(() => Boolean(profile) || hasToken, [profile, hasToken]);
-
-    const loadStatsSummary = useCallback(async () => {
-        setIsStatsLoading(true);
-        setStatsError(null);
-        try {
-            const summary = await fetchStatsSummary();
-            setStats(summary);
-        } catch (error) {
-            console.error("Error fetching stats summary:", error);
-            setStats(null);
-            setStatsError('총 이용자 수를 불러오지 못했습니다.');
-        } finally {
-            setIsStatsLoading(false);
-        }
-    }, []);
 
     const loadProfile = useCallback(async () => {
         const accessToken = getAccessToken();
@@ -517,14 +455,31 @@ function AuthSection() {
         } else {
             loadProfile();
         }
-        loadStatsSummary();
-    }, [exchangeCode, loadProfile, loadStatsSummary]);
+    }, [exchangeCode, loadProfile]);
+
+    useEffect(() => {
+        const loadStats = async () => {
+            try {
+                const summary = await fetchStatsSummary();
+                setStats(summary);
+            } catch (e) {
+                console.error("Failed to load stats summary:", e);
+                setStats(null);
+                setStatsError('이용자 수를 불러오지 못했습니다.');
+            }
+        };
+        loadStats();
+    }, []);
 
     const handleLogin = () => startGoogleLogin();
 
     const handleLogout = () => {
         window.location.href = `${API_BASE_URL}/core/logout`;
     };
+    const formatCount = (value?: number | null) => typeof value === 'number'
+        ? value.toLocaleString('ko-KR')
+        : null;
+    const totalUserCount = formatCount(stats?.totalUserCount);
 
     const handleSync = async () => {
         const accessToken = getAccessToken();
@@ -619,57 +574,21 @@ function AuthSection() {
         }
     };
 
-    const totalUserCount = typeof stats?.totalUserCount === 'number'
-        ? stats.totalUserCount.toLocaleString('ko-KR')
-        : null;
-    const bannerFallback = isStatsLoading
-        ? '대현닷컴 이용자 수를 불러오는 중...'
-        : statsError
-            ? '대현닷컴을 이용해주셔서 감사합니다.'
-            : null;
-    const formatCount = (value?: number | null) => typeof value === 'number'
-        ? value.toLocaleString('ko-KR')
-        : '-';
-    const statCards = [
-        {label: '오늘 가입', value: `${formatCount(stats?.todayUserCount)}명`},
-        {label: '오늘 추가된 계정', value: `${formatCount(stats?.todayAccountCount)}개`},
-        {label: '전체 사용자', value: `${formatCount(stats?.totalUserCount)}명`},
-    ];
-
     return (
         <PageStack>
-            {(totalUserCount || bannerFallback) && (
-                <StatBannerRow>
-                    <StatBanner aria-live="polite">
-                        {totalUserCount ? (
-                            <>
-                                <StatNumber>{totalUserCount}</StatNumber>
-                                <span>명이 선택한 마피아 서드파티 서비스 - 대현.com</span>
-                            </>
-                        ) : (
-                            <span>{bannerFallback}</span>
-                        )}
-                    </StatBanner>
-                </StatBannerRow>
-            )}
-            {(stats || isStatsLoading || statsError) && (
-                <StatsSection aria-live="polite">
-                    <StatsGrid>
-                        {statCards.map((item) => (
-                            <StatCard key={item.label}>
-                                <StatLabel>{item.label}</StatLabel>
-                                <StatValue>{item.value}</StatValue>
-                            </StatCard>
-                        ))}
-                    </StatsGrid>
-                    {statsError && <Helper>{statsError}</Helper>}
-                </StatsSection>
-            )}
             <Card>
-                <Headline>대현닷컴 로그인</Headline>
+                <HeadlineRow>
+                    <Headline>대현닷컴 로그인</Headline>
+                    {totalUserCount && (
+                        <HeadlineSub aria-live="polite">
+                            - {totalUserCount}명이 선택한 마피아 서드파티 서비스
+                        </HeadlineSub>
+                    )}
+                </HeadlineRow>
                 <Subtext>
                     로그인하면 검닉/길드 배경 랭킹, 획초 체크, 실시간 동접 등 멤버 기능이 활성화됩니다.
                 </Subtext>
+                {statsError && <Helper>{statsError}</Helper>}
 
                 {!isLoggedIn && (
                     <ButtonRow>

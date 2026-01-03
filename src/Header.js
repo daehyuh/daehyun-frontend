@@ -21,7 +21,7 @@ function Header() {
                     to="/상자깡"
                     className={path === '/상자깡' ? styles.active : styles.notactive}
                 >
-                    상자깡 확률
+                    이벤트 상자깡 확률
                 </Link>                
                 <Link
                     to="/티어"

@@ -180,7 +180,7 @@ function App() {
     
     const pages: PageType[] = [
         {hrefs: ["/", "/login", "/인증"], title: "구글 로그인", page: <AuthButton/>},
-        {hrefs: ["/상자깡"], title: "상자깡 확률", page: <Gacha/>},
+        {hrefs: ["/상자깡"], title: "이벤트 상자깡 확률", page: <Gacha/>},
         {hrefs: ["/티어"], title: "티어 계산기", page: <Tier/>},
         {hrefs: ["/우체통"], title: "우체통 계산기", page: <Mail/>},
         {hrefs: ["/출석보상"], title: "출석보상 계산기", page: <DailyReward/>},

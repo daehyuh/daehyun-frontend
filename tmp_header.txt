@@ -16,17 +16,10 @@ type HeaderProps = {
 const HeaderWrapper = styled.header`
     position: static;
     backdrop-filter: blur(0px);
-
-    @media (min-width: ${({theme}) => theme.breakpoints.lg}px) {
-        position: sticky;
-        top: 0;
-        z-index: ${({theme}) => theme.zIndex.header};
-    }
 `;
 
 const HeaderSurface = styled.div`
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: flex;
     align-items: center;
     gap: ${({theme}) => theme.spacing.md};
     padding: ${({theme}) => theme.spacing.md};
@@ -35,13 +28,6 @@ const HeaderSurface = styled.div`
     background: rgba(10, 12, 18, 0.92);
     backdrop-filter: blur(18px);
     box-shadow: ${({theme}) => theme.shadows.soft};
-
-    @media (max-width: ${({theme}) => theme.breakpoints.lg}px) {
-        grid-template-columns: 1fr auto;
-        grid-template-rows: auto auto;
-        align-items: center;
-        row-gap: ${({theme}) => theme.spacing.sm};
-    }
 `;
 
 const BrandLink = styled(Link)`
@@ -50,11 +36,6 @@ const BrandLink = styled(Link)`
     gap: ${({theme}) => theme.spacing.sm};
     color: ${({theme}) => theme.colors.textPrimary};
     text-decoration: none;
-    flex-shrink: 0;
-
-    @media (min-width: ${({theme}) => theme.breakpoints.lg}px) {
-        flex-basis: 200px;
-    }
 `;
 
 const BrandCopy = styled.div`
@@ -76,13 +57,10 @@ const BrandCaption = styled.span`
 `;
 
 const DesktopNav = styled.nav`
-    flex: 0 1 640px;
-    width: 100%;
-    max-width: 720px;
+    flex: 1;
     display: none;
     flex-direction: column;
     gap: ${({theme}) => theme.spacing.xs};
-    justify-self: center;
 
     @media (min-width: ${({theme}) => theme.breakpoints.lg}px) {
         display: flex;
@@ -151,7 +129,9 @@ const MenuIcon = styled.span`
 `;
 
 const NavRail = styled.div`
-    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: ${({theme}) => theme.zIndex.header};
     margin-top: ${({theme}) => theme.spacing.sm};
     padding: ${({theme}) => `${theme.spacing.sm} ${theme.spacing.md}`};
     border-radius: ${({theme}) => theme.radii.lg};
@@ -161,19 +141,6 @@ const NavRail = styled.div`
     display: flex;
     flex-direction: column;
     gap: ${({theme}) => theme.spacing.sm};
-
-    @media (max-width: ${({theme}) => theme.breakpoints.lg - 1}px) {
-        position: sticky;
-        top: calc(env(safe-area-inset-top, 0px));
-        z-index: ${({theme}) => theme.zIndex.header};
-        margin-top: 0;
-        border-radius: 0 0 ${({theme}) => theme.radii.lg} ${({theme}) => theme.radii.lg};
-        border-left: none;
-        border-right: none;
-        border-top: none;
-        box-shadow: none;
-        background: ${({theme}) => theme.colors.surface};
-    }
 
     @media (min-width: ${({theme}) => theme.breakpoints.lg}px) {
         display: none;
@@ -293,7 +260,7 @@ function Header({pages, member_pages}: HeaderProps) {
 
     const memberPages = member_pages.filter(item => !item.hide);
     const primaryPages = pages.filter(item => !item.hide);
-    const loginPage = primaryPages.find(item => item.hrefs.includes('/login') || item.hrefs.includes('/Ïù∏Ï¶ù'));
+    const loginPage = primaryPages.find(item => item.hrefs.includes('/login') || item.hrefs.includes('/¿Œ¡ı'));
     const generalPages = primaryPages.filter(item => item !== loginPage);
 
     useEffect(() => {
@@ -327,92 +294,85 @@ function Header({pages, member_pages}: HeaderProps) {
     const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
     return (
-        <>
-            <HeaderWrapper>
-                <HeaderSurface>
-                    <BrandLink to="/">
-                        <Logo size={'42px'}/>
-                        <BrandCopy>
-                            <BrandTitle>ÎåÄÌòÑÎã∑Ïª¥</BrandTitle>
-                            <BrandCaption>since 2020</BrandCaption>
-                        </BrandCopy>
-                    </BrandLink>
+        <HeaderWrapper>
+            <HeaderSurface>
+                <BrandLink to="/">
+                    <Logo size={'42px'}/>
+                    <BrandCopy>
+                        <BrandTitle>¥Î«ˆ¥Âƒƒ</BrandTitle>
+                        <BrandCaption>since 2020</BrandCaption>
+                    </BrandCopy>
+                </BrandLink>
 
-                    <DesktopNav aria-label="Î©îÎâ¥ (Îç∞Ïä§ÌÅ¨ÌÜ±)">
-                        {memberPages.length > 0 && (
-                            <>
-                                <RailLabel>ÌöåÏõê Ï†ÑÏö© ÎèÑÍµ¨</RailLabel>
-                                <NavRow>
-                                    {loginPage && (
-                                        <HeaderItemLink
-                                            key={loginPage.hrefs[0]}
-                                            path={path}
-                                            variant={'premium'}
-                                            {...loginPage}
-                                        />
-                                    )}
-                                    {memberPages.map((item, index) => (
-                                        <HeaderItemLink
-                                            key={item.hrefs[0] ?? `member-${index}`}
-                                            path={path}
-                                            variant={'premium'}
-                                            requiresAuth={true}
-                                            {...item}
-                                        />
-                                    ))}
-                                </NavRow>
-                            </>
+                <DesktopNav aria-label="∏ﬁ¥∫ (µ•Ω∫≈©≈È)">
+                    <NavRow>
+                        {loginPage && (
+                            <HeaderItemLink
+                                key={loginPage.hrefs[0]}
+                                path={path}
+                                variant={'premium'}
+                                {...loginPage}
+                            />
                         )}
-                        <RailLabel>ÏùºÎ∞ò ÎèÑÍµ¨</RailLabel>
-                        <NavRow>
-                            {generalPages.map((item, index) => (
-                                <HeaderItemLink
-                                    key={item.hrefs[0] ?? `general-${index}`}
-                                    path={path}
-                                    variant={'primary'}
-                                    requiresAuth={item.requiresAuth}
-                                    {...item}
-                                />
-                            ))}
-                        </NavRow>
-                    </DesktopNav>
+                        {memberPages.map((item, index) => (
+                            <HeaderItemLink
+                                key={item.hrefs[0] ?? `member-${index}`}
+                                path={path}
+                                variant={'premium'}
+                                requiresAuth={true}
+                                {...item}
+                            />
+                        ))}
+                    </NavRow>
+                    <NavRow>
+                        {generalPages.map((item, index) => (
+                            <HeaderItemLink
+                                key={item.hrefs[0] ?? `general-${index}`}
+                                path={path}
+                                variant={'primary'}
+                                requiresAuth={item.requiresAuth}
+                                {...item}
+                            />
+                        ))}
+                    </NavRow>
+                </DesktopNav>
 
-                    <Actions>
-                        {loginPage && !hasToken && (
-                            <GoogleButton href={loginPage.hrefs[0]} onClick={(e) => {
-                                e.preventDefault();
-                                startGoogleLogin();
-                            }}>
-                                <GoogleLogo/>
-                                <span>GoogleÎ°ú Î°úÍ∑∏Ïù∏</span>
-                            </GoogleButton>
-                        )}
-                        {hasToken && (
-                            <GoogleButton href={`${loginPage?.hrefs[0] ?? '/'}`} onClick={(e) => {
-                                e.preventDefault();
-                                window.location.href = `${API_BASE_URL}/core/logout`;
-                            }}>
-                                <GoogleLogo/>
-                                <span>Î°úÍ∑∏ÏïÑÏõÉ</span>
-                            </GoogleButton>
-                        )}
-                        <MobileMenuButton
-                            type="button"
-                            aria-label="Ï†ÑÏ≤¥ Î©îÎâ¥ Ïó¥Í∏∞"
-                            aria-expanded={isMobileMenuOpen}
-                            onClick={() => setIsMobileMenuOpen(true)}
-                        >
-                            <MenuIcon/>
-                        </MobileMenuButton>
-                    </Actions>
-                </HeaderSurface>
-            </HeaderWrapper>
+                <Actions>
+                    {loginPage && !hasToken && (
+                        <GoogleButton href={loginPage.hrefs[0]} onClick={(e) => {
+                            e.preventDefault();
+                            startGoogleLogin();
+                        }}>
+                            <GoogleLogo/>
+                            <span>Google∑Œ ∑Œ±◊¿Œ</span>
+                        </GoogleButton>
+                    )}
+                    {hasToken && (
+                        <GoogleButton href={`${loginPage?.hrefs[0] ?? '/'}`} onClick={(e) => {
+                            e.preventDefault();
+                            window.location.href = `${API_BASE_URL}/core/logout`;
+                        }}>
+                            <GoogleLogo/>
+                            <span>∑Œ±◊æ∆øÙ</span>
+                        </GoogleButton>
+                    )}
+                    <MobileMenuButton
+                        type="button"
+                        aria-label="¿¸√º ∏ﬁ¥∫ ø≠±‚"
+                        aria-expanded={isMobileMenuOpen}
+                        onClick={() => setIsMobileMenuOpen(true)}
+                    >
+                        <MenuIcon/>
+                    </MobileMenuButton>
+                </Actions>
+
+            </HeaderSurface>
 
             <NavRail>
                 {memberPages.length > 0 && (
                     <>
-                        <RailLabel>ÌöåÏõê Ï†ÑÏö© ÎèÑÍµ¨</RailLabel>
-                        <NavScroller aria-label="ÌöåÏõê Ï†ÑÏö© ÎèÑÍµ¨">
+                        <RailLabel>»∏ø¯ ¿¸øÎ µµ±∏</RailLabel>
+                        <NavScroller aria-label="»∏ø¯ ¿¸øÎ µµ±∏">
                             {loginPage && (
                                 <HeaderItemLink
                                     key={loginPage.hrefs[0]}
@@ -434,8 +394,8 @@ function Header({pages, member_pages}: HeaderProps) {
                     </>
                 )}
 
-                <RailLabel>ÏùºÎ∞ò ÎèÑÍµ¨</RailLabel>
-                <NavScroller aria-label="ÏùºÎ∞ò ÎèÑÍµ¨">
+                <RailLabel>¿œπ› µµ±∏</RailLabel>
+                <NavScroller aria-label="¿œπ› µµ±∏">
                     {generalPages.map((item, index) => (
                         <HeaderItemLink
                             key={item.hrefs[0] ?? index}
@@ -451,11 +411,11 @@ function Header({pages, member_pages}: HeaderProps) {
                 <MobileMenuSheet $isOpen={isMobileMenuOpen} onClick={(event) => event.stopPropagation()}>
                     <SheetHeader>
                         <BrandCopy>
-                            <BrandTitle>Ï†ÑÏ≤¥ Î©îÎâ¥</BrandTitle>
-                            <BrandCaption>Îπ†Î•∏ Ï†êÌîÑ</BrandCaption>
+                            <BrandTitle>¿¸√º ∏ﬁ¥∫</BrandTitle>
+                            <BrandCaption>∫¸∏• ¡°«¡</BrandCaption>
                         </BrandCopy>
-                        <CloseButton type="button" aria-label="Î©îÎâ¥ Îã´Í∏∞" onClick={closeMobileMenu}>
-                            ‚úï
+                        <CloseButton type="button" aria-label="∏ﬁ¥∫ ¥›±‚" onClick={closeMobileMenu}>
+                            ?
                         </CloseButton>
                     </SheetHeader>
 
@@ -473,7 +433,7 @@ function Header({pages, member_pages}: HeaderProps) {
 
                     {memberPages.length > 0 && (
                         <MobileSection>
-                            <MobileSectionTitle>ÌöåÏõê Ìà¥</MobileSectionTitle>
+                            <MobileSectionTitle>»∏ø¯ ≈¯</MobileSectionTitle>
                             {memberPages.map((item, index) => (
                                 <HeaderItemLink
                                     key={`mobile-member-${item.hrefs[0] ?? index}`}
@@ -488,8 +448,9 @@ function Header({pages, member_pages}: HeaderProps) {
                     )}
                 </MobileMenuSheet>
             </MobileMenuOverlay>
-        </>
+        </HeaderWrapper>
     );
 }
 
 export default Header;
+

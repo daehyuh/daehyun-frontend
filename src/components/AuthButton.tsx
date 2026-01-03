@@ -285,6 +285,7 @@ function AuthSection() {
     const [nickname, setNickname] = useState('');
     const [userCode, setUserCode] = useState('');
     const [guestNickname, setGuestNickname] = useState('');
+    const [guestInstruction, setGuestInstruction] = useState<string | null>(null);
     const [hasToken, setHasToken] = useState<boolean>(() => Boolean(getAccessToken()));
     const [insight, setInsight] = useState<UserInsight | null>(null);
     const [insightLoading, setInsightLoading] = useState(false);
@@ -459,6 +460,7 @@ function AuthSection() {
             return;
         }
 
+        setGuestInstruction(null);
         setIsSyncing(true);
         try {
             const url = `${API_BASE_URL}/User/Account/addGuest?nickname=${encodeURIComponent(guestNickname)}`;
@@ -477,16 +479,19 @@ function AuthSection() {
             }
 
             const data = await response.json();
+            const verificationCode = data?.data ?? 'data 안의 인증번호 4글자';
             setStatus({
                 tone: 'success',
-                message: `"${data?.data ?? '인증번호'}"를 최후의 반론 Team42 공지 댓글로 남겨주세요.`
+                message: `인게임 최후의반론 Team42 공지글 댓글에 "${verificationCode}" 를 입력해주세요.`
             });
+            setGuestInstruction(`인게임 최후의반론 Team42 공지글 댓글에 "${verificationCode}" 를 입력해주세요.`);
         } catch (error) {
             console.error("Error adding guest:", error);
             setStatus({
                 tone: 'danger',
                 message: '이미 등록된 유저이거나 1계정 1회만 등록 가능합니다. 필요 시 문의해주세요.'
             });
+            setGuestInstruction(null);
         } finally {
             setIsSyncing(false);
         }
@@ -631,6 +636,11 @@ function AuthSection() {
                 <ActionButton onClick={handleGuestRegister} disabled={!isLoggedIn || isSyncing}>
                     {isSyncing ? '요청 중...' : '게스트 인증번호 받기'}
                 </ActionButton>
+                {guestInstruction && (
+                    <Status $tone="success">
+                        {guestInstruction}
+                    </Status>
+                )}
             </Card>
         </PageStack>
     );

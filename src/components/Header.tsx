@@ -6,6 +6,8 @@ import HeaderItemLink from "./HeaderItemLink";
 import Logo from "./base/Logo";
 import {startGoogleLogin} from "@/utils/googleLogin";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE ?? 'https://api.xn--vk1b177d.com';
+
 type HeaderProps = {
     pages: PageType[];
     member_pages: PageType[];
@@ -347,7 +349,7 @@ function Header({pages, member_pages}: HeaderProps) {
                     {hasToken && (
                         <GoogleButton href={`${loginPage?.hrefs[0] ?? '/'}`} onClick={(e) => {
                             e.preventDefault();
-                            window.location.href = `${loginPage?.hrefs[0] ?? '/'}`;
+                            window.location.href = `${API_BASE_URL}/core/logout`;
                         }}>
                             <GoogleLogo/>
                             <span>로그아웃</span>

@@ -122,6 +122,39 @@ const ActionButton = styled.button.attrs({type: 'button'})<{ $variant?: 'primary
     }
 `;
 
+const GoogleButton = styled.button.attrs({type: 'button'})`
+    display: inline-flex;
+    align-items: center;
+    gap: ${({theme}) => theme.spacing.sm};
+    padding: ${({theme}) => `${theme.spacing.xs} ${theme.spacing.md}`};
+    border-radius: ${({theme}) => theme.radii.pill};
+    border: 1px solid ${({theme}) => theme.colors.border};
+    background: #fff;
+    color: #202124;
+    font-weight: ${({theme}) => theme.typography.weights.semibold};
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    min-width: 180px;
+    justify-content: center;
+
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+`;
+
+const GoogleLogo = () => (
+    <svg viewBox="0 0 488 512" aria-hidden="true" focusable="false">
+        <path fill="#EA4335"
+              d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.3 0 122 24.4 164.7 64.6l-66.8 64.2C310 104.5 281.3 92.7 248 92.7c-85.8 0-155.4 69.2-155.4 155.3 0 86 69.6 155.3 155.4 155.3 79.1 0 130-45.3 136-108.6H248v-87.4h240c2.2 12.7 4 24.9 4 43.5z"/>
+    </svg>
+);
+
 const Status = styled.div<{ $tone: StatusTone }>`
     border-radius: ${({theme}) => theme.radii.md};
     padding: ${({theme}) => `${theme.spacing.sm} ${theme.spacing.md}`};
@@ -575,7 +608,6 @@ function AuthSection() {
         }
     };
 
-    const userInitial = profile?.name?.[0] ?? 'G';
     const totalUserCount = typeof stats?.totalUserCount === 'number'
         ? stats.totalUserCount.toLocaleString('ko-KR')
         : null;
@@ -624,36 +656,19 @@ function AuthSection() {
                 </StatsSection>
             )}
             <Card>
-                <Pill>Google Login</Pill>
-                <Headline>구글로 로그인하면 멤버 전용 기능이 열려요.</Headline>
+                <Headline>대현닷컴 로그인</Headline>
                 <Subtext>
                     로그인하면 검닉/길드 배경 랭킹, 획초 체크, 실시간 동접 등 멤버 기능이 활성화됩니다.
                 </Subtext>
 
-                <ButtonRow>
-                    {!isLoggedIn && (
-                        <ActionButton onClick={handleLogin} disabled={isLoading}>
+                {!isLoggedIn && (
+                    <ButtonRow>
+                        <GoogleButton onClick={handleLogin} disabled={isLoading}>
+                            <GoogleLogo/>
                             {isLoading ? '로그인 중...' : 'Google로 계속하기'}
-                        </ActionButton>
-                    )}
-                    {isLoggedIn && (
-                        <>
-                            <ActionButton $variant="ghost" onClick={loadProfile} disabled={isLoading}>
-                                상태 새로고침
-                            </ActionButton>
-                            <ActionButton onClick={handleLogout} $variant="primary" disabled={isLoading}>
-                                로그아웃
-                            </ActionButton>
-                        </>
-                    )}
-                    <UserBadge>
-                        <Avatar aria-hidden>{userInitial}</Avatar>
-                        <div>
-                            <strong>{profile?.name ?? '로그아웃 상태'}</strong>
-                            <Helper>{profile?.email ?? 'Google 로그인 후 계정 정보를 확인하세요.'}</Helper>
-                        </div>
-                    </UserBadge>
-                </ButtonRow>
+                        </GoogleButton>
+                    </ButtonRow>
+                )}
 
                 {status && (
                     <Status $tone={status.tone}>
@@ -662,16 +677,16 @@ function AuthSection() {
                 )}
             </Card>
 
-            <InsightCard>
-                <InsightHeadline>
-                    내 닉네임: {insight?.nickname ?? '로그인하면 확인됩니다'}
-                </InsightHeadline>
-                <SectionTitle>내 정보 요약</SectionTitle>
-                <Helper>검닉/길드 랭킹과 오늘 경기 기록을 한눈에 확인하세요.</Helper>
-                {insightLoading && <Helper>불러오는 중...</Helper>}
-                {insightError && <Status $tone="danger">{insightError}</Status>}
-                {isLoggedIn ? (
-                    insight ? (
+            {isLoggedIn && (
+                <InsightCard>
+                    <InsightHeadline>
+                        내 닉네임: {insight?.nickname ?? ''}
+                    </InsightHeadline>
+                    <SectionTitle>내 정보 요약</SectionTitle>
+                    <Helper>검닉/길드 랭킹과 오늘 경기 기록을 한눈에 확인하세요.</Helper>
+                    {insightLoading && <Helper>불러오는 중...</Helper>}
+                    {insightError && <Status $tone="danger">{insightError}</Status>}
+                    {insight ? (
                         <InsightGrid>
                             <InsightItem>
                                 <InsightLabel>닉네임 랭킹</InsightLabel>
@@ -705,11 +720,9 @@ function AuthSection() {
                         </InsightGrid>
                     ) : (
                         <Helper>내 정보 데이터를 불러올 수 없습니다. 상태 새로고침을 눌러주세요.</Helper>
-                    )
-                ) : (
-                    <Helper>로그인하면 내 랭킹과 색상, 오늘 게임 기록을 확인할 수 있습니다.</Helper>
-                )}
-            </InsightCard>
+                    )}
+                </InsightCard>
+            )}
 
             <Card>
                 <SectionTitle>계정 동기화</SectionTitle>

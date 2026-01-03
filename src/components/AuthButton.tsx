@@ -250,8 +250,12 @@ const InsightHeadline = styled.div`
 
 const InsightGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: ${({theme}) => theme.spacing.md};
+
+    @media (max-width: ${({theme}) => theme.breakpoints.md}px) {
+        grid-template-columns: 1fr;
+    }
 `;
 
 const InsightItem = styled.div`
@@ -324,7 +328,7 @@ const StatsSection = styled.section`
 
 const StatsGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: ${({theme}) => theme.spacing.sm};
 `;
 
@@ -350,6 +354,13 @@ const StatValue = styled.span`
     color: ${({theme}) => theme.colors.textPrimary};
     font-size: ${({theme}) => theme.typography.sizes.xl};
     font-weight: ${({theme}) => theme.typography.weights.bold};
+`;
+
+const GameDetail = styled(Helper)`
+    margin-top: ${({theme}) => theme.spacing.sm};
+    display: block;
+    white-space: pre-line;
+    line-height: 1.7;
 `;
 
 const getAccessToken = (): string | null => {
@@ -619,6 +630,11 @@ function AuthSection() {
     const formatCount = (value?: number | null) => typeof value === 'number'
         ? value.toLocaleString('ko-KR')
         : '-';
+    const statCards = [
+        {label: '오늘 가입', value: `${formatCount(stats?.todayUserCount)}명`},
+        {label: '오늘 추가된 계정', value: `${formatCount(stats?.todayAccountCount)}개`},
+        {label: '전체 사용자', value: `${formatCount(stats?.totalUserCount)}명`},
+    ];
 
     return (
         <PageStack>
@@ -639,18 +655,12 @@ function AuthSection() {
             {(stats || isStatsLoading || statsError) && (
                 <StatsSection aria-live="polite">
                     <StatsGrid>
-                        <StatCard>
-                            <StatLabel>오늘 가입</StatLabel>
-                            <StatValue>{formatCount(stats?.todayUserCount)}명</StatValue>
-                        </StatCard>
-                        <StatCard>
-                            <StatLabel>오늘 추가된 계정</StatLabel>
-                            <StatValue>{formatCount(stats?.todayAccountCount)}개</StatValue>
-                        </StatCard>
-                        <StatCard>
-                            <StatLabel>전체 사용자</StatLabel>
-                            <StatValue>{formatCount(stats?.totalUserCount)}명</StatValue>
-                        </StatCard>
+                        {statCards.map((item) => (
+                            <StatCard key={item.label}>
+                                <StatLabel>{item.label}</StatLabel>
+                                <StatValue>{item.value}</StatValue>
+                            </StatCard>
+                        ))}
                     </StatsGrid>
                     {statsError && <Helper>{statsError}</Helper>}
                 </StatsSection>
@@ -711,11 +721,7 @@ function AuthSection() {
                             <InsightItem>
                                 <InsightLabel>오늘 게임 횟수</InsightLabel>
                                 <InsightValue>{insight.todayGames ?? '정보 없음'}</InsightValue>
-                                <Helper>
-                                    승 {insight.todayWinDelta ?? 0}회
-                                    <br/>
-                                    패 {insight.todayLoseDelta ?? 0}회
-                                </Helper>
+                                <GameDetail>{`승 ${insight.todayWinDelta ?? 0}회\n패 ${insight.todayLoseDelta ?? 0}회`}</GameDetail>
                             </InsightItem>
                             <InsightItem>
                                 <InsightLabel>획초 여부</InsightLabel>

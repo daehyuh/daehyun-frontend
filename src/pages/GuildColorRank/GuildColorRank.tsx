@@ -97,7 +97,6 @@ function GuildColorRank() {
                             oddBackgroundColor="#11121A"
                             evenBackgroundColor="#0B0D14"
                             border="1px solid #2E313E"
-                            useRankColor
                         >
                             <tbody>
                             {filtered.map((item, index) => (

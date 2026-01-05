@@ -13,7 +13,6 @@ type StyledTableProps = {
     columnWidths?: Property.Width[]
     oddBackgroundColor?: Property.BackgroundColor
     evenBackgroundColor?: Property.BackgroundColor
-    useRankColor?: boolean;
 }
 
 const StyledTableContainer = styled(Container)`
@@ -40,19 +39,6 @@ const StyledTable = styled.table<StyledTableProps>`
     & tr:nth-child(even) {
         background-color: ${({evenBackgroundColor, theme}) => evenBackgroundColor ?? theme.colors.surface};
     }
-
-    ${({useRankColor}) => useRankColor && `
-    & tbody tr:nth-child(1) td:nth-child(1) {
-        background-color: #f7c83b;
-    }
-
-    & tbody tr:nth-child(2) td:nth-child(1) {
-        background-color: #cbc9c9;
-    }
-
-    & tbody tr:nth-child(3) td:nth-child(1) {
-        background-color: #e8763b;
-    }`}
 `
 
 type TableHeaderProps = {
@@ -83,7 +69,6 @@ const StyledTableHead = styled.thead<StyledTableHeaderProps>`
 function Table({
                    children,
                    columnWidths,
-                   useRankColor,
                    oddBackgroundColor,
                    evenBackgroundColor,
                    maxHeight = '700px',
@@ -105,8 +90,7 @@ function Table({
     >
         <StyledTable columnWidths={columnWidths}
                      oddBackgroundColor={oddBackgroundColor}
-                     evenBackgroundColor={evenBackgroundColor}
-                     useRankColor={useRankColor}>
+                     evenBackgroundColor={evenBackgroundColor}>
             <StyledTableHead headerBackgroundColor={headerBackgroundColor}
                              headerColor={headerColor}
                              headerPadding={headerPadding}

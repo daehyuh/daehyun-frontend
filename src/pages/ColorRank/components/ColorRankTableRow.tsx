@@ -32,12 +32,62 @@ const StyledTableRow = styled.tr<{
     }
 `;
 
-const RankText = styled.span`
+type RankStyle = {
+    background: string;
+    color: string;
+    border: string;
+    shadow: string;
+    textShadow?: string;
+};
+
+const rankStyles: Record<number, RankStyle> = {
+    1: {
+        background: 'linear-gradient(135deg, #fff4bf, #f0c350)',
+        color: '#3e2a00',
+        border: '1px solid rgba(240, 195, 80, 0.65)',
+        shadow: '0 10px 24px rgba(240, 195, 80, 0.25)',
+        textShadow: '0 1px 1px rgba(255, 255, 255, 0.6)',
+    },
+    2: {
+        background: 'linear-gradient(135deg, #f4f7fb, #cfd7e6)',
+        color: '#2e3644',
+        border: '1px solid rgba(207, 215, 230, 0.7)',
+        shadow: '0 10px 24px rgba(207, 215, 230, 0.25)',
+        textShadow: '0 1px 1px rgba(255, 255, 255, 0.5)',
+    },
+    3: {
+        background: 'linear-gradient(135deg, #f6e5d4, #d7a46a)',
+        color: '#3f2d18',
+        border: '1px solid rgba(215, 164, 106, 0.65)',
+        shadow: '0 10px 24px rgba(215, 164, 106, 0.22)',
+        textShadow: '0 1px 1px rgba(255, 255, 255, 0.45)',
+    },
+};
+
+const getRankStyle = (rank?: number): Partial<RankStyle> => {
+    if (!rank) return {};
+    return rankStyles[rank] ?? {};
+};
+
+const RankBadge = styled.span<{ $rank?: number }>`
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    min-width: 64px;
+    padding: 8px 12px;
+    border-radius: ${({theme}) => theme.radii.pill};
     font-weight: ${({theme}) => theme.typography.weights.bold};
-    color: ${({theme}) => theme.colors.textPrimary};
+    letter-spacing: 0.02em;
+    ${({$rank, theme}) => {
+        const style = getRankStyle($rank);
+        return `
+            background: ${style.background ?? 'rgba(255, 255, 255, 0.04)'};
+            color: ${style.color ?? theme.colors.textPrimary};
+            border: ${style.border ?? '1px solid rgba(255, 255, 255, 0.08)'};
+            box-shadow: ${style.shadow ?? 'inset 0 1px 0 rgba(255, 255, 255, 0.04)'};
+            text-shadow: ${style.textShadow ?? 'none'};
+        `;
+    }}
 `;
 
 const CellStack = styled.div`
@@ -109,11 +159,12 @@ const formatRank = (rank?: number) => {
 function renderUserRow(rankUser: RankUser) {
     const {hex, display} = formatHex(rankUser.color);
     const isBlackNickname = rankUser.isBlack ?? rankUser.closeness >= 90;
+    const rankValue = rankUser.rank;
 
     return (
         <>
             <td>
-                <RankText>{formatRank(rankUser.rank)}</RankText>
+                <RankBadge $rank={rankValue}>{formatRank(rankValue)}</RankBadge>
             </td>
             <td>
                 <Text fontWeight="600">{rankUser.nickname}</Text>
@@ -137,11 +188,12 @@ function renderUserRow(rankUser: RankUser) {
 function renderGuildRow(rankGuild: RankGuild) {
     const {hex: initialHex, display: initialDisplay} = formatHex(rankGuild.initial_color);
     const {hex: backgroundHex, display: backgroundDisplay} = formatHex(rankGuild.initial_background_color);
+    const rankValue = rankGuild.rank;
 
     return (
         <>
             <td>
-                <RankText>{formatRank(rankGuild.rank)}</RankText>
+                <RankBadge $rank={rankValue}>{formatRank(rankValue)}</RankBadge>
             </td>
             <td>
                 <Text fontWeight="600">{rankGuild.guild_name}</Text>

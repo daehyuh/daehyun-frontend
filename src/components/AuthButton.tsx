@@ -654,7 +654,29 @@ function AuthSection() {
             )}
 
             <Card>
-                <SectionTitle>계정 동기화</SectionTitle>
+                <Headline>인증방법 선택</Headline>
+                <SectionTitle>최후의반론 인증</SectionTitle>
+                <Helper>Team42 공지 댓글로 인증번호를 남겨 계정을 동기화합니다.</Helper>
+                <Field>
+                    <Label htmlFor="guestNickname">닉네임</Label>
+                    <Input
+                        id="guestNickname"
+                        value={guestNickname}
+                        onChange={setGuestNickname}
+                        placeholder="예: 최후의 반론"
+                        width="100%"
+                    />
+                </Field>
+                <ActionButton onClick={handleGuestRegister} disabled={!isLoggedIn || isSyncing}>
+                    {isSyncing ? '요청 중...' : '게스트 인증번호 받기'}
+                </ActionButton>
+                {guestInstruction && (
+                    <Status $tone="success">
+                        {guestInstruction}
+                    </Status>
+                )}
+                <Divider />
+                <SectionTitle>스파이의 비밀문서 인증</SectionTitle>
                 <Helper>로그인 후 닉네임과 인증 코드를 입력해 계정을 연결하세요.</Helper>
                 <TwoColumn>
                     <Field>
@@ -683,28 +705,9 @@ function AuthSection() {
                 </ActionButton>
                 <Helper>계정당 1회만 등록할 수 있습니다. 오류 시 문의해주세요.</Helper>
 
-                <Divider />
+               
 
-                <SectionTitle>게스트 등록</SectionTitle>
-                <Helper>Team42 공지 댓글로 인증번호를 남겨 게스트를 동기화합니다.</Helper>
-                <Field>
-                    <Label htmlFor="guestNickname">게스트 닉네임</Label>
-                    <Input
-                        id="guestNickname"
-                        value={guestNickname}
-                        onChange={setGuestNickname}
-                        placeholder="예: 최후의 반론"
-                        width="100%"
-                    />
-                </Field>
-                <ActionButton onClick={handleGuestRegister} disabled={!isLoggedIn || isSyncing}>
-                    {isSyncing ? '요청 중...' : '게스트 인증번호 받기'}
-                </ActionButton>
-                {guestInstruction && (
-                    <Status $tone="success">
-                        {guestInstruction}
-                    </Status>
-                )}
+
             </Card>
         </PageStack>
     );

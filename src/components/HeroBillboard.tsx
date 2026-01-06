@@ -6,6 +6,8 @@ import {NormalizedAd, normalizeAdsResponse} from "@/utils/ads";
 const Billboard = styled.section`
     position: relative;
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     border-radius: ${({theme}) => theme.radii.lg};
     border: 1px solid ${({theme}) => theme.colors.border};
     background: ${({theme}) => theme.gradients.panel};
@@ -26,6 +28,17 @@ const HeaderRow = styled.div`
         align-items: flex-start;
         gap: ${({theme}) => theme.spacing.xs};
     }
+`;
+
+const Badge = styled.span`
+    display: inline-flex;
+    align-items: center;
+    padding: ${({theme}) => `${theme.spacing.xs} ${theme.spacing.sm}`};
+    border-radius: ${({theme}) => theme.radii.pill};
+    background: ${({theme}) => theme.colors.surfaceMuted};
+    border: 1px solid ${({theme}) => theme.colors.border};
+    font-size: ${({theme}) => theme.typography.sizes.xs};
+    letter-spacing: 0.08em;
 `;
 
 const InlineLink = styled.a`
@@ -50,12 +63,24 @@ const InlineLink = styled.a`
 const Track = styled.div<{ $index: number }>`
     display: flex;
     width: 100%;
+    max-width: 100%;
     transition: transform ${({theme}) => theme.transitions.default};
     transform: translateX(${({$index}) => `-${$index * 100}%`});
 `;
 
+const TrackViewport = styled.div`
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+`;
+
 const SlideCard = styled.a<{ $clickable: boolean }>`
     min-width: 100%;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     display: grid;
     grid-template-columns: 1fr;
     gap: ${({theme}) => theme.spacing.md};
@@ -89,6 +114,8 @@ const SlideCard = styled.a<{ $clickable: boolean }>`
 const Visual = styled.div`
     position: relative;
     width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
     border-radius: ${({theme}) => theme.radii.md};
     overflow: hidden;
     background: ${({theme}) => theme.colors.surfaceMuted};
@@ -110,29 +137,6 @@ const VisualImage = styled.img`
     object-fit: contain;
     background: ${({theme}) => theme.colors.surfaceMuted};
     display: block;
-
-    @media (max-width: ${({theme}) => theme.breakpoints.md}px) {
-        object-fit: cover;
-    }
-`;
-
-const Ribbon = styled.span`
-    position: absolute;
-    top: ${({theme}) => theme.spacing.sm};
-    left: ${({theme}) => theme.spacing.sm};
-    padding: ${({theme}) => `${theme.spacing.xs} ${theme.spacing.sm}`};
-    border-radius: ${({theme}) => theme.radii.pill};
-    background: rgba(0, 0, 0, 0.4);
-    color: ${({theme}) => theme.colors.textPrimary};
-    font-size: ${({theme}) => theme.typography.sizes.xs};
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    backdrop-filter: blur(6px);
-
-    @media (max-width: ${({theme}) => theme.breakpoints.md}px) {
-        top: ${({theme}) => theme.spacing.md};
-        left: ${({theme}) => theme.spacing.md};
-    }
 `;
 
 const Copy = styled.div`
@@ -272,6 +276,7 @@ function HeroBillboard() {
             aria-label="상단 광고판"
         >
             <HeaderRow>
+                <Badge>광고</Badge>
                 <InlineLink
                     href="https://open.kakao.com/o/sWIax8Vc"
                     target="_blank"
@@ -281,7 +286,7 @@ function HeroBillboard() {
                 </InlineLink>
             </HeaderRow>
 
-            <div style={{position: 'relative', width: '100%'}}>
+            <TrackViewport>
                 <Track $index={currentIndex}>
                     {items.map((item, index) => {
                         const clickable = Boolean(item.href);
@@ -296,7 +301,6 @@ function HeroBillboard() {
                             >
                                 <Visual>
                                     <VisualImage src={item.image} alt={item.label ?? '광고 이미지'} />
-                                    <Ribbon>광고</Ribbon>
                                 </Visual>
                                 <Copy className="sr-only">
                                     <Eyebrow>스폰서 · {index + 1} / {items.length}</Eyebrow>
@@ -318,7 +322,7 @@ function HeroBillboard() {
                         </ControlButton>
                     </Controls>
                 )}
-            </div>
+            </TrackViewport>
 
             {items.length > 1 && (
                 <>

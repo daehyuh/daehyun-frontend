@@ -20,14 +20,10 @@ const HeaderRow = styled.div`
     display: flex;
     align-items: center;
     gap: ${({theme}) => theme.spacing.sm};
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    min-width: 0;
+    overflow: hidden;
     margin-bottom: ${({theme}) => theme.spacing.md};
-
-    @media (max-width: ${({theme}) => theme.breakpoints.md}px) {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: ${({theme}) => theme.spacing.xs};
-    }
 `;
 
 const Badge = styled.span`
@@ -39,6 +35,7 @@ const Badge = styled.span`
     border: 1px solid ${({theme}) => theme.colors.border};
     font-size: ${({theme}) => theme.typography.sizes.xs};
     letter-spacing: 0.08em;
+    flex-shrink: 0;
 `;
 
 const InlineLink = styled.a`
@@ -53,6 +50,10 @@ const InlineLink = styled.a`
     font-size: ${({theme}) => theme.typography.sizes.sm};
     text-decoration: none;
     white-space: nowrap;
+    flex-shrink: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &:hover {
         border-color: ${({theme}) => theme.colors.accent};
@@ -247,9 +248,11 @@ function HeroBillboard() {
     const activeAd = hasAds ? items[currentIndex % items.length] : null;
 
     useEffect(() => {
-        if (items.length <= 1 || isPaused) return;
+        if (items.length <= 1) return;
         const timer = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % items.length);
+            setCurrentIndex((prev) => (
+                isPaused ? prev : (prev + 1) % items.length
+            ));
         }, 6500);
 
         return () => clearInterval(timer);
@@ -336,7 +339,6 @@ function HeroBillboard() {
                             />
                         ))}
                     </Dots>
-                    <Hint>모바일에서는 좌우로 밀어 다음 광고를 볼 수 있어요.</Hint>
                 </>
             )}
             {!isClickable && (

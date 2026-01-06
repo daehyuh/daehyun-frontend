@@ -89,12 +89,6 @@ const InlineAdsSection = styled.section`
     gap: ${({theme}) => theme.spacing.md};
 `;
 
-const SectionTitle = styled.h2`
-    margin: 0;
-    font-size: ${({theme}) => theme.typography.sizes.lg};
-    color: ${({theme}) => theme.colors.textPrimary};
-`;
-
 const AdRail = styled.aside`
     display: none;
 
@@ -228,6 +222,8 @@ function App() {
             <Shell>
                 <Header pages={pages} member_pages={member_pages}/>
 
+                <HeroBillboard />
+
                 <ContentGrid $hasRail={SHOW_AD_LAYOUT}>
                     <PrimaryColumn>
                         <PageSurface>
@@ -250,15 +246,11 @@ function App() {
                         </PageSurface>
                     </PrimaryColumn>
                 </ContentGrid>
-
-                <HeroBillboard />
                 <Footer/>
 
                 {SHOW_AD_LAYOUT && hasAds && (
                     <AdsRow aria-label="푸터 위 스폰서 광고 영역">
                         <InlineAdsSection>
-                            <SectionTitle>스폰서 보드</SectionTitle>
-                            <p style={{margin: '0', color: '#A4A9C3'}}>오늘의 광고를 스와이프해서 확인해보세요</p>
                             <p style={{margin: '0', color: '#A4A9C3'}}>광고/제휴 카카오톡 오픈채팅</p>
                             <GoogleAdSense
                                 slotId={ADSENSE_SLOTS.inline}

@@ -9,7 +9,7 @@ const Billboard = styled.section`
     border-radius: ${({theme}) => theme.radii.lg};
     border: 1px solid ${({theme}) => theme.colors.border};
     background: ${({theme}) => theme.gradients.panel};
-    padding: clamp(18px, 3vw, 28px);
+    padding: clamp(14px, 2.4vw, 22px);
     box-shadow: ${({theme}) => theme.shadows.soft};
     overflow: hidden;
 `;
@@ -26,28 +26,6 @@ const HeaderRow = styled.div`
         align-items: flex-start;
         gap: ${({theme}) => theme.spacing.xs};
     }
-`;
-
-const Pill = styled.span`
-    display: inline-flex;
-    align-items: center;
-    gap: ${({theme}) => theme.spacing.xs};
-    padding: ${({theme}) => `${theme.spacing.xs} ${theme.spacing.sm}`};
-    border-radius: ${({theme}) => theme.radii.pill};
-    background: ${({theme}) => theme.colors.surfaceMuted};
-    border: 1px solid ${({theme}) => theme.colors.border};
-    font-size: ${({theme}) => theme.typography.sizes.xs};
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-`;
-
-const Title = styled.h2`
-    margin: 0;
-    font-size: clamp(1.15rem, 2.4vw, 1.45rem);
-    color: ${({theme}) => theme.colors.textPrimary};
-    letter-spacing: -0.01em;
-    flex: 1 1 100%;
-    width: 100%;
 `;
 
 const InlineLink = styled.a`
@@ -85,7 +63,7 @@ const SlideCard = styled.a<{ $clickable: boolean }>`
     background: ${({theme}) => theme.colors.surface};
     border: 1px solid ${({theme}) => theme.colors.border};
     border-radius: ${({theme}) => theme.radii.md};
-    padding: clamp(10px, 1.6vw, 16px);
+    padding: clamp(8px, 1.4vw, 14px);
     color: ${({theme}) => theme.colors.textPrimary};
     text-decoration: none;
     box-shadow: ${({theme}) => theme.shadows.soft};
@@ -114,11 +92,13 @@ const Visual = styled.div`
     border-radius: ${({theme}) => theme.radii.md};
     overflow: hidden;
     background: ${({theme}) => theme.colors.surfaceMuted};
-    aspect-ratio: 16 / 6;
+    aspect-ratio: 16 / 5;
+    max-height: clamp(160px, 28vw, 220px);
     box-shadow: ${({theme}) => theme.shadows.tight};
 
     @media (max-width: ${({theme}) => theme.breakpoints.md}px) {
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 16 / 7;
+        max-height: 200px;
         border-radius: ${({theme}) => theme.radii.lg};
         box-shadow: none;
     }
@@ -292,8 +272,6 @@ function HeroBillboard() {
             aria-label="상단 광고판"
         >
             <HeaderRow>
-                <Pill>스폰서 보드</Pill>
-                <Title>오늘의 광고를 스와이프해서 확인해보세요</Title>
                 <InlineLink
                     href="https://open.kakao.com/o/sWIax8Vc"
                     target="_blank"

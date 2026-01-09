@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import styled from "styled-components";
 import {Link} from "react-router-dom";
 
@@ -93,13 +93,18 @@ const FooterLegal = styled.div`
     }
 `;
 
+const InfoText = styled.span`
+    color: ${({theme}) => theme.colors.textPrimary};
+    font-size: ${({theme}) => theme.typography.sizes.sm};
+`;
+
 function Footer() {
     return (
         <FooterWrapper>
             <FooterGrid>
                 <FooterSection>
-                    <FooterBrand>대현닷컴</FooterBrand>
-                    <FooterHeading>연락처</FooterHeading>
+                    <FooterBrand>DAEHYUN</FooterBrand>
+                    <FooterHeading>CONTACT</FooterHeading>
                     <ContactList>
                         <ExternalLink href="mailto:rkdeown10@naver.com">rkdeown10@naver.com</ExternalLink>
                         <ExternalLink href="tel:01077122413">010-7712-2413</ExternalLink>
@@ -107,23 +112,24 @@ function Footer() {
                 </FooterSection>
 
                 <FooterSection>
-                    <FooterHeading>정책</FooterHeading>
-                    <FooterLink to="/이용약관">이용약관</FooterLink>
-                    <FooterLink to="/개인정보처리방침">개인정보 처리방침</FooterLink>
+                    <FooterHeading>POLICY</FooterHeading>
+                    <FooterLink to="/terms">서비스 이용약관</FooterLink>
+                    <FooterLink to="/privacy">개인정보 처리방침</FooterLink>
                 </FooterSection>
 
                 <FooterSection>
-                    <FooterHeading>광고/제휴</FooterHeading>
+                    <FooterHeading>광고 제휴/문의</FooterHeading>
                     <ContactList>
                         <ExternalLink href="https://open.kakao.com/o/sWIax8Vc" target="_blank" rel="noreferrer">
                             카카오톡 오픈채팅
                         </ExternalLink>
+                        <InfoText>후원: 토스뱅크 1000-0947-5155 (강대현)</InfoText>
                     </ContactList>
                 </FooterSection>
             </FooterGrid>
 
             <FooterLegal>
-                <span>© {new Date().getFullYear()} 대현닷컴. All rights reserved.</span>
+                <span>© {new Date().getFullYear()} DAEHYUN. All rights reserved.</span>
             </FooterLegal>
         </FooterWrapper>
     );

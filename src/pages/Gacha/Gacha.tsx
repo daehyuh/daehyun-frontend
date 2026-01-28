@@ -5,7 +5,7 @@ import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container, Text} from "@/components";
 import Input from "@/components/base/Input";
 
-import probabillty from "@/assets/probabilities/snowballFightProbability";
+import probabillty from "@/assets/probabilities/yutPlay2026Probability";
 
 import GradeProbability from "@/constant/GradeProbability";
 import ProbabilityItem from "@/constant/ProbabilityItem";
@@ -260,7 +260,7 @@ function Gacha() {
         <Layout>
             <ContentLayout>
             <div style={{marginBottom: 0}}>
-                <CategoryTitle title={`2025 눈싸움 확률 적용`}/>
+                <CategoryTitle title={`2026 윷놀이 확률 적용`}/>
             </div>
                 <SimulationCard fullWidth>
                     <SimulationHeader>

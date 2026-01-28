@@ -1,211 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <link rel="stylesheet" href="/rice/index.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>토끼 송편 패턴 연습</title>
 </head>
 <body>
-
-    <div class="game">
+    <div class="game" data-mode="rabbit">
         <div class="screen">
             <div class="sky">
-                <div class="mill">
-                    <p>🏏</p>
-                    <p>🏏</p>
-                    <p>🏏</p>
-                    <p>🏏</p>
-                    <p>🏏</p>
-                    <p>🏏</p>
+                <div class="hud">
+                    <div class="badge">🐰 토끼 모드</div>
+                    <div class="selector">
+                        <label>라운드
+                            <select data-round-select>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12" selected>12</option>
+                            </select>
+                        </label>
+                        <label>
+                            <input type="checkbox" data-stacked>
+                            반죽 공격 중첩(최대 36칸)
+                        </label>
+                    </div>
+                    <button class="ghost-button" data-refresh>새 패턴</button>
                 </div>
-                <div style="color: white;">
-                    26일 12시부터 3시간 코딩해서 만든거라 토끼만 있어요
-                </div>
-                
-                <div class="scorebar">
-                    <div>❄️</div>
-                    <div class="score">0</div>
-                </div>
-            </div>
-
-            <div class="timer">
-                <div class="alerticon">⏰</div>
-                <div class="time"></div>
-                
-            </div>
-            
-            <div class="dot">
-                <div id="top" class="top">
-
-                </div>
-                <div id="mid" class="top">
-                    
-                </div>
-                <div id="bottom" class="bottom">
-                    
+                <div class="info-line" data-pattern-note>
+                    상급 송편부터 패턴이 적용됩니다. 토끼 모드는 □(초록·파랑·핑크) / ■(청록)으로 패턴이 색상화돼요.
                 </div>
             </div>
 
-
+            <div class="lanes" data-lanes></div>
         </div>
         
         <div class="control">
-            <div class="blankbutton">
-
+            <div class="status">
+                <div><strong data-pattern-label>패턴 대기 중</strong></div>
+                <div data-progress>0 / 0</div>
             </div>
+            <div class="status" data-status-text>버튼을 눌러 패턴을 따라가세요.</div>
 
-            <div class="topbutton">
+            <div class="control-row">
                 <div class="left">
-
+                    <div class="control-btn tealbtn" data-color="teal" aria-label="청록"></div>
                 </div>
                 <div class="right">
-                    <div id="greenbtn" class="greenbtn"></div>
-                    <div id="bluebtn" class="bluebtn"></div>
+                    <div class="control-btn pinkbtn" data-color="pink" aria-label="핑크"></div>
                 </div>
             </div>
 
-            <div class="bottombutoom">
+            <div class="control-row">
                 <div class="left">
-                    <div id="tealbtn" class="tealbtn"></div>
+                    <div class="control-btn greenbtn" data-color="green" aria-label="초록"></div>
                 </div>
                 <div class="right">
-                    <div id="pinkbtn" class="pinkbtn"></div>
+                    <div class="control-btn bluebtn" data-color="blue" aria-label="파랑"></div>
                 </div>
             </div>
         </div>
-
     </div>
 
-    <script>
-        var topdiv = document.getElementById('top');
-        var middiv = document.getElementById('mid');
-        var bottomdiv = document.getElementById('bottom');
-
-        var ball_list = ["blue", "green","teal","pink"];
-
-        var list = []
-        var cnt = 0;
-        
-        function start(){
-            list = [];
-            topdiv.innerHTML = "";
-            middiv.innerHTML = "";
-            bottomdiv.innerHTML = "";
-            cnt = 0;
-
-            for (let i = 0; i < 18; i++){
-            let random = Math.floor(Math.random() * ball_list.length);
-            list.push(ball_list[random]);
-            }
-
-            console.log(list);
-
-            for (let i = 0; i < 6; i++){
-                topdiv.innerHTML += `<div class="ball ${list[i]}"></div>`;
-                middiv.innerHTML += `<div class="ball ${list[i+6]}"></div>`;
-                bottomdiv.innerHTML += `<div class="ball ${list[i+12]}"></div>`;
-            }
-
-            
-        }
-
-
-
-var bluebtn = document.getElementById('bluebtn');
-var greenbtn = document.getElementById('greenbtn');
-var tealbtn = document.getElementById('tealbtn');
-var pinkbtn = document.getElementById('pinkbtn');
-
-
-
-bluebtn.addEventListener('click', function(){
-    if (list[cnt] == "blue"){
-        var ball = document.querySelectorAll('.ball');
-        ball[cnt].style.backgroundImage = "url('/rice/images/icon/blue_gray.png')";
-        cnt++;
-        console.log("성공");
-    } else {
-        alert("실패");
-        start();
-    }
-    if (cnt == 18){
-        alert("성공");
-        start();
-    }
-});
-
-greenbtn.addEventListener('click', function(){
-    if (list[cnt] == "green"){
-        var ball = document.querySelectorAll('.ball');
-        ball[cnt].style.backgroundImage = "url('/rice/images/icon/green_gray.png')";
-
-        cnt++;
-        console.log("성공");
-    } else {
-        alert("실패");
-        start();
-    }
-    if (cnt == 18){
-        alert("성공");
-        start();
-    }
-});
-
-tealbtn.addEventListener('click', function(){
-    if (list[cnt] == "teal"){
-        var ball = document.querySelectorAll('.ball');
-        ball[cnt].style.backgroundImage = "url('/rice/images/icon/teal_gray.png')";
-        cnt++;
-        console.log("성공");
-    } else {
-        alert("실패");
-        start();
-    }
-    if (cnt == 18){
-        alert("성공");
-        start();
-    }
-});
-
-pinkbtn.addEventListener('click', function(){
-    if (list[cnt] == "pink"){
-        var ball = document.querySelectorAll('.ball');
-        ball[cnt].style.backgroundImage = "url('/rice/images/icon/pink_gray.png')";
-
-        // list.shift();
-        cnt++;
-        console.log("성공");
-    } else {
-        alert("실패");
-        start();
-    }
-
-    if (cnt == 18){
-        alert("성공");
-        start();
-    }
-
-});
-
-// 시간을 세는 함수
-
-var time = document.querySelector('.time');
-var alerticon = document.querySelector('.alerticon');
-
-var timer = setInterval(function(){
-    time.innerHTML = parseInt(time.innerHTML) - 1;
-    if (parseInt(time.innerHTML) == 0){
-        clearInterval(timer);
-        alerticon.innerHTML = "시간초과";
-    }
-}, 1000);
-
-  
-start();
-
-
-</script>
-
+    <script type="module">
+        import { initRiceGame } from '/rice/game.js';
+        initRiceGame({ mode: 'rabbit' });
+    </script>
 </body>
 </html>

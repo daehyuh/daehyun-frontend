@@ -1,0 +1,9 @@
+{ "items": [
+  { "chance": 15, "equip": true, "name": "암영지존 대부 스킨" },
+  { "chance": 15, "equip": true, "name": "벽력의 나그네 테러리스트 스킨" },
+  { "chance": 15, "equip": true, "name": "어두운 사념 테두리" },
+  { "chance": 15, "equip": true, "name": "방랑자의 흔적 테두리" },
+  { "chance": 15, "equip": true, "name": "흑연혼보" },
+  { "chance": 15, "equip": true, "name": "비급 족자" },
+  { "chance": 10, "equip": true, "name": "천방지축 댕댕이콘" }
+] }

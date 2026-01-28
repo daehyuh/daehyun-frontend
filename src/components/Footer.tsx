@@ -103,7 +103,8 @@ function Footer() {
         <FooterWrapper>
             <FooterGrid>
                 <FooterSection>
-                    <FooterBrand>DAEHYUN</FooterBrand>
+                    <FooterBrand>대현닷컴</FooterBrand>
+                    <InfoText>개발자 : 강대현</InfoText>
                     <FooterHeading>CONTACT</FooterHeading>
                     <ContactList>
                         <ExternalLink href="mailto:rkdeown10@naver.com">rkdeown10@naver.com</ExternalLink>
@@ -129,7 +130,7 @@ function Footer() {
             </FooterGrid>
 
             <FooterLegal>
-                <span>© {new Date().getFullYear()} DAEHYUN. All rights reserved.</span>
+                <span>© 2026 대현닷컴. All rights reserved.</span>
             </FooterLegal>
         </FooterWrapper>
     );

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <link rel="stylesheet" href="/rice/index.css">
     <meta charset="UTF-8">
@@ -7,55 +7,41 @@
     <title>떡치기 연습</title>
 </head>
 <body>
-
     <div class="game">
         <div class="screen">
             <div class="sky">
-                <div class="mill">
-                    <p>🏏</p>
-                    <p>🏏</p>
-                    <p>🏏</p>
-                    <p>🏏</p>
-                    <p>🏏</p>
-                    <p>🏏</p>
+                <div class="hud">
+                    <div class="badge">🥟 떡치기 패턴 연습</div>
+                    <div class="badge">모드를 눌러 바로 이동</div>
                 </div>
-                <div style="color: white;">
-                    26일 12시부터 3시간 코딩해서 만든거라 토끼만 있어요
-                </div>
-                
-                <div class="scorebar">
-                    <div>❄️</div>
-                    <div class="score">0</div>
+                <div class="info-line">
+                    1~4라운드: 하급(흰·분홍·쑥) | 5~8라운드: 중급(자색·감자·칡·모시·도토리·송기) | 9~11라운드: 상급(조개·꽃·과일·호박) | 12라운드: 최고급(토끼·호랑이·돼지 + 상급)
                 </div>
             </div>
-
-            <div class="timer">
-                <div class="alerticon">⏰</div>
-                <div class="time"></div>
-                
+            <div class="lanes">
+                <div class="lane">
+                    <div class="status">
+                        <div><strong>토끼</strong> 색상: 초록 · 파랑 · 핑크 / <span style="opacity:0.8;">패턴 블럭</span>: 청록</div>
+                        <div><strong>돼지</strong> 색상: 빨강 · 노랑 · 주황 / <span style="opacity:0.8;">패턴 블럭</span>: 보라</div>
+                    </div>
+                </div>
             </div>
-            <h3 style="color:white;">[플레이할 모드를 선택해주세요]</h3>
-            <div class="main">
-                <!-- 이미지클릭시 링크이동 -->
-                <a href="/rice/pig">
-                <img width="220px" height="400px" src="../rice/images/pig.png" alt="rice">
-                </a>
-                <a href="/rice/rabbit">
-                <img width="220px" height="400px" src="../rice/images/rabbit.png" alt="rice">
-                </a>
-            </div>
-            
-
-
         </div>
         
-        <div class="control" style="color: white;">
-            <h1>🐷 연습할 모드를 선택해 주세요 🐰</h1>
-            <h2>🐷 돼지인간 왼손잡이 모드 🐷</h2>
-            <h2>🐰 토끼인간 오른손잡이 모드 🐰</h2>
+        <div class="control">
+            <div class="main">
+                <a href="/rice/pig">
+                    <img width="220" height="360" src="../rice/images/pig.png" alt="pig mode">
+                </a>
+                <a href="/rice/rabbit">
+                    <img width="220" height="360" src="../rice/images/rabbit.png" alt="rabbit mode">
+                </a>
+            </div>
+            <div class="status">
+                <div><strong>Tip</strong> 라운드를 선택하면 각 페이지에서 패턴을 바로 확인할 수 있어요.</div>
+                <div style="opacity:0.85;">모바일도 가로·세로 모두 맞춰 정렬했습니다.</div>
+            </div>
         </div>
-
     </div>
-
 </body>
 </html>

@@ -62,6 +62,9 @@ const GachaTableRow = ({
                     style={{display: 'block'}}
                     src={`image/Items/${item.name.replace(': ', '')}.webp`}
                     alt={item.name.replace(': ', '')}
+                    onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.visibility = 'hidden';
+                    }}
                 />
             </Container>
         </td>

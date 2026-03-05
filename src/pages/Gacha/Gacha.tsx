@@ -5,7 +5,7 @@ import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container, Text} from "@/components";
 import Input from "@/components/base/Input";
 
-import probabillty from "@/assets/probabilities/yutPlay2026Probability";
+import probability from "@/assets/probabilities/cityNight2026Probability";
 
 import GradeProbability from "@/constant/GradeProbability";
 import ProbabilityItem from "@/constant/ProbabilityItem";
@@ -124,10 +124,10 @@ const IconBadge = styled.span`
 function Gacha() {
     const SELECT_GRADES: GachaSelectOptionType[] = [
         {label: '선택해주세요', value: null},
-        {label: '2500루블', value: '2500R'},
-        {label: '150루나', value: '150'},
-        {label: '750루나', value: '750'},
-        {label: '패키지상자', value: 'Legend'}
+        {label: '오래된 성물함', value: '150'},
+        {label: '평범한 성물함', value: '750'},
+        {label: '세뇌의 성물함', value: '2500R'},
+        {label: '구원의 성물함', value: 'Legend'}
     ]
 
     const [selectedGradeValue, setSelectedGradeValue] = useState(SELECT_GRADES[0]);
@@ -160,7 +160,7 @@ function Gacha() {
         const savedCheckedItems = getCookie("checkedItems");
         
         const savedCheckedItemsSet2 = new Set(savedCheckedItems ? savedCheckedItems.split(",").map(Number) : []);
-        const items2 = (grade ? probabillty[grade].items : []).map((item, index) => ({
+        const items2 = (grade ? probability[grade].items : []).map((item, index) => ({
             ...item,
             isChecked: savedCheckedItemsSet2.has(index),
             originalChance: item.chance
@@ -260,7 +260,7 @@ function Gacha() {
         <Layout>
             <ContentLayout>
             <div style={{marginBottom: 0}}>
-                <CategoryTitle title={`2026 윷놀이 확률 적용`}/>
+                <CategoryTitle title={`2026 포교된 도시의 밤 확률 적용`}/>
             </div>
                 <SimulationCard fullWidth>
                     <SimulationHeader>

@@ -1,0 +1,11 @@
+{
+  "items": [
+    { "name": "최후의 심판 청부업자 스킨", "chance": 18, "equip": true },
+    { "name": "개화하는 신세계의 교주 스킨", "chance": 18, "equip": true },
+    { "name": "심연 속 시선 테두리", "chance": 12, "equip": true },
+    { "name": "은제 구속구 테두리", "chance": 12, "equip": true },
+    { "name": "발아하는 재앙", "chance": 12, "equip": true },
+    { "name": "백은 묵주", "chance": 12, "equip": true },
+    { "name": "창세기 외전", "chance": 16, "equip": true }
+  ]
+}

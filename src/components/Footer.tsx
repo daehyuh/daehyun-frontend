@@ -104,7 +104,7 @@ function Footer() {
             <FooterGrid>
                 <FooterSection>
                     <FooterBrand>대현닷컴</FooterBrand>
-                    <InfoText>개발자 : 강대현</InfoText>
+                    <ExternalLink href="https://daehyun.dev">개발자 : 강대현</ExternalLink>
                     <FooterHeading>CONTACT</FooterHeading>
                     <ContactList>
                         <ExternalLink href="mailto:rkdeown10@naver.com">rkdeown10@naver.com</ExternalLink>

@@ -405,7 +405,7 @@ function AuthSection() {
             setInsightLoading(false);
         }
     }, []);
-
+    
     const exchangeCode = useCallback(async (code: string, incomingState?: string | null) => {
         const storedState = typeof sessionStorage !== 'undefined'
             ? sessionStorage.getItem('google_oauth_state')
@@ -549,7 +549,7 @@ function AuthSection() {
                 },
                 credentials: "include",
             });
-
+                                                                     
             if (!response.ok) {
                 const text = await response.text();
                 throw new Error(text || `요청 실패: ${response.status}`);

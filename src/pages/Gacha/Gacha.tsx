@@ -3,7 +3,6 @@ import styled from "styled-components";
 import {ContentLayout, Layout, Select, SelectOptionType} from "../../components/index";
 import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container, Text} from "@/components";
-import Input from "@/components/base/Input";
 
 import probability from "@/assets/probabilities/cityNight2026Probability";
 
@@ -53,6 +52,22 @@ const SimulationActions = styled.div`
     gap: ${({theme}) => theme.spacing.sm};
     flex-wrap: wrap;
     align-items: center;
+`;
+
+const SimulationCountInput = styled.input`
+    width: 120px;
+    height: 42px;
+    padding: 0 ${({theme}) => theme.spacing.md};
+    border-radius: ${({theme}) => theme.radii.md};
+    border: 1px solid ${({theme}) => theme.colors.border};
+    background: ${({theme}) => theme.colors.surfaceMuted};
+    color: ${({theme}) => theme.colors.textPrimary};
+    font-size: ${({theme}) => theme.typography.sizes.base};
+
+    &:focus {
+        outline: none;
+        border-color: ${({theme}) => theme.colors.accent};
+    }
 `;
 
 const ResultList = styled.div`
@@ -137,7 +152,7 @@ function Gacha() {
     })
     const [simResults, setSimResults] = useState<ProbabilityItem[]>([]);
     const [simError, setSimError] = useState<string | null>(null);
-    const [simCount, setSimCount] = useState<number>(1);
+    const [simCountInput, setSimCountInput] = useState<string>('1');
 
     const availableItems = useMemo(
         () => items.filter(item => item.chance > 0),
@@ -227,7 +242,9 @@ function Gacha() {
             return;
         }
 
-        const count = Math.min(10, Math.max(1, simCount || 1));
+        const parsedCount = Number(simCountInput);
+        const safeCount = Number.isFinite(parsedCount) ? Math.trunc(parsedCount) : 1;
+        const count = Math.min(20, Math.max(1, safeCount || 1));
         const candidates = availableItems;
         const totalChance = candidates.reduce((sum, item) => sum + item.chance, 0);
 
@@ -252,8 +269,8 @@ function Gacha() {
             picks.push(picked ?? candidates[candidates.length - 1]);
         }
 
-        setSimResults(picks.slice(0, 10));
-        setSimCount(count);
+        setSimResults(picks);
+        setSimCountInput(String(count));
     }
 
     return (
@@ -278,16 +295,14 @@ function Gacha() {
                             options={SELECT_GRADES}
                             onChange={selectChangeHandler}
                             width={'180px'}/>
-                        <Input
-                            type="number"
-                            value={simCount}
-                            onChange={(value) => setSimCount(() => {
-                                const num = Number(value);
-                                if (Number.isNaN(num)) return 1;
-                                return Math.min(10, Math.max(1, num));
-                            })}
-                            placeholder="1~10"
-                            width="120px"
+                        <SimulationCountInput
+                            type="text"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            value={simCountInput}
+                            onChange={(e) => setSimCountInput(e.target.value.replace(/[^0-9]/g, ''))}
+                            placeholder="1~20"
+                            aria-label="뽑기 횟수"
                         />
                         <Button onClick={simulateDraw} padding={'12px 20px'}>
                             뽑기 돌리기

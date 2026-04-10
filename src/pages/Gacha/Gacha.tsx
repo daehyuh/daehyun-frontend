@@ -5,7 +5,7 @@ import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container, Text} from "@/components";
 import Input from "@/components/base/Input";
 
-import probability from "@/assets/probabilities/cityNight2026Probability";
+import probability from "@/assets/probabilities/times42Probability";
 
 import GradeProbability from "@/constant/GradeProbability";
 import ProbabilityItem from "@/constant/ProbabilityItem";
@@ -122,12 +122,15 @@ const IconBadge = styled.span`
 `;
 
 function Gacha() {
+    const EVENT_ID = "times42-2026-spring";
+    const SELECTED_GRADE_COOKIE = `${EVENT_ID}:selectedGrade`;
+    const CHECKED_ITEMS_COOKIE = `${EVENT_ID}:checkedItems`;
     const SELECT_GRADES: GachaSelectOptionType[] = [
         {label: '선택해주세요', value: null},
-        {label: '오래된 성물함', value: '150'},
-        {label: '평범한 성물함', value: '750'},
-        {label: '세뇌의 성물함', value: '2500R'},
-        {label: '구원의 성물함', value: 'Legend'}
+        {label: '42타임즈 과월호', value: '150'},
+        {label: '일간 42타임즈', value: '750'},
+        {label: '주간 42타임즈', value: '2500R'},
+        {label: '42타임즈 봄맞이 특집호', value: 'Legend'}
     ]
 
     const [selectedGradeValue, setSelectedGradeValue] = useState(SELECT_GRADES[0]);
@@ -145,19 +148,19 @@ function Gacha() {
     );
 
     useEffect(() => {
-        const savedGrade = getCookie<GachaSelectOptionType>("selectedGrade");
+        const savedGrade = getCookie<GachaSelectOptionType>(SELECTED_GRADE_COOKIE);
         if (savedGrade) setSelectedGradeValue(savedGrade ?? SELECT_GRADES[0]);
         fetchItems(savedGrade?.value ?? null);
     }, []);
 
     const selectChangeHandler = (value: GachaSelectOptionType) => {
         setSelectedGradeValue(value)
-        setCookie<GachaSelectOptionType>("selectedGrade", value, 7);
+        setCookie<GachaSelectOptionType>(SELECTED_GRADE_COOKIE, value, 7);
         fetchItems(value.value)
     }
 
     const fetchItems = (grade: keyof GradeProbability | null) => {
-        const savedCheckedItems = getCookie("checkedItems");
+        const savedCheckedItems = getCookie(CHECKED_ITEMS_COOKIE);
         
         const savedCheckedItemsSet2 = new Set(savedCheckedItems ? savedCheckedItems.split(",").map(Number) : []);
         const items2 = (grade ? probability[grade].items : []).map((item, index) => ({
@@ -203,7 +206,7 @@ function Gacha() {
         const cookieValue = newItems
             .mapNotNull((item, index) => item.isChecked ? index : null)
             .join(",")
-        setCookie("checkedItems", cookieValue, 7);
+        setCookie(CHECKED_ITEMS_COOKIE, cookieValue, 7);
     }
 
     const checkedAllItemsHandler = (isChecked: boolean) => {
@@ -213,7 +216,7 @@ function Gacha() {
         const cookieValue = newItems
             .mapNotNull((item, index) => item.isChecked ? index : null)
             .join(",")
-        setCookie("checkedItems", cookieValue, 7);
+        setCookie(CHECKED_ITEMS_COOKIE, cookieValue, 7);
     }
 
     const getItemImage = (name: string) =>
@@ -260,7 +263,7 @@ function Gacha() {
         <Layout>
             <ContentLayout>
             <div style={{marginBottom: 0}}>
-                <CategoryTitle title={`2026 포교된 도시의 밤 확률 적용`}/>
+                <CategoryTitle title={`42타임즈 확률 적용`}/>
             </div>
                 <SimulationCard fullWidth>
                     <SimulationHeader>

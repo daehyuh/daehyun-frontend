@@ -4,7 +4,7 @@ import {ContentLayout, Layout, Select, SelectOptionType} from "../../components/
 import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container, Text} from "@/components";
 
-import probability from "@/assets/probabilities/cityNight2026Probability";
+import probability from "@/assets/probabilities/backAlleySecretGame2026Probability";
 
 import GradeProbability from "@/constant/GradeProbability";
 import ProbabilityItem from "@/constant/ProbabilityItem";
@@ -139,10 +139,10 @@ const IconBadge = styled.span`
 function Gacha() {
     const SELECT_GRADES: GachaSelectOptionType[] = [
         {label: '선택해주세요', value: null},
-        {label: '오래된 성물함', value: '150'},
-        {label: '평범한 성물함', value: '750'},
-        {label: '세뇌의 성물함', value: '2500R'},
-        {label: '구원의 성물함', value: 'Legend'}
+        {label: '기본', value: '2500R'},
+        {label: '프리미엄 경품 티켓', value: '150'},
+        {label: 'VIP 경품 티켓', value: '750'},
+        {label: '시크릿 경품 티켓', value: 'Legend'}
     ]
 
     const [selectedGradeValue, setSelectedGradeValue] = useState(SELECT_GRADES[0]);
@@ -231,14 +231,14 @@ function Gacha() {
         setCookie("checkedItems", cookieValue, 7);
     }
 
-    const getItemImage = (name: string) =>
-        `image/Items/${name.replace(': ', '')}.webp`;
+    const getItemImage = (name: string, extension: 'webp' | 'png' | 'gif' = 'webp') =>
+        `image/Items/${name.replace(': ', '')}.${extension}`;
 
     const simulateDraw = () => {
         setSimError(null);
 
         if (!selectedGradeValue.value) {
-            setSimError("상자를 먼저 선택해주세요.");
+            setSimError("경품 종류를 먼저 선택해주세요.");
             return;
         }
 
@@ -277,16 +277,16 @@ function Gacha() {
         <Layout>
             <ContentLayout>
             <div style={{marginBottom: 0}}>
-                <CategoryTitle title={`2026 포교된 도시의 밤 확률 적용`}/>
+                <CategoryTitle title={`2026 뒷골목의 은밀한 게임 확률 적용`}/>
             </div>
                 <SimulationCard fullWidth>
                     <SimulationHeader>
                         <SimulationTitle>
-                            <IconBadge aria-hidden="true">🎲</IconBadge>
+                            <IconBadge aria-hidden="true">★</IconBadge>
                             뽑기 시뮬레이션
                         </SimulationTitle>
                         <Text color={'#A4A9C3'} fontSize={'0.95rem'}>
-                            체크된 아이템은 시뮬레이션에서도 제외됩니다.
+                            체크한 아이템은 시뮬레이션에서도 제외됩니다.
                         </Text>
                     </SimulationHeader>
                     <SimulationActions>
@@ -320,8 +320,24 @@ function Gacha() {
                                         src={getItemImage(item.name)}
                                         alt={item.name}
                                         onError={(e) => {
-                                            (e.currentTarget as HTMLImageElement).style.visibility = 'hidden';
+                                            const target = e.currentTarget as HTMLImageElement;
+                                            const currentExtension = (target.dataset.extension as 'webp' | 'png' | 'gif' | undefined) ?? 'webp';
+
+                                            if (currentExtension === 'webp') {
+                                                target.dataset.extension = 'png';
+                                                target.src = getItemImage(item.name, 'png');
+                                                return;
+                                            }
+
+                                            if (currentExtension === 'png') {
+                                                target.dataset.extension = 'gif';
+                                                target.src = getItemImage(item.name, 'gif');
+                                                return;
+                                            }
+
+                                            target.style.visibility = 'hidden';
                                         }}
+                                        data-extension="webp"
                                     />
                                     <div>
                                         <ResultName>{idx + 1}. {item.name}</ResultName>

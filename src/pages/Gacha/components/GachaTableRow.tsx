@@ -39,6 +39,8 @@ const GachaTableRow = ({
                            height,
                            onChecked,
                        }: GachaTableRowProps) => {
+    const getItemImage = (name: string, extension: 'webp' | 'png' | 'gif' = 'webp') =>
+        `image/Items/${name.replace(': ', '')}.${extension}`;
 
     const onCheckedHandler = (isChecked: boolean) => {
         onChecked?.(index, isChecked)
@@ -60,11 +62,27 @@ const GachaTableRow = ({
                 <img
                     width={50}
                     style={{display: 'block'}}
-                    src={`image/Items/${item.name.replace(': ', '')}.webp`}
+                    src={getItemImage(item.name)}
                     alt={item.name.replace(': ', '')}
                     onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).style.visibility = 'hidden';
+                        const target = e.currentTarget as HTMLImageElement;
+                        const currentExtension = (target.dataset.extension as 'webp' | 'png' | 'gif' | undefined) ?? 'webp';
+
+                        if (currentExtension === 'webp') {
+                            target.dataset.extension = 'png';
+                            target.src = getItemImage(item.name, 'png');
+                            return;
+                        }
+
+                        if (currentExtension === 'png') {
+                            target.dataset.extension = 'gif';
+                            target.src = getItemImage(item.name, 'gif');
+                            return;
+                        }
+
+                        target.style.visibility = 'hidden';
                     }}
+                    data-extension="webp"
                 />
             </Container>
         </td>

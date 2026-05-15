@@ -5,7 +5,7 @@ import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container, Text} from "@/components";
 import Input from "@/components/base/Input";
 
-import probability from "@/assets/probabilities/times42Probability";
+import probability from "@/assets/probabilities/backRoadProbability";
 
 import GradeProbability from "@/constant/GradeProbability";
 import ProbabilityItem from "@/constant/ProbabilityItem";
@@ -13,6 +13,7 @@ import Table from "@components/base/Table";
 import GachaTableRow from "@/pages/Gacha/components/GachaTableRow";
 import GachaTableStickyRow from "@/pages/Gacha/components/GachaTableStickyRow";
 import Button from "@/components/base/Button";
+import {getItemImageUrl, setFallbackItemImage} from "@/pages/Gacha/utils/itemImage";
 
 type GachaSelectOptionType = SelectOptionType<keyof GradeProbability | null>;
 
@@ -122,15 +123,15 @@ const IconBadge = styled.span`
 `;
 
 function Gacha() {
-    const EVENT_ID = "times42-2026-spring";
+    const EVENT_ID = "backroad-2026";
     const SELECTED_GRADE_COOKIE = `${EVENT_ID}:selectedGrade`;
     const CHECKED_ITEMS_COOKIE = `${EVENT_ID}:checkedItems`;
     const SELECT_GRADES: GachaSelectOptionType[] = [
         {label: '선택해주세요', value: null},
-        {label: '42타임즈 과월호', value: '150'},
-        {label: '일간 42타임즈', value: '750'},
-        {label: '주간 42타임즈', value: '2500R'},
-        {label: '42타임즈 봄맞이 특집호', value: 'Legend'}
+        {label: '기본', value: '2500R'},
+        {label: '프리미엄 경품 티켓', value: '150'},
+        {label: 'VIP 경품 티켓', value: '750'},
+        {label: '시크릿 경품 티켓', value: 'Legend'}
     ]
 
     const [selectedGradeValue, setSelectedGradeValue] = useState(SELECT_GRADES[0]);
@@ -219,9 +220,6 @@ function Gacha() {
         setCookie(CHECKED_ITEMS_COOKIE, cookieValue, 7);
     }
 
-    const getItemImage = (name: string) =>
-        `image/Items/${name.replace(': ', '')}.webp`;
-
     const simulateDraw = () => {
         setSimError(null);
 
@@ -263,7 +261,7 @@ function Gacha() {
         <Layout>
             <ContentLayout>
             <div style={{marginBottom: 0}}>
-                <CategoryTitle title={`42타임즈 확률 적용`}/>
+                <CategoryTitle title={`2026뒷골목 확률 적용`}/>
             </div>
                 <SimulationCard fullWidth>
                     <SimulationHeader>
@@ -305,11 +303,10 @@ function Gacha() {
                             {simResults.map((item, idx) => (
                                 <ResultItem key={`${item.name}-${idx}`}>
                                     <ResultImage
-                                        src={getItemImage(item.name)}
+                                        src={getItemImageUrl(item.name)}
                                         alt={item.name}
-                                        onError={(e) => {
-                                            (e.currentTarget as HTMLImageElement).style.visibility = 'hidden';
-                                        }}
+                                        data-item-name={item.name.replace(': ', '')}
+                                        onError={setFallbackItemImage}
                                     />
                                     <div>
                                         <ResultName>{idx + 1}. {item.name}</ResultName>

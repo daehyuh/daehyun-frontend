@@ -3,6 +3,7 @@ import {Property} from "csstype";
 import styled from "styled-components";
 import {CheckBox, Container} from "@/components";
 import {GachaProbabilityItem} from "@/pages/Gacha/Gacha";
+import {getItemImageUrl, setFallbackItemImage} from "@/pages/Gacha/utils/itemImage";
 
 type GachaTableRowProps = {
     index: number
@@ -43,6 +44,7 @@ const GachaTableRow = ({
     const onCheckedHandler = (isChecked: boolean) => {
         onChecked?.(index, isChecked)
     }
+    const imageName = item.name.replace(': ', '');
 
     return <StyledTableRow borderBottomColor={borderBottomColor}
                            hoverBackgroundColor={hoverBackgroundColor}
@@ -60,11 +62,10 @@ const GachaTableRow = ({
                 <img
                     width={50}
                     style={{display: 'block'}}
-                    src={`image/Items/${item.name.replace(': ', '')}.webp`}
-                    alt={item.name.replace(': ', '')}
-                    onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).style.visibility = 'hidden';
-                    }}
+                    src={getItemImageUrl(item.name)}
+                    alt={imageName}
+                    data-item-name={imageName}
+                    onError={setFallbackItemImage}
                 />
             </Container>
         </td>

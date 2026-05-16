@@ -8,6 +8,7 @@ type InputProps = {
     value: number | string;
     placeholder?: string;
     onChange?: (value: string) => void;
+    onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
 } & Omit<StyledInputContainerProps, 'isFocused'> & StyledInputProps
 
 type StyledInputContainerProps = {
@@ -54,7 +55,7 @@ const StyledInput = styled.input<StyledInputProps>`
 ;
 `
 
-function Input({type = 'text', width, value, placeholder, onChange, ...styles}: InputProps) {
+function Input({type = 'text', width, value, placeholder, onChange, onKeyDown, ...styles}: InputProps) {
     const [isFocused, setIsFocused] = React.useState(false)
 
     return <StyledInputContainer isFocused={isFocused} width={width} {...styles}>
@@ -65,6 +66,7 @@ function Input({type = 'text', width, value, placeholder, onChange, ...styles}: 
             onChange={(e) => {
                 onChange?.(e.target.value)
             }}
+            onKeyDown={onKeyDown}
             onFocus={() => {
                 setIsFocused(true)
             }}

@@ -163,7 +163,7 @@ const normalizeAuthor = (source: unknown): TribunalAuthor | null => {
 
     return {
         id: toNumberValue(source.id),
-        name: anonymous ? (mine ? '익명(나)' : '익명') : nickname,
+        name: toStringValue(pickValue(source, ['name', 'nickname'])) ?? nickname,
         nickname,
         avatarUrl: toStringValue(source.avatarUrl),
         rankPoint: toNumberValue(pickValue(source, ['rankPoint2', 'rankPoint'])),

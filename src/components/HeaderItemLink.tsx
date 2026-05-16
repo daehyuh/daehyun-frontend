@@ -82,7 +82,13 @@ const StyledLink = styled(Link)<StyledLinkProps>`
 `;
 
 function HeaderItemLink({path, hrefs, title, variant = 'primary', fullWidth, requiresAuth = false, onNavigate}: HeaderItemLinkProps) {
-    const isActive = hrefs.some(e => e === path);
+    const isActive = hrefs.some((href) => {
+        if (href === '/') {
+            return path === href;
+        }
+
+        return path === href || path.startsWith(`${href}/`);
+    });
 
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         onNavigate?.();

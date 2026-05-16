@@ -228,6 +228,9 @@ const normalizeJobKey = (value: string | null | undefined): string | null => {
     return normalized.length > 0 ? normalized : null;
 };
 
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+    typeof value === 'object' && value !== null && !Array.isArray(value);
+
 const readAccessToken = (): string | null => {
     if (typeof document === 'undefined') return null;
     return document.cookie
@@ -253,26 +256,59 @@ const decodeJwtPayload = (token: string): Record<string, unknown> | null => {
     }
 };
 
+const ROLE_VALUE_PATTERN = /^ROLE_[A-Z0-9_]+$/i;
+
+const collectRoleCandidates = (value: unknown, roles: Set<string>, depth = 0) => {
+    if (depth > 6 || value === null || value === undefined) return;
+
+    if (typeof value === 'string') {
+        const normalized = value.trim().toUpperCase();
+        if (ROLE_VALUE_PATTERN.test(normalized) || normalized === 'ADMIN') {
+            roles.add(normalized === 'ADMIN' ? 'ROLE_ADMIN' : normalized);
+        }
+        return;
+    }
+
+    if (Array.isArray(value)) {
+        value.forEach((item) => collectRoleCandidates(item, roles, depth + 1));
+        return;
+    }
+
+    if (!isRecord(value)) return;
+
+    Object.entries(value).forEach(([key, nestedValue]) => {
+        const normalizedKey = key.trim().toLowerCase();
+
+        if (normalizedKey === 'role' || normalizedKey === 'roles' || normalizedKey === 'authority' || normalizedKey === 'authorities') {
+            collectRoleCandidates(nestedValue, roles, depth + 1);
+            return;
+        }
+
+        if (normalizedKey.includes('role') || normalizedKey.includes('authorit')) {
+            collectRoleCandidates(nestedValue, roles, depth + 1);
+            return;
+        }
+
+        if (depth < 3) {
+            collectRoleCandidates(nestedValue, roles, depth + 1);
+        }
+    });
+};
+
 const extractRoleFromToken = (token: string | null): string | null => {
     if (!token) return null;
 
     const payload = decodeJwtPayload(token);
     if (!payload) return null;
 
-    const directRole = typeof payload.role === 'string' ? payload.role : null;
-    if (directRole) return directRole;
+    const roles = new Set<string>();
+    collectRoleCandidates(payload, roles);
 
-    if (Array.isArray(payload.roles)) {
-        const role = payload.roles.find((value) => typeof value === 'string');
-        if (typeof role === 'string') return role;
+    if (roles.has('ROLE_ADMIN')) {
+        return 'ROLE_ADMIN';
     }
 
-    if (Array.isArray(payload.authorities)) {
-        const role = payload.authorities.find((value) => typeof value === 'string');
-        if (typeof role === 'string') return role;
-    }
-
-    return null;
+    return roles.values().next().value ?? null;
 };
 
 const formatDateTime = (value: string | null): string | null => {
@@ -366,7 +402,7 @@ const getRankTier = (rankPoint: number | null): RankTier => {
 
 const getTribunalAuthorLabel = (author: TribunalAuthor): string => {
     if (author.anonymous) {
-        return author.mine ? '익명(나)' : '익명';
+        return author.nickname || author.name || (author.mine ? '익명(나)' : '익명');
     }
 
     return author.nickname || author.name;
@@ -1816,13 +1852,13 @@ function Tribunal() {
     }, [currentPage, loadCases]);
 
     useEffect(() => {
-        if (!isLoggedIn || !selectedCaseId) {
+        if (!selectedCaseId) {
             setSelectedCase(null);
             return;
         }
 
         void loadCaseDetail(selectedCaseId);
-    }, [isLoggedIn, loadCaseDetail, selectedCaseId]);
+    }, [loadCaseDetail, selectedCaseId]);
 
     const visibleCases = useMemo(() => {
         if (deferredCaseQuery.length === 0) return cases;
@@ -1974,14 +2010,9 @@ function Tribunal() {
     );
 
     const selectCase = (caseId: number) => {
-        if (!isLoggedIn) {
-            setStatus({tone: 'info', message: '로그인이 필요한 기능입니다.'});
-            return;
-        }
-
         startTransition(() => {
             setSelectedCaseId(caseId);
-            navigate(`/tribunal/${caseId}`);
+            navigate(`/재판소/${caseId}`);
         });
     };
 
@@ -1989,7 +2020,7 @@ function Tribunal() {
         startTransition(() => {
             setSelectedCaseId(null);
             setSelectedCase(null);
-            navigate('/tribunal');
+            navigate('/재판소');
         });
     };
 
@@ -2284,7 +2315,7 @@ function Tribunal() {
             setSelectedCaseId(null);
             setDetailError(null);
             setStatus({tone: 'success', message: '사건을 삭제했습니다.'});
-            navigate('/tribunal', {replace: true});
+            navigate('/재판소', {replace: true});
             await loadCases(false, currentPage);
         } catch (error) {
             console.error(error);
@@ -2547,7 +2578,7 @@ function Tribunal() {
 
                         {!isLoggedIn && (
                             <StatusBox $tone="info">
-                                목록은 볼 수 있고, 상세 조회와 등록, 투표, 댓글은 로그인 후 사용할 수 있습니다.
+                                목록과 상세 조회는 볼 수 있고, 사건 등록, 투표, 댓글은 로그인 후 사용할 수 있습니다.
                             </StatusBox>
                         )}
                     </BoardCard>
@@ -2680,10 +2711,6 @@ function Tribunal() {
                     ) : isDetailPage && detailError ? (
                         <BoardCard>
                             <StatusBox $tone="danger">{detailError}</StatusBox>
-                        </BoardCard>
-                    ) : isDetailPage && !isLoggedIn ? (
-                        <BoardCard>
-                            <EmptyState>로그인 후 사건 상세를 볼 수 있습니다.</EmptyState>
                         </BoardCard>
                     ) : isDetailPage && selectedCase ? (
                         <ArticleCard>

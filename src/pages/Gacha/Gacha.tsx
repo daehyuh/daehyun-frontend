@@ -4,7 +4,7 @@ import {ContentLayout, Layout, Select, SelectOptionType} from "../../components/
 import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container, Text} from "@/components";
 
-import probability from "@/assets/probabilities/backAlleySecretGame2026Probability";
+import probability from "@/assets/probabilities/backRoadProbability";
 
 import GradeProbability from "@/constant/GradeProbability";
 import ProbabilityItem from "@/constant/ProbabilityItem";
@@ -12,6 +12,7 @@ import Table from "@components/base/Table";
 import GachaTableRow from "@/pages/Gacha/components/GachaTableRow";
 import GachaTableStickyRow from "@/pages/Gacha/components/GachaTableStickyRow";
 import Button from "@/components/base/Button";
+import {getItemImageUrl, setFallbackItemImage} from "@/pages/Gacha/utils/itemImage";
 
 type GachaSelectOptionType = SelectOptionType<keyof GradeProbability | null>;
 
@@ -137,6 +138,9 @@ const IconBadge = styled.span`
 `;
 
 function Gacha() {
+    const EVENT_ID = "backroad-2026";
+    const SELECTED_GRADE_COOKIE = `${EVENT_ID}:selectedGrade`;
+    const CHECKED_ITEMS_COOKIE = `${EVENT_ID}:checkedItems`;
     const SELECT_GRADES: GachaSelectOptionType[] = [
         {label: '선택해주세요', value: null},
         {label: '기본', value: '2500R'},
@@ -160,19 +164,19 @@ function Gacha() {
     );
 
     useEffect(() => {
-        const savedGrade = getCookie<GachaSelectOptionType>("selectedGrade");
+        const savedGrade = getCookie<GachaSelectOptionType>(SELECTED_GRADE_COOKIE);
         if (savedGrade) setSelectedGradeValue(savedGrade ?? SELECT_GRADES[0]);
         fetchItems(savedGrade?.value ?? null);
     }, []);
 
     const selectChangeHandler = (value: GachaSelectOptionType) => {
         setSelectedGradeValue(value)
-        setCookie<GachaSelectOptionType>("selectedGrade", value, 7);
+        setCookie<GachaSelectOptionType>(SELECTED_GRADE_COOKIE, value, 7);
         fetchItems(value.value)
     }
 
     const fetchItems = (grade: keyof GradeProbability | null) => {
-        const savedCheckedItems = getCookie("checkedItems");
+        const savedCheckedItems = getCookie(CHECKED_ITEMS_COOKIE);
         
         const savedCheckedItemsSet2 = new Set(savedCheckedItems ? savedCheckedItems.split(",").map(Number) : []);
         const items2 = (grade ? probability[grade].items : []).map((item, index) => ({
@@ -218,7 +222,7 @@ function Gacha() {
         const cookieValue = newItems
             .mapNotNull((item, index) => item.isChecked ? index : null)
             .join(",")
-        setCookie("checkedItems", cookieValue, 7);
+        setCookie(CHECKED_ITEMS_COOKIE, cookieValue, 7);
     }
 
     const checkedAllItemsHandler = (isChecked: boolean) => {
@@ -228,11 +232,8 @@ function Gacha() {
         const cookieValue = newItems
             .mapNotNull((item, index) => item.isChecked ? index : null)
             .join(",")
-        setCookie("checkedItems", cookieValue, 7);
+        setCookie(CHECKED_ITEMS_COOKIE, cookieValue, 7);
     }
-
-    const getItemImage = (name: string, extension: 'webp' | 'png' | 'gif' = 'webp') =>
-        `image/Items/${name.replace(': ', '')}.${extension}`;
 
     const simulateDraw = () => {
         setSimError(null);
@@ -277,7 +278,7 @@ function Gacha() {
         <Layout>
             <ContentLayout>
             <div style={{marginBottom: 0}}>
-                <CategoryTitle title={`2026 뒷골목의 은밀한 게임 확률 적용`}/>
+                <CategoryTitle title={`2026뒷골목 확률 적용`}/>
             </div>
                 <SimulationCard fullWidth>
                     <SimulationHeader>
@@ -317,27 +318,10 @@ function Gacha() {
                             {simResults.map((item, idx) => (
                                 <ResultItem key={`${item.name}-${idx}`}>
                                     <ResultImage
-                                        src={getItemImage(item.name)}
+                                        src={getItemImageUrl(item.name)}
                                         alt={item.name}
-                                        onError={(e) => {
-                                            const target = e.currentTarget as HTMLImageElement;
-                                            const currentExtension = (target.dataset.extension as 'webp' | 'png' | 'gif' | undefined) ?? 'webp';
-
-                                            if (currentExtension === 'webp') {
-                                                target.dataset.extension = 'png';
-                                                target.src = getItemImage(item.name, 'png');
-                                                return;
-                                            }
-
-                                            if (currentExtension === 'png') {
-                                                target.dataset.extension = 'gif';
-                                                target.src = getItemImage(item.name, 'gif');
-                                                return;
-                                            }
-
-                                            target.style.visibility = 'hidden';
-                                        }}
-                                        data-extension="webp"
+                                        data-item-name={item.name.replace(': ', '')}
+                                        onError={setFallbackItemImage}
                                     />
                                     <div>
                                         <ResultName>{idx + 1}. {item.name}</ResultName>

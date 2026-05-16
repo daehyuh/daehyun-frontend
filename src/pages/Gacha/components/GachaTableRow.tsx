@@ -3,6 +3,7 @@ import {Property} from "csstype";
 import styled from "styled-components";
 import {CheckBox, Container} from "@/components";
 import {GachaProbabilityItem} from "@/pages/Gacha/Gacha";
+import {getItemImageUrl, setFallbackItemImage} from "@/pages/Gacha/utils/itemImage";
 
 type GachaTableRowProps = {
     index: number
@@ -39,12 +40,10 @@ const GachaTableRow = ({
                            height,
                            onChecked,
                        }: GachaTableRowProps) => {
-    const getItemImage = (name: string, extension: 'webp' | 'png' | 'gif' = 'webp') =>
-        `image/Items/${name.replace(': ', '')}.${extension}`;
-
     const onCheckedHandler = (isChecked: boolean) => {
         onChecked?.(index, isChecked)
     }
+    const imageName = item.name.replace(': ', '');
 
     return <StyledTableRow borderBottomColor={borderBottomColor}
                            hoverBackgroundColor={hoverBackgroundColor}
@@ -62,27 +61,10 @@ const GachaTableRow = ({
                 <img
                     width={50}
                     style={{display: 'block'}}
-                    src={getItemImage(item.name)}
-                    alt={item.name.replace(': ', '')}
-                    onError={(e) => {
-                        const target = e.currentTarget as HTMLImageElement;
-                        const currentExtension = (target.dataset.extension as 'webp' | 'png' | 'gif' | undefined) ?? 'webp';
-
-                        if (currentExtension === 'webp') {
-                            target.dataset.extension = 'png';
-                            target.src = getItemImage(item.name, 'png');
-                            return;
-                        }
-
-                        if (currentExtension === 'png') {
-                            target.dataset.extension = 'gif';
-                            target.src = getItemImage(item.name, 'gif');
-                            return;
-                        }
-
-                        target.style.visibility = 'hidden';
-                    }}
-                    data-extension="webp"
+                    src={getItemImageUrl(item.name)}
+                    alt={imageName}
+                    data-item-name={imageName}
+                    onError={setFallbackItemImage}
                 />
             </Container>
         </td>

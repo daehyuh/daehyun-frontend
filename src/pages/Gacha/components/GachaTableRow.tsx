@@ -40,7 +40,6 @@ const GachaTableRow = ({
                            height,
                            onChecked,
                        }: GachaTableRowProps) => {
-
     const onCheckedHandler = (isChecked: boolean) => {
         onChecked?.(index, isChecked)
     }

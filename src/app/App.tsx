@@ -22,6 +22,7 @@ import GuildColorRank from "@/pages/GuildColorRank/GuildColorRank";
 import JobReceiveCalculator from "@/pages/JobReceiveCalculator/JobReceiveCalculator";
 import ChannelLive from "@/pages/ChannelLive/ChannelLive";
 import HeroBillboard from "@/components/HeroBillboard";
+import Tribunal from "@/pages/Tribunal/Tribunal";
 
 import styled from 'styled-components';
 import AuthButton from "@/components/AuthButton";
@@ -173,6 +174,7 @@ function App() {
     }, []);
     
     const pages: PageType[] = [
+        {hrefs: ["/tribunal", "/재판소"], title: "재판소", page: <Tribunal/>},
         {hrefs: ["/", "/login", "/인증"], title: "메인 페이지(연동하기)", page: <AuthButton/>},
         {hrefs: ["/상자깡"], title: "이벤트 상자깡 확률", page: <Gacha/>},
         {hrefs: ["/티어"], title: "티어 계산기", page: <Tier/>},

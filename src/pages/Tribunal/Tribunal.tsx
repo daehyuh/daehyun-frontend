@@ -855,6 +855,22 @@ const SectionCard = styled.section`
     background: ${({theme}) => theme.colors.surfaceMuted};
 `;
 
+const ReplaySectionCard = styled(SectionCard)`
+    padding: 0;
+    gap: 0;
+    overflow: hidden;
+`;
+
+const ReplaySectionTop = styled.div`
+    display: grid;
+    gap: ${({theme}) => theme.spacing.md};
+    padding: ${({theme}) => theme.spacing.lg};
+
+    @media (max-width: ${({theme}) => theme.breakpoints.sm}px) {
+        padding: ${({theme}) => theme.spacing.md};
+    }
+`;
+
 const SectionHeader = styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -953,9 +969,12 @@ const ReplayStage = styled.div`
     display: grid;
     gap: ${({theme}) => theme.spacing.md};
     padding: ${({theme}) => theme.spacing.lg};
-    border-radius: ${({theme}) => theme.radii.md};
-    border: 1px solid ${({theme}) => theme.colors.border};
+    border-top: 1px solid ${({theme}) => theme.colors.border};
     background: #15181d;
+
+    @media (max-width: ${({theme}) => theme.breakpoints.sm}px) {
+        padding: ${({theme}) => theme.spacing.md};
+    }
 `;
 
 const ReplayStream = styled.div`
@@ -964,6 +983,11 @@ const ReplayStream = styled.div`
     max-height: 640px;
     overflow-y: auto;
     padding-right: ${({theme}) => theme.spacing.xs};
+
+    @media (max-width: ${({theme}) => theme.breakpoints.sm}px) {
+        gap: ${({theme}) => theme.spacing.sm};
+        padding-right: 0;
+    }
 `;
 
 const ReplaySystemMessage = styled.div<{ $highlighted: boolean }>`
@@ -988,6 +1012,11 @@ const ReplayRow = styled.div<{ $highlighted: boolean }>`
     border-radius: ${({theme}) => theme.radii.md};
     background: ${({$highlighted}) => $highlighted ? 'rgba(255, 214, 102, 0.12)' : 'transparent'};
     box-shadow: ${({$highlighted}) => $highlighted ? '0 0 0 1px rgba(255, 214, 102, 0.45)' : 'none'};
+
+    @media (max-width: ${({theme}) => theme.breakpoints.sm}px) {
+        gap: ${({theme}) => theme.spacing.sm};
+        padding: 4px 0;
+    }
 `;
 
 const ReplayProfileColumn = styled.div`
@@ -995,6 +1024,11 @@ const ReplayProfileColumn = styled.div`
     min-width: 56px;
     display: flex;
     justify-content: center;
+
+    @media (max-width: ${({theme}) => theme.breakpoints.sm}px) {
+        width: 42px;
+        min-width: 42px;
+    }
 `;
 
 const ReplayProfileFrame = styled.div`
@@ -1006,6 +1040,12 @@ const ReplayProfileFrame = styled.div`
     justify-content: center;
     overflow: hidden;
     border-radius: 14px;
+
+    @media (max-width: ${({theme}) => theme.breakpoints.sm}px) {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+    }
 `;
 
 const ReplayJobIcon = styled.img`
@@ -1016,6 +1056,10 @@ const ReplayJobIcon = styled.img`
     height: 100%;
     object-fit: cover;
     border-radius: 14px;
+
+    @media (max-width: ${({theme}) => theme.breakpoints.sm}px) {
+        border-radius: 10px;
+    }
 `;
 
 const ReplayProfileFallback = styled.div`
@@ -1029,6 +1073,13 @@ const ReplayProfileFallback = styled.div`
     color: ${({theme}) => theme.colors.textPrimary};
     font-weight: ${({theme}) => theme.typography.weights.bold};
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
+
+    @media (max-width: ${({theme}) => theme.breakpoints.sm}px) {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        box-shadow: none;
+    }
 `;
 
 const ReplayContentColumn = styled.div`
@@ -1047,6 +1098,7 @@ const ReplayBubbleStack = styled.div`
     display: grid;
     gap: 8px;
     justify-items: start;
+    width: 100%;
 `;
 
 const ReplayBubble = styled.div<{ $tone: ReplayBubbleTone; $isFirst: boolean }>`
@@ -1058,6 +1110,11 @@ const ReplayBubble = styled.div<{ $tone: ReplayBubbleTone; $isFirst: boolean }>`
     line-height: ${({theme}) => theme.typography.lineHeights.relaxed};
     word-break: break-word;
     white-space: pre-line;
+
+    @media (max-width: ${({theme}) => theme.breakpoints.sm}px) {
+        max-width: 100%;
+        padding: 10px 12px;
+    }
 
     ${({$tone}) => {
         if ($tone === 'MAFIACHAT') {
@@ -1264,8 +1321,8 @@ const ReplayParticipantsRail = styled.div`
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: ${({theme}) => theme.spacing.sm};
 
-    @media (max-width: ${({theme}) => theme.breakpoints.md}px) {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+    @media (max-width: ${({theme}) => theme.breakpoints.sm}px) {
+        gap: ${({theme}) => theme.spacing.xs};
     }
 `;
 
@@ -1278,17 +1335,43 @@ const ReplayParticipantCard = styled.div`
     border: 1px solid rgba(255, 255, 255, 0.08);
     background: rgba(0, 0, 0, 0.26);
     text-align: center;
+
+    @media (max-width: ${({theme}) => theme.breakpoints.sm}px) {
+        gap: 4px;
+        padding: ${({theme}) => theme.spacing.xs};
+
+        ${ReplayProfileFrame},
+        ${ReplayProfileFallback} {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            border-radius: 8px;
+            box-shadow: none;
+        }
+
+        ${ReplayJobIcon} {
+            border-radius: 8px;
+        }
+    }
 `;
 
 const ReplayParticipantName = styled.div`
     color: #ffffff;
     font-size: ${({theme}) => theme.typography.sizes.xs};
     font-weight: ${({theme}) => theme.typography.weights.semibold};
+    word-break: break-word;
+    line-height: 1.25;
 `;
 
 const ReplayParticipantPick = styled.div`
     color: rgba(255, 255, 255, 0.72);
     font-size: ${({theme}) => theme.typography.sizes.xs};
+    word-break: break-word;
+    line-height: 1.25;
+
+    @media (max-width: ${({theme}) => theme.breakpoints.sm}px) {
+        font-size: 11px;
+    }
 `;
 
 const SearchHighlight = styled.mark`
@@ -2756,23 +2839,25 @@ function Tribunal() {
 
                             <Divider />
 
-                            <SectionCard>
-                                <SectionHeader>
-                                    <SectionTitle>리플레이 로그</SectionTitle>
-                                    <SectionHint>
-                                        {deferredMessageSearch.length > 0
-                                            ? `${matchedGroupKeys.length.toLocaleString()}개 찾음`
-                                            : `${groupedMessages.length.toLocaleString()}개 표시`}
-                                    </SectionHint>
-                                </SectionHeader>
-                                <FilterRow>
-                                    <Input
-                                        value={messageSearch}
-                                        onChange={setMessageSearch}
-                                        placeholder="닉네임이나 채팅 키워드 검색"
-                                        width="280px"
-                                    />
-                                </FilterRow>
+                            <ReplaySectionCard>
+                                <ReplaySectionTop>
+                                    <SectionHeader>
+                                        <SectionTitle>리플레이 로그</SectionTitle>
+                                        <SectionHint>
+                                            {deferredMessageSearch.length > 0
+                                                ? `${matchedGroupKeys.length.toLocaleString()}개 찾음`
+                                                : `${groupedMessages.length.toLocaleString()}개 표시`}
+                                        </SectionHint>
+                                    </SectionHeader>
+                                    <FilterRow>
+                                        <Input
+                                            value={messageSearch}
+                                            onChange={setMessageSearch}
+                                            placeholder="닉네임이나 채팅 키워드 검색"
+                                            width="280px"
+                                        />
+                                    </FilterRow>
+                                </ReplaySectionTop>
 
                                 {groupedMessages.length > 0 ? (
                                     <ReplayStage>
@@ -2873,7 +2958,7 @@ function Tribunal() {
                                 ) : (
                                     <EmptyState>조건에 맞는 로그가 없습니다.</EmptyState>
                                 )}
-                            </SectionCard>
+                            </ReplaySectionCard>
 
                             <SectionCard>
                                 <SectionHeader>

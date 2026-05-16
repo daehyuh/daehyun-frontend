@@ -293,14 +293,8 @@ function Header({pages, member_pages}: HeaderProps) {
 
     const memberPages = member_pages.filter(item => !item.hide);
     const primaryPages = pages.filter(item => !item.hide);
-    const isTribunalPage = (item: PageType) =>
-        item.hrefs.includes('/재판소') || item.hrefs.includes('/tribunal');
     const loginPage = primaryPages.find(item => item.hrefs.includes('/login') || item.hrefs.includes('/인증'));
-    const tribunalPage = primaryPages.find(isTribunalPage);
-    const promotedMemberPages = tribunalPage && !memberPages.some(isTribunalPage)
-        ? [tribunalPage, ...memberPages]
-        : memberPages;
-    const generalPages = primaryPages.filter(item => item !== loginPage && item !== tribunalPage);
+    const generalPages = primaryPages.filter(item => item !== loginPage);
 
     useEffect(() => {
         setIsMobileMenuOpen(false);
@@ -345,7 +339,7 @@ function Header({pages, member_pages}: HeaderProps) {
                     </BrandLink>
 
                     <DesktopNav aria-label="메뉴 (데스크톱)">
-                        {promotedMemberPages.length > 0 && (
+                        {memberPages.length > 0 && (
                             <>
                                 <RailLabel>회원 전용 도구</RailLabel>
                                 <NavRow>
@@ -357,7 +351,7 @@ function Header({pages, member_pages}: HeaderProps) {
                                             {...loginPage}
                                         />
                                     )}
-                                    {promotedMemberPages.map((item, index) => (
+                                    {memberPages.map((item, index) => (
                                         <HeaderItemLink
                                             key={item.hrefs[0] ?? `member-${index}`}
                                             path={path}
@@ -415,7 +409,7 @@ function Header({pages, member_pages}: HeaderProps) {
             </HeaderWrapper>
 
             <NavRail>
-                {promotedMemberPages.length > 0 && (
+                {memberPages.length > 0 && (
                     <>
                         <RailLabel>회원 전용 도구</RailLabel>
                         <NavScroller aria-label="회원 전용 도구">
@@ -427,7 +421,7 @@ function Header({pages, member_pages}: HeaderProps) {
                                     {...loginPage}
                                 />
                             )}
-                            {promotedMemberPages.map((item, index) => (
+                            {memberPages.map((item, index) => (
                                 <HeaderItemLink
                                     key={item.hrefs[0] ?? index}
                                     path={path}
@@ -477,10 +471,10 @@ function Header({pages, member_pages}: HeaderProps) {
                         ))}
                     </MobileSection>
 
-                    {promotedMemberPages.length > 0 && (
+                    {memberPages.length > 0 && (
                         <MobileSection>
                             <MobileSectionTitle>회원 툴</MobileSectionTitle>
-                            {promotedMemberPages.map((item, index) => (
+                            {memberPages.map((item, index) => (
                                 <HeaderItemLink
                                     key={`mobile-member-${item.hrefs[0] ?? index}`}
                                     path={path}

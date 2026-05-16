@@ -1766,7 +1766,6 @@ function Tribunal() {
         setEditingContent('');
         setEditingAnonymous(false);
         setNewCommentAnonymous(true);
-        setIsParticipantsExpanded(true);
     }, [selectedCaseId]);
 
     useEffect(() => {

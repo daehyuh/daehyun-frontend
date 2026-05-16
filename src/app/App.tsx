@@ -14,6 +14,7 @@ import DailyReward from "../pages/DailyReward/DailyReward";
 import ColorRank from "../pages/ColorRank/ColorRank";
 import LimitCheck from "../pages/LimitCheck/LimitCheck";
 import Header from "../components/Header";
+import {AD_INQUIRY_KAKAO_URL} from "@/constant/contact";
 import Ads from "../components/Ads";
 import GoogleAdSense from "../components/GoogleAdSense";
 import Channel from "../pages/Channel/Channel";
@@ -88,6 +89,18 @@ const InlineAdsSection = styled.section`
     display: flex;
     flex-direction: column;
     gap: ${({theme}) => theme.spacing.md};
+`;
+
+const AdInquiryLink = styled.a`
+    width: fit-content;
+    color: ${({theme}) => theme.colors.textSecondary};
+    text-decoration: none;
+    font-size: ${({theme}) => theme.typography.sizes.sm};
+
+    &:hover {
+        color: ${({theme}) => theme.colors.accent};
+        text-decoration: underline;
+    }
 `;
 
 const AdRail = styled.aside`
@@ -230,6 +243,8 @@ function App() {
                     <PrimaryColumn>
                         <PageSurface>
                             <Routes>
+                                <Route path="/tribunal/:caseId" element={<Tribunal/>}/>
+                                <Route path="/재판소/:caseId" element={<Tribunal/>}/>
                                 {
                                     member_pages.map((item) => (
                                         item.hrefs.map(href => (
@@ -253,6 +268,9 @@ function App() {
                 {SHOW_AD_LAYOUT && hasAds && (
                     <AdsRow aria-label="푸터 위 스폰서 광고 영역">
                         <InlineAdsSection>
+                            <AdInquiryLink href={AD_INQUIRY_KAKAO_URL} target="_blank" rel="noreferrer">
+                                광고/제휴 오픈카카오톡 프로필
+                            </AdInquiryLink>
                             <p style={{margin: '0', color: '#A4A9C3'}}>광고/제휴 카카오톡 오픈채팅</p>
                             <GoogleAdSense
                                 slotId={ADSENSE_SLOTS.inline}

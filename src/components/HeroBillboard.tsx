@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import styled from "styled-components";
 import fetchAds from "@/apis/fetchAds";
 import {NormalizedAd, normalizeAdsResponse} from "@/utils/ads";
+import {AD_INQUIRY_KAKAO_URL} from "@/constant/contact";
 
 const Billboard = styled.section`
     position: relative;
@@ -281,11 +282,11 @@ function HeroBillboard() {
             <HeaderRow>
                 <Badge>광고</Badge>
                 <InlineLink
-                    href="https://open.kakao.com/o/sWIax8Vc"
+                    href={AD_INQUIRY_KAKAO_URL}
                     target="_blank"
                     rel="noreferrer"
                 >
-                    광고/제휴 카카오톡 오픈채팅
+                    광고/제휴 문의 이메일
                 </InlineLink>
             </HeaderRow>
 
@@ -342,7 +343,7 @@ function HeroBillboard() {
                 </>
             )}
             {!isClickable && (
-                <Hint>광고/제휴 문의: https://open.kakao.com/o/sWIax8Vc</Hint>
+                <Hint>광고/제휴 문의: 오픈카카오톡 프로필</Hint>
             )}
         </Billboard>
     );

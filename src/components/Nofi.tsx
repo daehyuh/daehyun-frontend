@@ -96,7 +96,7 @@ function Nofi() {
                 }}
                 alt="광고"
             />
-            <StyledA href="https://open.kakao.com/o/sWIax8Vc">대현닷컴 홍보문의 오픈카톡</StyledA>
+            <StyledA href="mailto:rkdeown10@naver.com">대현닷컴 홍보문의 이메일</StyledA>
         </Container>
     );
 }

@@ -293,9 +293,11 @@ function Header({pages, member_pages}: HeaderProps) {
 
     const memberPages = member_pages.filter(item => !item.hide);
     const primaryPages = pages.filter(item => !item.hide);
+    const isTribunalPage = (item: PageType) =>
+        item.hrefs.includes('/재판소') || item.hrefs.includes('/tribunal');
     const loginPage = primaryPages.find(item => item.hrefs.includes('/login') || item.hrefs.includes('/인증'));
-    const tribunalPage = primaryPages.find(item => item.hrefs.includes('/tribunal'));
-    const promotedMemberPages = tribunalPage && !memberPages.some(item => item.hrefs.includes('/tribunal'))
+    const tribunalPage = primaryPages.find(isTribunalPage);
+    const promotedMemberPages = tribunalPage && !memberPages.some(isTribunalPage)
         ? [tribunalPage, ...memberPages]
         : memberPages;
     const generalPages = primaryPages.filter(item => item !== loginPage && item !== tribunalPage);

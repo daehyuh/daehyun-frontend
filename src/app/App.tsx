@@ -1,4 +1,4 @@
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes, useParams} from "react-router-dom";
 import {ReactElement, useEffect, useState} from "react";
 import '../utils/extensions/index'
 import '../utils/overrideConsole'
@@ -161,6 +161,15 @@ export type PageType = {
     requiresAuth?: boolean
 }
 
+const TRIBUNAL_PATH = "/재판소";
+
+function TribunalLegacyRedirect() {
+    const {caseId} = useParams<{ caseId?: string }>();
+    const nextPath = caseId ? `${TRIBUNAL_PATH}/${caseId}` : TRIBUNAL_PATH;
+
+    return <Navigate to={nextPath} replace/>;
+}
+
 function App() {
     const [showPrank, setShowPrank] = useState(false);
     const [hasAds, setHasAds] = useState(false);
@@ -187,7 +196,7 @@ function App() {
     }, []);
     
     const pages: PageType[] = [
-        {hrefs: ["/tribunal", "/재판소"], title: "재판소", page: <Tribunal/>},
+        {hrefs: [TRIBUNAL_PATH], title: "재판소", page: <Tribunal/>},
         {hrefs: ["/", "/login", "/인증"], title: "메인 페이지(연동하기)", page: <AuthButton/>},
         {hrefs: ["/상자깡"], title: "이벤트 상자깡 확률", page: <Gacha/>},
         {hrefs: ["/티어"], title: "티어 계산기", page: <Tier/>},
@@ -243,8 +252,9 @@ function App() {
                     <PrimaryColumn>
                         <PageSurface>
                             <Routes>
-                                <Route path="/tribunal/:caseId" element={<Tribunal/>}/>
-                                <Route path="/재판소/:caseId" element={<Tribunal/>}/>
+                                <Route path="/tribunal" element={<TribunalLegacyRedirect/>}/>
+                                <Route path="/tribunal/:caseId" element={<TribunalLegacyRedirect/>}/>
+                                <Route path={`${TRIBUNAL_PATH}/:caseId`} element={<Tribunal/>}/>
                                 {
                                     member_pages.map((item) => (
                                         item.hrefs.map(href => (

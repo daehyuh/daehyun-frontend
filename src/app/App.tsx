@@ -279,9 +279,9 @@ function App() {
                     <AdsRow aria-label="푸터 위 스폰서 광고 영역">
                         <InlineAdsSection>
                             <AdInquiryLink href={AD_INQUIRY_KAKAO_URL} target="_blank" rel="noreferrer">
-                                광고/제휴 오픈카카오톡 프로필
+                                광고 제휴 문의
                             </AdInquiryLink>
-                            <p style={{margin: '0', color: '#A4A9C3'}}>광고/제휴 카카오톡 오픈채팅</p>
+                            <p style={{margin: '0', color: '#A4A9C3'}}>오픈카톡으로 문의할 수 있습니다.</p>
                             <GoogleAdSense
                                 slotId={ADSENSE_SLOTS.inline}
                                 label="인라인 반응형 광고"

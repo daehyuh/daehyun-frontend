@@ -133,6 +133,12 @@ const SecondaryLink = styled.a`
     text-decoration: none;
 `;
 
+const TertiaryLink = styled(SecondaryLink)`
+    flex: 0 1 auto;
+    min-width: 140px;
+    background: ${({theme}) => theme.colors.surfaceMuted};
+`;
+
 const AdNote = styled.p`
     margin: 0;
     font-size: ${({theme}) => theme.typography.sizes.xs};
@@ -223,9 +229,14 @@ function Ads({useInquiry = true, onAvailabilityChange}: AdsProps) {
                     </PrimaryLink>
                 )}
                 {useInquiry && (
-                    <SecondaryLink href={AD_INQUIRY_KAKAO_URL} target="_blank" rel="noreferrer">
-                        광고/제휴 이메일 문의
-                    </SecondaryLink>
+                    <>
+                        <SecondaryLink href={AD_INQUIRY_KAKAO_URL} target="_blank" rel="noreferrer">
+                            광고 제휴 문의
+                        </SecondaryLink>
+                        <TertiaryLink href={AD_INQUIRY_KAKAO_URL} target="_blank" rel="noreferrer">
+                            오픈카톡
+                        </TertiaryLink>
+                    </>
                 )}
             </ActionRow>
             <AdNote>권장 크기 : 728×90, 970×250, 336×280 (모바일에서는 320×100).</AdNote>

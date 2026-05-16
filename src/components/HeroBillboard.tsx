@@ -286,7 +286,7 @@ function HeroBillboard() {
                     target="_blank"
                     rel="noreferrer"
                 >
-                    광고/제휴 문의 이메일
+                    광고 제휴 문의
                 </InlineLink>
             </HeaderRow>
 
@@ -343,7 +343,7 @@ function HeroBillboard() {
                 </>
             )}
             {!isClickable && (
-                <Hint>광고/제휴 문의: 오픈카카오톡 프로필</Hint>
+                <Hint>광고 제휴 문의 · 오픈카톡</Hint>
             )}
         </Billboard>
     );

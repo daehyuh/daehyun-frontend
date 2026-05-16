@@ -89,6 +89,21 @@ const parseJsonSafely = (text: string): unknown => {
 const isApiResponse = <T>(value: unknown): value is ApiResponse<T> =>
     isRecord(value) && 'success' in value && 'message' in value && 'data' in value;
 
+class TribunalRequestError extends Error {
+    status: number;
+
+    constructor(message: string, status: number) {
+        super(message);
+        this.name = 'TribunalRequestError';
+        this.status = status;
+    }
+}
+
+type TribunalRequestOptions = {
+    includeAuth?: boolean;
+    credentials?: RequestCredentials;
+};
+
 const extractErrorMessage = (value: unknown): string | null => {
     if (typeof value === 'string' && value.trim().length > 0) {
         return value;
@@ -105,15 +120,21 @@ const extractErrorMessage = (value: unknown): string | null => {
     );
 };
 
-const tribunalRequest = async <T>(path: string, init: RequestInit = {}): Promise<T> => {
+const tribunalRequest = async <T>(
+    path: string,
+    init: RequestInit = {},
+    options: TribunalRequestOptions = {}
+): Promise<T> => {
     const headers = new Headers(init.headers);
     headers.set('Accept', 'application/json');
+    const includeAuth = options.includeAuth ?? true;
+    const credentials = options.credentials ?? 'include';
 
     if (init.body && !(init.body instanceof FormData) && !headers.has('Content-Type')) {
         headers.set('Content-Type', 'application/json');
     }
 
-    const accessToken = readAccessToken();
+    const accessToken = includeAuth ? readAccessToken() : null;
     if (accessToken && !headers.has('Authorization')) {
         headers.set('Authorization', `Bearer ${accessToken}`);
     }
@@ -121,7 +142,7 @@ const tribunalRequest = async <T>(path: string, init: RequestInit = {}): Promise
     const response = await fetch(`${API_BASE_URL}${path}`, {
         ...init,
         headers,
-        credentials: 'include',
+        credentials,
     });
 
     const text = await response.text();
@@ -131,7 +152,7 @@ const tribunalRequest = async <T>(path: string, init: RequestInit = {}): Promise
         const fallbackMessage = response.status === 401 || response.status === 403
             ? '로그인이 필요합니다.'
             : `Request failed with status ${response.status}`;
-        throw new Error(extractErrorMessage(parsed) ?? fallbackMessage);
+        throw new TribunalRequestError(extractErrorMessage(parsed) ?? fallbackMessage, response.status);
     }
 
     if (isApiResponse<T>(parsed)) {
@@ -142,6 +163,21 @@ const tribunalRequest = async <T>(path: string, init: RequestInit = {}): Promise
     }
 
     return parsed as T;
+};
+
+const requestTribunalPublicReadable = async <T>(path: string): Promise<T> => {
+    try {
+        return await tribunalRequest<T>(path);
+    } catch (error) {
+        if (error instanceof TribunalRequestError && (error.status === 401 || error.status === 403)) {
+            return tribunalRequest<T>(path, {}, {
+                includeAuth: false,
+                credentials: 'omit',
+            });
+        }
+
+        throw error;
+    }
 };
 
 const sortByCreatedAt = <T extends { createdAt: string | null }>(items: T[]): T[] =>
@@ -408,12 +444,12 @@ export const listTribunalCases = async (
     searchParams.set('page', String(params.page ?? 0));
     searchParams.set('size', String(params.size ?? 20));
 
-    const response = await tribunalRequest<unknown>(`/tribunal/cases?${searchParams.toString()}`);
+    const response = await requestTribunalPublicReadable<unknown>(`/tribunal/cases?${searchParams.toString()}`);
     return normalizeCaseListPage(response);
 };
 
 export const getTribunalCaseDetail = async (caseId: number): Promise<TribunalCaseDetail> => {
-    const response = await tribunalRequest<unknown>(`/tribunal/cases/${caseId}`);
+    const response = await requestTribunalPublicReadable<unknown>(`/tribunal/cases/${caseId}`);
     return normalizeCaseDetail(response);
 };
 

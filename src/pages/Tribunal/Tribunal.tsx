@@ -36,19 +36,6 @@ type StatusMessage = {
     message: string;
 };
 
-type ViewerProfileResponse = {
-    role?: string | null;
-    user?: {
-        role?: string | null;
-    } | null;
-    data?: {
-        role?: string | null;
-        user?: {
-            role?: string | null;
-        } | null;
-    } | null;
-};
-
 type CaseFormState = {
     replayUrl: string;
     description: string;
@@ -187,7 +174,6 @@ const defaultCaseForm = (): CaseFormState => ({
 const replayUrlPattern = /^https?:\/\/mafia42\.com\/history\/kr\/[A-Za-z0-9]+/i;
 const CASE_PAGE_SIZE = 20;
 const CASE_LIST_STACK_BREAKPOINT = 1100;
-const API_BASE_URL = import.meta.env.VITE_API_BASE ?? 'https://api.xn--vk1b177d.com';
 
 const JOB_LABELS: Record<string, string> = {
     mafia: '마피아',
@@ -251,11 +237,42 @@ const readAccessToken = (): string | null => {
         ?.split('=')[1] ?? null;
 };
 
-const getViewerRole = (value: unknown): string | null => {
-    if (!value || typeof value !== 'object') return null;
+const decodeJwtPayload = (token: string): Record<string, unknown> | null => {
+    const parts = token.split('.');
+    if (parts.length < 2) return null;
 
-    const record = value as ViewerProfileResponse;
-    return record.user?.role ?? record.data?.user?.role ?? record.role ?? record.data?.role ?? null;
+    try {
+        const normalized = parts[1]
+            .replace(/-/g, '+')
+            .replace(/_/g, '/')
+            .padEnd(Math.ceil(parts[1].length / 4) * 4, '=');
+        const json = atob(normalized);
+        return JSON.parse(json) as Record<string, unknown>;
+    } catch {
+        return null;
+    }
+};
+
+const extractRoleFromToken = (token: string | null): string | null => {
+    if (!token) return null;
+
+    const payload = decodeJwtPayload(token);
+    if (!payload) return null;
+
+    const directRole = typeof payload.role === 'string' ? payload.role : null;
+    if (directRole) return directRole;
+
+    if (Array.isArray(payload.roles)) {
+        const role = payload.roles.find((value) => typeof value === 'string');
+        if (typeof role === 'string') return role;
+    }
+
+    if (Array.isArray(payload.authorities)) {
+        const role = payload.authorities.find((value) => typeof value === 'string');
+        if (typeof role === 'string') return role;
+    }
+
+    return null;
 };
 
 const formatDateTime = (value: string | null): string | null => {
@@ -1699,46 +1716,9 @@ function Tribunal() {
             return;
         }
 
-        let cancelled = false;
-
-        const loadViewerRole = async () => {
-            const accessToken = readAccessToken();
-            if (!accessToken) {
-                if (!cancelled) setViewerRole(null);
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/User/profile/me`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                        Accept: 'application/json',
-                    },
-                    credentials: 'include',
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-
-                const data = await response.json();
-                if (!cancelled) {
-                    setViewerRole(getViewerRole(data));
-                }
-            } catch (error) {
-                console.error(error);
-                if (!cancelled) {
-                    setViewerRole(null);
-                }
-            }
-        };
-
-        void loadViewerRole();
-
-        return () => {
-            cancelled = true;
-        };
+        const accessToken = readAccessToken();
+        const roleFromToken = extractRoleFromToken(accessToken);
+        setViewerRole(roleFromToken);
     }, [isLoggedIn]);
 
     useEffect(() => {

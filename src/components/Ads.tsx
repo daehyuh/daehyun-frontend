@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import styled from "styled-components";
 import fetchAds from "../apis/fetchAds";
 import {NormalizedAd, normalizeAdsResponse} from "@/utils/ads";
+import {AD_INQUIRY_KAKAO_URL} from "@/constant/contact";
 
 type AdsProps = {
     useInquiry?: boolean;
@@ -222,8 +223,8 @@ function Ads({useInquiry = true, onAvailabilityChange}: AdsProps) {
                     </PrimaryLink>
                 )}
                 {useInquiry && (
-                    <SecondaryLink href="https://open.kakao.com/o/sWIax8Vc" target="_blank" rel="noreferrer">
-                        광고/제휴 문의
+                    <SecondaryLink href={AD_INQUIRY_KAKAO_URL} target="_blank" rel="noreferrer">
+                        광고/제휴 이메일 문의
                     </SecondaryLink>
                 )}
             </ActionRow>

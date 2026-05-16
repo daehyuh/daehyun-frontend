@@ -1,20 +1,49 @@
+export type ApiResponse<T> = {
+    success: boolean;
+    data: T;
+    message: string;
+};
+
 export type TribunalVoteChoice = 'GUILTY' | 'NOT_GUILTY';
+
+export type TribunalAuthor = {
+    id: number | null;
+    name: string;
+    nickname: string;
+    avatarUrl: string | null;
+    rankPoint: number | null;
+    anonymous: boolean;
+    mine: boolean;
+};
+
+export type TribunalVoteSummary = {
+    guiltyCount: number;
+    notGuiltyCount: number;
+    myVerdict: TribunalVoteChoice | null;
+};
 
 export type TribunalReplayMessage = {
     id: string;
+    sequenceNo: number;
     kind: 'PLAYER' | 'SYSTEM';
     speaker: string;
     content: string;
     timestamp: string | null;
     round: string | null;
+    chatType: string | null;
+    pick: string | null;
+    frameImageUrl: string | null;
+    jobIconUrl: string | null;
+    jobCode: string | null;
 };
 
 export type TribunalComment = {
     id: number;
-    caseId: number | null;
     parentId: number | null;
-    author: string;
+    author: TribunalAuthor;
+    authorVerdict: TribunalVoteChoice | null;
     content: string;
+    deleted: boolean;
     createdAt: string | null;
     updatedAt: string | null;
     likeCount: number;
@@ -24,25 +53,72 @@ export type TribunalComment = {
     children: TribunalComment[];
 };
 
+export type TribunalCafeLink = {
+    id: number | null;
+    url: string;
+};
+
+export type TribunalReplayPreviewPlayer = {
+    order: number;
+    nickname: string;
+    pick: string;
+    pickName: string | null;
+    jobImageUrl: string | null;
+    frameImageUrl: string | null;
+};
+
+export type TribunalReplayPreview = {
+    replayUrl: string;
+    replayRoomId: string | null;
+    replayLang: string | null;
+    winnerTeam: string | null;
+    gameType: string | null;
+    gameDuration: string | null;
+    fetchedAt: string | null;
+    players: TribunalReplayPreviewPlayer[];
+};
+
 export type TribunalCaseSummary = {
     id: number;
     replayUrl: string;
+    replayRoomId: string | null;
+    replayLang: string | null;
     nickname: string;
     pick: string;
+    pickName: string | null;
     description: string;
-    cafeLinks: string[];
-    createdAt: string | null;
-    messageCount: number;
+    winnerTeam: string | null;
+    gameType: string | null;
+    gameDuration: string | null;
+    author: TribunalAuthor | null;
     guiltyCount: number;
     notGuiltyCount: number;
+    myVote: TribunalVoteChoice | null;
+    viewCount: number;
     commentCount: number;
+    messageCount: number;
+    replayFetchedAt: string | null;
+    createdAt: string | null;
+    updatedAt: string | null;
 };
 
 export type TribunalCaseDetail = TribunalCaseSummary & {
-    statusLabel: string;
-    myVote: TribunalVoteChoice | null;
+    cafeLinks: TribunalCafeLink[];
     messages: TribunalReplayMessage[];
     comments: TribunalComment[];
+};
+
+export type TribunalCaseListPage = {
+    page: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    content: TribunalCaseSummary[];
+};
+
+export type TribunalCaseListParams = {
+    page?: number;
+    size?: number;
 };
 
 export type TribunalCaseCreateRequest = {
@@ -51,4 +127,9 @@ export type TribunalCaseCreateRequest = {
     pick: string;
     description: string;
     cafeLinks: string[];
+};
+
+export type TribunalCommentSubmitOptions = {
+    parentId?: number | null;
+    anonymous?: boolean;
 };

@@ -123,7 +123,6 @@ function GuildColorRank() {
                     </ControlBar>
 
                     <NoteText>길드 배경 색상과 GP를 함께 확인해 보세요.</NoteText>
-                    <NoteText>랭킹은 50명 단위로 조회하고, 검색은 백엔드 스냅샷에서 처리합니다.</NoteText>
                     {error && (
                         <MessageBox $tone="error" role="alert">
                             <Text>{error}</Text>

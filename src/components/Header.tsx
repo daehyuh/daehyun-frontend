@@ -294,7 +294,11 @@ function Header({pages, member_pages}: HeaderProps) {
     const memberPages = member_pages.filter(item => !item.hide);
     const primaryPages = pages.filter(item => !item.hide);
     const loginPage = primaryPages.find(item => item.hrefs.includes('/login') || item.hrefs.includes('/인증'));
-    const generalPages = primaryPages.filter(item => item !== loginPage);
+    const tribunalPage = primaryPages.find(item => item.hrefs.includes('/tribunal'));
+    const promotedMemberPages = tribunalPage && !memberPages.some(item => item.hrefs.includes('/tribunal'))
+        ? [tribunalPage, ...memberPages]
+        : memberPages;
+    const generalPages = primaryPages.filter(item => item !== loginPage && item !== tribunalPage);
 
     useEffect(() => {
         setIsMobileMenuOpen(false);
@@ -339,7 +343,7 @@ function Header({pages, member_pages}: HeaderProps) {
                     </BrandLink>
 
                     <DesktopNav aria-label="메뉴 (데스크톱)">
-                        {memberPages.length > 0 && (
+                        {promotedMemberPages.length > 0 && (
                             <>
                                 <RailLabel>회원 전용 도구</RailLabel>
                                 <NavRow>
@@ -351,7 +355,7 @@ function Header({pages, member_pages}: HeaderProps) {
                                             {...loginPage}
                                         />
                                     )}
-                                    {memberPages.map((item, index) => (
+                                    {promotedMemberPages.map((item, index) => (
                                         <HeaderItemLink
                                             key={item.hrefs[0] ?? `member-${index}`}
                                             path={path}
@@ -409,7 +413,7 @@ function Header({pages, member_pages}: HeaderProps) {
             </HeaderWrapper>
 
             <NavRail>
-                {memberPages.length > 0 && (
+                {promotedMemberPages.length > 0 && (
                     <>
                         <RailLabel>회원 전용 도구</RailLabel>
                         <NavScroller aria-label="회원 전용 도구">
@@ -421,7 +425,7 @@ function Header({pages, member_pages}: HeaderProps) {
                                     {...loginPage}
                                 />
                             )}
-                            {memberPages.map((item, index) => (
+                            {promotedMemberPages.map((item, index) => (
                                 <HeaderItemLink
                                     key={item.hrefs[0] ?? index}
                                     path={path}
@@ -471,10 +475,10 @@ function Header({pages, member_pages}: HeaderProps) {
                         ))}
                     </MobileSection>
 
-                    {memberPages.length > 0 && (
+                    {promotedMemberPages.length > 0 && (
                         <MobileSection>
                             <MobileSectionTitle>회원 툴</MobileSectionTitle>
-                            {memberPages.map((item, index) => (
+                            {promotedMemberPages.map((item, index) => (
                                 <HeaderItemLink
                                     key={`mobile-member-${item.hrefs[0] ?? index}`}
                                     path={path}

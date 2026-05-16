@@ -123,7 +123,6 @@ function ColorRank() {
                     </ControlBar>
 
                     <NoteText>검닉으로 인정되면 점수 앞에 ✅가 붙어요.</NoteText>
-                    <NoteText>랭킹은 50명 단위로 조회하고, 검색은 백엔드 스냅샷에서 처리합니다.</NoteText>
                     {error && (
                         <MessageBox $tone="error" role="alert">
                             <Text>{error}</Text>

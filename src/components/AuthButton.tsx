@@ -1,6 +1,7 @@
 import {useCallback, useEffect, useMemo, useState} from "react";
 import styled from "styled-components";
 import Input from "./base/Input";
+import ToastNotice from "./base/ToastNotice";
 import {startGoogleLogin} from "@/utils/googleLogin";
 import fetchStatsSummary, {StatsSummaryResponse} from "@/apis/fetchStatsSummary";
 
@@ -11,6 +12,8 @@ type UserProfile = {
     email?: string;
     avatarUrl?: string;
     role?: string;
+    nickname?: string;
+    NICKNAME?: string;
 };
 
 type UserProfileResponse = {
@@ -19,6 +22,8 @@ type UserProfileResponse = {
         NICKNAME?: string;
         nickname?: string;
     };
+    nickname?: string;
+    NICKNAME?: string;
     nicknameColor?: string | null;
     nicknameRank?: number | null;
     guildBackgroundColor?: string | null;
@@ -334,6 +339,18 @@ const clearAuthParams = () => {
     window.history.replaceState({}, '', url.toString());
 };
 
+const extractLinkedNickname = (data: UserProfileResponse): string =>
+    [
+        data.record?.NICKNAME,
+        data.record?.nickname,
+        data.NICKNAME,
+        data.nickname,
+        data.user?.NICKNAME,
+        data.user?.nickname,
+    ]
+        .map((value) => value?.trim())
+        .find((value): value is string => Boolean(value)) ?? '';
+
 function AuthSection() {
     const [profile, setProfile] = useState<UserProfile | null>(null);
     const [status, setStatus] = useState<{ tone: StatusTone, message: string } | null>(null);
@@ -349,6 +366,8 @@ function AuthSection() {
     const [insight, setInsight] = useState<UserInsight | null>(null);
     const [insightLoading, setInsightLoading] = useState(false);
     const [insightError, setInsightError] = useState<string | null>(null);
+    const [isVerified, setIsVerified] = useState(false);
+    const [profileResolved, setProfileResolved] = useState(false);
 
     const isLoggedIn = useMemo(() => Boolean(profile) || hasToken, [profile, hasToken]);
 
@@ -358,10 +377,13 @@ function AuthSection() {
         if (!accessToken) {
             setProfile(null);
             setInsight(null);
+            setIsVerified(false);
+            setProfileResolved(true);
             return;
         }
 
         setIsLoading(true);
+        setProfileResolved(false);
         try {
             const response = await fetch(`${API_BASE_URL}/User/profile/me`, {
                 method: "GET",
@@ -377,12 +399,14 @@ function AuthSection() {
             }
 
             const data = await response.json() as UserProfileResponse;
+            const linkedNickname = extractLinkedNickname(data);
             setProfile(data.user);
+            setIsVerified(Boolean(linkedNickname));
             setStatus({tone: 'success', message: `${data.user?.name ?? '로그인한'} 사용자로 연결되었습니다.`});
 
             setInsightLoading(true);
             setInsightError(null);
-            const nicknameVal = data.record?.NICKNAME ?? data.record?.nickname ?? data.user?.name ?? "";
+            const nicknameVal = linkedNickname || data.user?.name || "";
             setInsight({
                 nickname: nicknameVal,
                 nicknameColor: data.nicknameColor ? `#${data.nicknameColor}` : undefined,
@@ -398,11 +422,13 @@ function AuthSection() {
             console.error("Error fetching user data:", error);
             setProfile(null);
             setInsight(null);
+            setIsVerified(false);
             setStatus({tone: 'danger', message: '로그인이 만료되었어요. 다시 로그인해주세요.'});
             setInsightError("내 정보 요약을 불러오지 못했습니다.");
         } finally {
             setIsLoading(false);
             setInsightLoading(false);
+            setProfileResolved(true);
         }
     }, []);
     
@@ -512,6 +538,7 @@ function AuthSection() {
             }
 
             await response.json();
+            await loadProfile();
             setStatus({tone: 'success', message: '계정을 동기화했어요.'});
         } catch (error) {
             console.error("Error syncing account:", error);
@@ -599,11 +626,6 @@ function AuthSection() {
                     </ButtonRow>
                 )}
 
-                {status && (
-                    <Status $tone={status.tone}>
-                        {status.message}
-                    </Status>
-                )}
             </Card>
 
             {isLoggedIn && (
@@ -653,6 +675,7 @@ function AuthSection() {
                 </InsightCard>
             )}
 
+            {isLoggedIn && profileResolved && !isVerified && (
             <Card>
                 <Headline>인증방법 선택</Headline>
                 <SectionTitle>최후의반론 인증</SectionTitle>
@@ -709,6 +732,8 @@ function AuthSection() {
 
 
             </Card>
+            )}
+            <ToastNotice notice={status} onClose={() => setStatus(null)} />
         </PageStack>
     );
 }

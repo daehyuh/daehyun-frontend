@@ -1,6 +1,7 @@
 ﻿import React from "react";
 import styled from "styled-components";
 import {Link} from "react-router-dom";
+import {AD_INQUIRY_KAKAO_URL} from "@/constant/contact";
 
 const FooterWrapper = styled.footer`
     width: 100%;
@@ -93,22 +94,15 @@ const FooterLegal = styled.div`
     }
 `;
 
-const InfoText = styled.span`
-    color: ${({theme}) => theme.colors.textPrimary};
-    font-size: ${({theme}) => theme.typography.sizes.sm};
-`;
-
 function Footer() {
     return (
         <FooterWrapper>
             <FooterGrid>
                 <FooterSection>
                     <FooterBrand>대현닷컴</FooterBrand>
-                    <ExternalLink href="https://daehyun.dev">개발자 : 강대현</ExternalLink>
                     <FooterHeading>CONTACT</FooterHeading>
                     <ContactList>
                         <ExternalLink href="mailto:rkdeown10@naver.com">rkdeown10@naver.com</ExternalLink>
-                        <ExternalLink href="tel:01077122413">010-7712-2413</ExternalLink>
                     </ContactList>
                 </FooterSection>
 
@@ -121,10 +115,12 @@ function Footer() {
                 <FooterSection>
                     <FooterHeading>광고 제휴/문의</FooterHeading>
                     <ContactList>
-                        <ExternalLink href="https://open.kakao.com/o/sWIax8Vc" target="_blank" rel="noreferrer">
-                            카카오톡 오픈채팅
+                        <ExternalLink href="mailto:rkdeown10@naver.com">
+                            rkdeown10@naver.com
                         </ExternalLink>
-                        <InfoText>후원: 토스뱅크 1000-0947-5155 (강대현)</InfoText>
+                        <ExternalLink href={AD_INQUIRY_KAKAO_URL} target="_blank" rel="noreferrer">
+                            오픈카카오톡 프로필
+                        </ExternalLink>
                     </ContactList>
                 </FooterSection>
             </FooterGrid>

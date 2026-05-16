@@ -160,11 +160,6 @@ const RANK_PLATE_THEMES: Record<RankTier, RankPlateTheme> = {
     },
 };
 
-const formatReplayParticipantPick = (participant: ReplayParticipant): string =>
-    participant.isDefendant
-        ? `피고인 / ${participant.pick ?? '직업 미상'}`
-        : participant.pick ?? '직업 미상';
-
 const defaultCaseForm = (): CaseFormState => ({
     replayUrl: '',
     description: '',
@@ -1236,86 +1231,6 @@ const ReplayParticipants = styled.div`
     gap: ${({theme}) => theme.spacing.sm};
 `;
 
-const ReplayParticipantsToggle = styled.button.attrs({type: 'button'})<{ $expanded: boolean }>`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: ${({theme}) => theme.spacing.md};
-    padding: ${({theme}) => `${theme.spacing.sm} ${theme.spacing.md}`};
-    border-radius: ${({theme}) => theme.radii.md};
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: ${({$expanded}) => $expanded ? 'rgba(0, 0, 0, 0.34)' : 'rgba(0, 0, 0, 0.24)'};
-    color: #ffffff;
-    cursor: pointer;
-    text-align: left;
-    transition: background ${({theme}) => theme.transitions.default}, border-color ${({theme}) => theme.transitions.default};
-
-    &:hover {
-        background: rgba(0, 0, 0, 0.4);
-        border-color: rgba(255, 255, 255, 0.16);
-    }
-`;
-
-const ReplayParticipantsToggleCopy = styled.div`
-    display: grid;
-    gap: 4px;
-    min-width: 0;
-`;
-
-const ReplayParticipantsToggleTitle = styled.div`
-    color: #ffffff;
-    font-size: ${({theme}) => theme.typography.sizes.sm};
-    font-weight: ${({theme}) => theme.typography.weights.semibold};
-`;
-
-const ReplayParticipantsToggleMeta = styled.div`
-    color: rgba(255, 255, 255, 0.68);
-    font-size: ${({theme}) => theme.typography.sizes.xs};
-`;
-
-const ReplayParticipantsToggleIcon = styled.span<{ $expanded: boolean }>`
-    color: rgba(255, 255, 255, 0.82);
-    font-size: ${({theme}) => theme.typography.sizes.sm};
-    transform: rotate(${({$expanded}) => $expanded ? '180deg' : '0deg'});
-    transition: transform ${({theme}) => theme.transitions.snappy};
-`;
-
-const ReplayParticipantsPreview = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    gap: ${({theme}) => theme.spacing.xs};
-`;
-
-const ReplayParticipantChip = styled.div`
-    display: inline-flex;
-    align-items: center;
-    gap: ${({theme}) => theme.spacing.xs};
-    padding: ${({theme}) => `${theme.spacing.xs} ${theme.spacing.sm}`};
-    border-radius: ${({theme}) => theme.radii.pill};
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.24);
-    color: rgba(255, 255, 255, 0.82);
-    font-size: ${({theme}) => theme.typography.sizes.xs};
-
-    ${ReplayProfileFrame},
-    ${ReplayProfileFallback} {
-        width: 24px;
-        height: 24px;
-        min-width: 24px;
-        border-radius: 8px;
-        box-shadow: none;
-    }
-
-    ${ReplayJobIcon} {
-        border-radius: 8px;
-    }
-`;
-
-const ReplayParticipantChipText = styled.span`
-    white-space: nowrap;
-`;
-
 const ReplayParticipantsRail = styled.div`
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1799,7 +1714,6 @@ function Tribunal() {
     const [previewLoading, setPreviewLoading] = useState(false);
     const [caseQuery, setCaseQuery] = useState('');
     const [messageSearch, setMessageSearch] = useState('');
-    const [isParticipantsExpanded, setIsParticipantsExpanded] = useState(true);
     const [newComment, setNewComment] = useState('');
     const [newCommentAnonymous, setNewCommentAnonymous] = useState(true);
     const [replyDrafts, setReplyDrafts] = useState<Record<number, string>>({});
@@ -2906,24 +2820,8 @@ function Tribunal() {
                                         </ReplayStream>
 
                                         <ReplayParticipants>
-                                            <ReplayParticipantsToggle
-                                                $expanded={isParticipantsExpanded}
-                                                onClick={() => setIsParticipantsExpanded((current) => !current)}
-                                                aria-expanded={isParticipantsExpanded}
-                                            >
-                                                <ReplayParticipantsToggleCopy>
-                                                    <ReplayParticipantsToggleTitle>참여자 픽</ReplayParticipantsToggleTitle>
-                                                    <ReplayParticipantsToggleMeta>
-                                                        {replayParticipants.length.toLocaleString()}명 · {isParticipantsExpanded ? '접기' : '펼치기'}
-                                                    </ReplayParticipantsToggleMeta>
-                                                </ReplayParticipantsToggleCopy>
-                                                <ReplayParticipantsToggleIcon $expanded={isParticipantsExpanded}>
-                                                    {isParticipantsExpanded ? '-' : '+'}
-                                                </ReplayParticipantsToggleIcon>
-                                            </ReplayParticipantsToggle>
                                             <SectionHint>참여자 픽</SectionHint>
-                                            {isParticipantsExpanded ? (
-                                                <ReplayParticipantsRail>
+                                            <ReplayParticipantsRail>
                                                 {replayParticipants.map((participant) => (
                                                     <ReplayParticipantCard key={participant.speaker}>
                                                         {renderReplayProfile(participant.speaker, participant.frameImageUrl, participant.jobIconUrl)}
@@ -2936,23 +2834,6 @@ function Tribunal() {
                                                     </ReplayParticipantCard>
                                                 ))}
                                             </ReplayParticipantsRail>
-                                            ) : (
-                                                <ReplayParticipantsPreview>
-                                                    {replayParticipants.slice(0, 4).map((participant) => (
-                                                        <ReplayParticipantChip key={`collapsed-${participant.speaker}`}>
-                                                            {renderReplayProfile(participant.speaker, participant.frameImageUrl, participant.jobIconUrl)}
-                                                            <ReplayParticipantChipText>
-                                                                {participant.speaker} / {formatReplayParticipantPick(participant)}
-                                                            </ReplayParticipantChipText>
-                                                        </ReplayParticipantChip>
-                                                    ))}
-                                                    {replayParticipants.length > 4 && (
-                                                        <ReplayParticipantChip>
-                                                            <ReplayParticipantChipText>+{replayParticipants.length - 4}명</ReplayParticipantChipText>
-                                                        </ReplayParticipantChip>
-                                                    )}
-                                                </ReplayParticipantsPreview>
-                                            )}
                                         </ReplayParticipants>
                                     </ReplayStage>
                                 ) : (

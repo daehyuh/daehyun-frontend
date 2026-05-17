@@ -19,6 +19,7 @@ import {
     voteTribunalCase
 } from "@/apis/tribunal";
 import type {
+    TribunalAiReview,
     TribunalAuthor,
     TribunalCaseDetail,
     TribunalCaseSummary,
@@ -408,6 +409,9 @@ const getCommentVerdictCopy = (verdict: TribunalVoteChoice | null): string | nul
     if (verdict === 'NOT_GUILTY') return '무죄';
     return null;
 };
+
+const isAiReviewPolling = (aiReview: TribunalAiReview | null | undefined): boolean =>
+    aiReview?.status === 'PENDING' || aiReview?.status === 'RUNNING';
 
 const escapeRegExp = (value: string): string =>
     value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -1521,6 +1525,12 @@ const CommentDeletedText = styled.div`
     line-height: ${({theme}) => theme.typography.lineHeights.relaxed};
 `;
 
+const CommentMetrics = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: ${({theme}) => theme.spacing.xs};
+`;
+
 const CommentActionRow = styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -2005,6 +2015,31 @@ function Tribunal() {
         [selectedCase]
     );
 
+    const pinnedAiComment = useMemo(
+        () => selectedCase?.comments.find((comment) => comment.commentType === 'AI_JUDGMENT') ?? null,
+        [selectedCase]
+    );
+
+    const visibleComments = useMemo(
+        () => selectedCase?.comments.filter((comment) => comment.commentType !== 'AI_JUDGMENT') ?? [],
+        [selectedCase]
+    );
+
+    useEffect(() => {
+        if (!selectedCaseId || !isAiReviewPolling(selectedCase?.aiReview)) {
+            return;
+        }
+
+        const timer = window.setTimeout(() => {
+            void Promise.all([
+                loadCaseDetail(selectedCaseId, true),
+                loadCases(true, currentPage),
+            ]);
+        }, 2500);
+
+        return () => window.clearTimeout(timer);
+    }, [currentPage, loadCaseDetail, loadCases, selectedCase?.aiReview, selectedCaseId]);
+
     const selectCase = (caseId: number) => {
         startTransition(() => {
             setSelectedCaseId(caseId);
@@ -2397,14 +2432,87 @@ function Tribunal() {
         );
     };
 
-    const renderComment = (comment: TribunalComment, isReply = false) => {
+    const renderAiPinnedComment = () => {
+        if (!selectedCase?.aiReview) return null;
+
+        if (pinnedAiComment) {
+            return renderComment(pinnedAiComment, false, {pinned: true});
+        }
+
+        const {aiReview} = selectedCase;
+        const verdictLabel = getCommentVerdictCopy(aiReview.verdict);
+        const verdictTone =
+            aiReview.verdict === 'GUILTY'
+                ? 'danger'
+                : aiReview.verdict === 'NOT_GUILTY'
+                    ? 'success'
+                    : 'default';
+        const statusTone =
+            aiReview.status === 'FAILED'
+                ? 'danger'
+                : aiReview.status === 'SUCCEEDED'
+                    ? 'success'
+                    : 'warning';
+        const statusMessage =
+            aiReview.status === 'PENDING'
+                ? 'AI 판사가 사건을 접수하고 분석을 준비 중입니다.'
+                : aiReview.status === 'RUNNING'
+                    ? 'AI 판사가 리플레이와 대화 로그를 분석 중입니다.'
+                    : aiReview.status === 'FAILED'
+                        ? 'AI 판결 생성에 실패했습니다.'
+                        : 'AI 판결을 불러오는 중입니다.';
+        const aiMetrics = [
+            aiReview.score !== null ? `점수 ${aiReview.score}/100` : null,
+            aiReview.grade ? `등급 ${aiReview.grade}` : null,
+            aiReview.teamAlignment !== null ? `팀 기여도 ${aiReview.teamAlignment}/100` : null,
+            aiReview.confidence !== null ? `신뢰도 ${aiReview.confidence}%` : null,
+            aiReview.model ? `모델 ${aiReview.model}` : null,
+        ].filter((item): item is string => Boolean(item));
+
+        return (
+            <CommentCard $isReply={false}>
+                <CommentHeader>
+                    <CommentMeta>
+                        <CommentIdentity>
+                            <CommentIdentityRow>
+                                <CommentNameplate $tier="MASTER">
+                                    <CommentNameplateName>AI 판사</CommentNameplateName>
+                                    <CommentNameplateRank $tier="MASTER">AI</CommentNameplateRank>
+                                </CommentNameplate>
+                                <Badge $tone="warning">상단 고정</Badge>
+                            </CommentIdentityRow>
+                            <CommentIdentityRow>
+                                <CommentVerdictBadge $tone={verdictTone}>
+                                    {verdictLabel ? `AI 판결 ${verdictLabel}` : 'AI 판결 대기'}
+                                </CommentVerdictBadge>
+                                <Badge $tone={statusTone}>상태 {aiReview.status}</Badge>
+                            </CommentIdentityRow>
+                        </CommentIdentity>
+                        <CommentTime>{formatDateTime(aiReview.updatedAt ?? aiReview.completedAt ?? aiReview.requestedAt)}</CommentTime>
+                    </CommentMeta>
+                </CommentHeader>
+                <CommentBody>{statusMessage}</CommentBody>
+                {aiMetrics.length > 0 && (
+                    <CommentMetrics>
+                        {aiMetrics.map((metric) => (
+                            <Badge key={metric}>{metric}</Badge>
+                        ))}
+                    </CommentMetrics>
+                )}
+            </CommentCard>
+        );
+    };
+
+    const renderComment = (comment: TribunalComment, isReply = false, options?: { pinned?: boolean }) => {
+        const isAiJudgment = comment.commentType === 'AI_JUDGMENT';
+        const isPinnedAi = Boolean(options?.pinned && isAiJudgment);
         const isEditing = editingCommentId === comment.id;
         const replyDraft = replyDrafts[comment.id] ?? '';
         const replyIsAnonymous = replyAnonymous[comment.id] ?? true;
-        const canReply = comment.parentId === null && !comment.deleted;
+        const canReply = !isAiJudgment && comment.parentId === null && !comment.deleted;
         const displayContent = comment.deleted ? '삭제된 댓글입니다.' : comment.content;
-        const authorLabel = getTribunalAuthorLabel(comment.author);
-        const authorRankTier = getRankTier(comment.author.rankPoint);
+        const authorLabel = isAiJudgment ? 'AI 판사' : getTribunalAuthorLabel(comment.author);
+        const authorRankTier = isAiJudgment ? 'MASTER' : getRankTier(comment.author.rankPoint);
         const authorRankTheme = RANK_PLATE_THEMES[authorRankTier];
         const authorVerdictLabel = getCommentVerdictCopy(comment.authorVerdict);
         const authorVerdictTone =
@@ -2413,9 +2521,17 @@ function Tribunal() {
                 : comment.authorVerdict === 'NOT_GUILTY'
                     ? 'success'
                     : 'default';
-        const authorRankPointText = comment.author.rankPoint !== null && comment.author.rankPoint >= 0
+        const authorRankPointText = !isAiJudgment && comment.author.rankPoint !== null && comment.author.rankPoint >= 0
             ? `${comment.author.rankPoint.toLocaleString()} RP`
             : null;
+        const aiMetrics = isAiJudgment && selectedCase?.aiReview
+            ? [
+                selectedCase.aiReview.score !== null ? `점수 ${selectedCase.aiReview.score}/100` : null,
+                selectedCase.aiReview.grade ? `등급 ${selectedCase.aiReview.grade}` : null,
+                selectedCase.aiReview.teamAlignment !== null ? `팀 기여도 ${selectedCase.aiReview.teamAlignment}/100` : null,
+                selectedCase.aiReview.confidence !== null ? `신뢰도 ${selectedCase.aiReview.confidence}%` : null,
+            ].filter((item): item is string => Boolean(item))
+            : [];
 
         return (
             <Fragment key={comment.id}>
@@ -2430,9 +2546,12 @@ function Tribunal() {
                                     >
                                         <CommentNameplateName>{authorLabel}</CommentNameplateName>
                                         <CommentNameplateRank $tier={authorRankTier}>
-                                            {authorRankTheme.label}
+                                            {isAiJudgment ? 'AI' : authorRankTheme.label}
                                         </CommentNameplateRank>
                                     </CommentNameplate>
+                                    {isPinnedAi && (
+                                        <Badge $tone="warning">상단 고정</Badge>
+                                    )}
                                     {authorRankPointText && (
                                         <CommentRankPoint>{authorRankPointText}</CommentRankPoint>
                                     )}
@@ -2446,7 +2565,7 @@ function Tribunal() {
                             <CommentTime>{formatDateTime(comment.updatedAt ?? comment.createdAt)}</CommentTime>
                         </CommentMeta>
                         <CommentActionRow>
-                            {!comment.deleted && (
+                            {!isAiJudgment && !comment.deleted && (
                                 <TinyButton onClick={() => handleToggleLike(comment.id)} disabled={busyKey === `like-${comment.id}`}>
                                     인정 {comment.likeCount}
                                 </TinyButton>
@@ -2499,8 +2618,19 @@ function Tribunal() {
                                 </GhostButton>
                             </ButtonRow>
                         </CommentComposer>
+                    ) : comment.deleted ? (
+                        <CommentDeletedText>{displayContent}</CommentDeletedText>
                     ) : (
-                        comment.deleted ? <CommentDeletedText>{displayContent}</CommentDeletedText> : <CommentBody>{displayContent}</CommentBody>
+                        <>
+                            <CommentBody>{displayContent}</CommentBody>
+                            {aiMetrics.length > 0 && (
+                                <CommentMetrics>
+                                    {aiMetrics.map((metric) => (
+                                        <Badge key={`${comment.id}-${metric}`}>{metric}</Badge>
+                                    ))}
+                                </CommentMetrics>
+                            )}
+                        </>
                     )}
 
                     {replyTargetId === comment.id && (
@@ -2880,6 +3010,7 @@ function Tribunal() {
                                     <SectionTitle>댓글</SectionTitle>
                                     <SectionHint>{selectedCommentCount.toLocaleString()}개</SectionHint>
                                 </SectionHeader>
+                                {renderAiPinnedComment()}
                                 <CommentComposer>
                                     <StyledTextarea
                                         value={newComment}
@@ -2900,9 +3031,9 @@ function Tribunal() {
                                     </ButtonRow>
                                 </CommentComposer>
 
-                                {selectedCase.comments.length > 0 ? (
+                                {visibleComments.length > 0 ? (
                                     <CommentList>
-                                        {selectedCase.comments.map((comment) => renderComment(comment))}
+                                        {visibleComments.map((comment) => renderComment(comment))}
                                     </CommentList>
                                 ) : (
                                     <EmptyState>댓글이 없습니다.</EmptyState>

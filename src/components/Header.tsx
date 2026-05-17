@@ -293,8 +293,14 @@ function Header({pages, member_pages}: HeaderProps) {
 
     const memberPages = member_pages.filter(item => !item.hide);
     const primaryPages = pages.filter(item => !item.hide);
+    const isTribunalPage = (item: PageType) => item.hrefs.includes('/재판소') || item.hrefs.includes('/tribunal');
     const loginPage = primaryPages.find(item => item.hrefs.includes('/login') || item.hrefs.includes('/인증'));
-    const generalPages = primaryPages.filter(item => item !== loginPage);
+    const tribunalPage = primaryPages.find(isTribunalPage);
+    const groupedMemberPages = tribunalPage && !memberPages.some(isTribunalPage)
+        ? [tribunalPage, ...memberPages]
+        : memberPages;
+    const memberNavigationPages = loginPage ? [loginPage, ...groupedMemberPages] : groupedMemberPages;
+    const generalPages = primaryPages.filter(item => item !== loginPage && item !== tribunalPage);
 
     useEffect(() => {
         setIsMobileMenuOpen(false);
@@ -339,24 +345,16 @@ function Header({pages, member_pages}: HeaderProps) {
                     </BrandLink>
 
                     <DesktopNav aria-label="메뉴 (데스크톱)">
-                        {memberPages.length > 0 && (
+                        {memberNavigationPages.length > 0 && (
                             <>
                                 <RailLabel>회원 전용 도구</RailLabel>
                                 <NavRow>
-                                    {loginPage && (
-                                        <HeaderItemLink
-                                            key={loginPage.hrefs[0]}
-                                            path={path}
-                                            variant={'premium'}
-                                            {...loginPage}
-                                        />
-                                    )}
-                                    {memberPages.map((item, index) => (
+                                    {memberNavigationPages.map((item, index) => (
                                         <HeaderItemLink
                                             key={item.hrefs[0] ?? `member-${index}`}
                                             path={path}
                                             variant={'premium'}
-                                            requiresAuth={true}
+                                            requiresAuth={item.requiresAuth}
                                             {...item}
                                         />
                                     ))}
@@ -409,24 +407,16 @@ function Header({pages, member_pages}: HeaderProps) {
             </HeaderWrapper>
 
             <NavRail>
-                {memberPages.length > 0 && (
+                {memberNavigationPages.length > 0 && (
                     <>
                         <RailLabel>회원 전용 도구</RailLabel>
                         <NavScroller aria-label="회원 전용 도구">
-                            {loginPage && (
-                                <HeaderItemLink
-                                    key={loginPage.hrefs[0]}
-                                    path={path}
-                                    variant={'premium'}
-                                    {...loginPage}
-                                />
-                            )}
-                            {memberPages.map((item, index) => (
+                            {memberNavigationPages.map((item, index) => (
                                 <HeaderItemLink
                                     key={item.hrefs[0] ?? index}
                                     path={path}
                                     variant={'premium'}
-                                    requiresAuth={true}
+                                    requiresAuth={item.requiresAuth}
                                     {...item}
                                 />
                             ))}
@@ -460,7 +450,7 @@ function Header({pages, member_pages}: HeaderProps) {
                     </SheetHeader>
 
                     <MobileSection>
-                        {primaryPages.map((item, index) => (
+                        {generalPages.map((item, index) => (
                             <HeaderItemLink
                                 key={`mobile-primary-${item.hrefs[0] ?? index}`}
                                 path={path}
@@ -471,10 +461,10 @@ function Header({pages, member_pages}: HeaderProps) {
                         ))}
                     </MobileSection>
 
-                    {memberPages.length > 0 && (
+                    {memberNavigationPages.length > 0 && (
                         <MobileSection>
                             <MobileSectionTitle>회원 툴</MobileSectionTitle>
-                            {memberPages.map((item, index) => (
+                            {memberNavigationPages.map((item, index) => (
                                 <HeaderItemLink
                                     key={`mobile-member-${item.hrefs[0] ?? index}`}
                                     path={path}

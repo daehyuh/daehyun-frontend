@@ -1,4 +1,5 @@
 import type {
+    TribunalAiReview,
     ApiResponse,
     TribunalAuthor,
     TribunalCafeLink,
@@ -8,6 +9,7 @@ import type {
     TribunalCaseListParams,
     TribunalCaseSummary,
     TribunalComment,
+    TribunalCommentType,
     TribunalReplayMessage,
     TribunalReplayPreview,
     TribunalReplayPreviewPlayer,
@@ -73,6 +75,19 @@ const toBooleanValue = (value: unknown): boolean | null => {
 const toVoteChoice = (value: unknown): TribunalVoteChoice | null => {
     const upper = toStringValue(value)?.toUpperCase();
     if (upper === 'GUILTY' || upper === 'NOT_GUILTY') {
+        return upper;
+    }
+    return null;
+};
+
+const toCommentType = (value: unknown): TribunalCommentType => {
+    const upper = toStringValue(value)?.toUpperCase();
+    return upper === 'AI_JUDGMENT' ? 'AI_JUDGMENT' : 'USER';
+};
+
+const toAiReviewStatus = (value: unknown): TribunalAiReview['status'] | null => {
+    const upper = toStringValue(value)?.toUpperCase();
+    if (upper === 'PENDING' || upper === 'RUNNING' || upper === 'SUCCEEDED' || upper === 'FAILED') {
         return upper;
     }
     return null;
@@ -254,6 +269,7 @@ const normalizeCommentShallow = (source: unknown): TribunalComment => {
     return {
         id: toNumberValue(record.id) ?? 0,
         parentId: toNumberValue(record.parentId),
+        commentType: toCommentType(record.commentType),
         author,
         authorVerdict: toVoteChoice(record.authorVerdict),
         content: toStringValue(record.content) ?? '',
@@ -265,6 +281,29 @@ const normalizeCommentShallow = (source: unknown): TribunalComment => {
         canEdit: toBooleanValue(pickValue(record, ['canEdit', 'editable', 'mine'])) ?? author.mine,
         canDelete: toBooleanValue(pickValue(record, ['canDelete', 'deletable', 'mine'])) ?? author.mine,
         children: [],
+    };
+};
+
+const normalizeAiReview = (source: unknown): TribunalAiReview | null => {
+    if (!isRecord(source)) return null;
+
+    const status = toAiReviewStatus(source.status);
+    if (!status) return null;
+
+    return {
+        id: toNumberValue(source.id) ?? 0,
+        status,
+        verdict: toVoteChoice(source.verdict),
+        score: toNumberValue(source.score),
+        grade: toStringValue(source.grade),
+        teamAlignment: toNumberValue(source.teamAlignment),
+        confidence: toNumberValue(source.confidence),
+        model: toStringValue(source.model),
+        errorMessage: toStringValue(source.errorMessage) === 'AI_REVIEW_FAILED' ? 'AI_REVIEW_FAILED' : null,
+        requestedAt: toStringValue(source.requestedAt),
+        startedAt: toStringValue(source.startedAt),
+        completedAt: toStringValue(source.completedAt),
+        updatedAt: toStringValue(source.updatedAt),
     };
 };
 
@@ -416,6 +455,7 @@ const normalizeCaseDetail = (source: unknown): TribunalCaseDetail => {
         ...base,
         cafeLinks: normalizeCafeLinks(record.cafeLinks),
         messages,
+        aiReview: normalizeAiReview(record.aiReview),
         comments,
         messageCount: base.messageCount || messages.length,
         commentCount: base.commentCount || countNestedComments(comments),

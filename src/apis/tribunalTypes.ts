@@ -5,6 +5,8 @@ export type ApiResponse<T> = {
 };
 
 export type TribunalVoteChoice = 'GUILTY' | 'NOT_GUILTY';
+export type TribunalCommentType = 'USER' | 'AI_JUDGMENT';
+export type TribunalAiReviewStatus = 'PENDING' | 'RUNNING' | 'SUCCEEDED' | 'FAILED';
 
 export type TribunalAuthor = {
     id: number | null;
@@ -40,6 +42,7 @@ export type TribunalReplayMessage = {
 export type TribunalComment = {
     id: number;
     parentId: number | null;
+    commentType: TribunalCommentType;
     author: TribunalAuthor;
     authorVerdict: TribunalVoteChoice | null;
     content: string;
@@ -51,6 +54,22 @@ export type TribunalComment = {
     canEdit: boolean;
     canDelete: boolean;
     children: TribunalComment[];
+};
+
+export type TribunalAiReview = {
+    id: number;
+    status: TribunalAiReviewStatus;
+    verdict: TribunalVoteChoice | null;
+    score: number | null;
+    grade: string | null;
+    teamAlignment: number | null;
+    confidence: number | null;
+    model: string | null;
+    errorMessage: 'AI_REVIEW_FAILED' | null;
+    requestedAt: string | null;
+    startedAt: string | null;
+    completedAt: string | null;
+    updatedAt: string | null;
 };
 
 export type TribunalCafeLink = {
@@ -105,6 +124,7 @@ export type TribunalCaseSummary = {
 export type TribunalCaseDetail = TribunalCaseSummary & {
     cafeLinks: TribunalCafeLink[];
     messages: TribunalReplayMessage[];
+    aiReview: TribunalAiReview | null;
     comments: TribunalComment[];
 };
 

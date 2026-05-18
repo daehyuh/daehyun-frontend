@@ -1525,12 +1525,6 @@ const CommentDeletedText = styled.div`
     line-height: ${({theme}) => theme.typography.lineHeights.relaxed};
 `;
 
-const CommentMetrics = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    gap: ${({theme}) => theme.spacing.xs};
-`;
-
 const CommentActionRow = styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -2433,74 +2427,8 @@ function Tribunal() {
     };
 
     const renderAiPinnedComment = () => {
-        if (!selectedCase?.aiReview) return null;
-
-        if (pinnedAiComment) {
-            return renderComment(pinnedAiComment, false, {pinned: true});
-        }
-
-        const {aiReview} = selectedCase;
-        const verdictLabel = getCommentVerdictCopy(aiReview.verdict);
-        const verdictTone =
-            aiReview.verdict === 'GUILTY'
-                ? 'danger'
-                : aiReview.verdict === 'NOT_GUILTY'
-                    ? 'success'
-                    : 'default';
-        const statusTone =
-            aiReview.status === 'FAILED'
-                ? 'danger'
-                : aiReview.status === 'SUCCEEDED'
-                    ? 'success'
-                    : 'warning';
-        const statusMessage =
-            aiReview.status === 'PENDING'
-                ? 'AI 판사가 사건을 접수하고 분석을 준비 중입니다.'
-                : aiReview.status === 'RUNNING'
-                    ? 'AI 판사가 리플레이와 대화 로그를 분석 중입니다.'
-                    : aiReview.status === 'FAILED'
-                        ? 'AI 판결 생성에 실패했습니다.'
-                        : 'AI 판결을 불러오는 중입니다.';
-        const aiMetrics = [
-            aiReview.score !== null ? `점수 ${aiReview.score}/100` : null,
-            aiReview.grade ? `등급 ${aiReview.grade}` : null,
-            aiReview.teamAlignment !== null ? `팀 기여도 ${aiReview.teamAlignment}/100` : null,
-            aiReview.confidence !== null ? `신뢰도 ${aiReview.confidence}%` : null,
-            aiReview.model ? `모델 ${aiReview.model}` : null,
-        ].filter((item): item is string => Boolean(item));
-
-        return (
-            <CommentCard $isReply={false}>
-                <CommentHeader>
-                    <CommentMeta>
-                        <CommentIdentity>
-                            <CommentIdentityRow>
-                                <CommentNameplate $tier="MASTER">
-                                    <CommentNameplateName>AI 판사</CommentNameplateName>
-                                    <CommentNameplateRank $tier="MASTER">AI</CommentNameplateRank>
-                                </CommentNameplate>
-                                <Badge $tone="warning">상단 고정</Badge>
-                            </CommentIdentityRow>
-                            <CommentIdentityRow>
-                                <CommentVerdictBadge $tone={verdictTone}>
-                                    {verdictLabel ? `AI 판결 ${verdictLabel}` : 'AI 판결 대기'}
-                                </CommentVerdictBadge>
-                                <Badge $tone={statusTone}>상태 {aiReview.status}</Badge>
-                            </CommentIdentityRow>
-                        </CommentIdentity>
-                        <CommentTime>{formatDateTime(aiReview.updatedAt ?? aiReview.completedAt ?? aiReview.requestedAt)}</CommentTime>
-                    </CommentMeta>
-                </CommentHeader>
-                <CommentBody>{statusMessage}</CommentBody>
-                {aiMetrics.length > 0 && (
-                    <CommentMetrics>
-                        {aiMetrics.map((metric) => (
-                            <Badge key={metric}>{metric}</Badge>
-                        ))}
-                    </CommentMetrics>
-                )}
-            </CommentCard>
-        );
+        if (!pinnedAiComment) return null;
+        return renderComment(pinnedAiComment, false, {pinned: true});
     };
 
     const renderComment = (comment: TribunalComment, isReply = false, options?: { pinned?: boolean }) => {
@@ -2524,15 +2452,6 @@ function Tribunal() {
         const authorRankPointText = !isAiJudgment && comment.author.rankPoint !== null && comment.author.rankPoint >= 0
             ? `${comment.author.rankPoint.toLocaleString()} RP`
             : null;
-        const aiMetrics = isAiJudgment && selectedCase?.aiReview
-            ? [
-                selectedCase.aiReview.score !== null ? `점수 ${selectedCase.aiReview.score}/100` : null,
-                selectedCase.aiReview.grade ? `등급 ${selectedCase.aiReview.grade}` : null,
-                selectedCase.aiReview.teamAlignment !== null ? `팀 기여도 ${selectedCase.aiReview.teamAlignment}/100` : null,
-                selectedCase.aiReview.confidence !== null ? `신뢰도 ${selectedCase.aiReview.confidence}%` : null,
-            ].filter((item): item is string => Boolean(item))
-            : [];
-
         return (
             <Fragment key={comment.id}>
                 <CommentCard $isReply={isReply}>
@@ -2558,7 +2477,9 @@ function Tribunal() {
                                 </CommentIdentityRow>
                                 <CommentIdentityRow>
                                     <CommentVerdictBadge $tone={authorVerdictTone}>
-                                        투표 {authorVerdictLabel ?? '없음'}
+                                        {isAiJudgment
+                                            ? `AI 판결 ${authorVerdictLabel ?? '없음'}`
+                                            : `투표 ${authorVerdictLabel ?? '없음'}`}
                                     </CommentVerdictBadge>
                                 </CommentIdentityRow>
                             </CommentIdentity>
@@ -2621,16 +2542,7 @@ function Tribunal() {
                     ) : comment.deleted ? (
                         <CommentDeletedText>{displayContent}</CommentDeletedText>
                     ) : (
-                        <>
-                            <CommentBody>{displayContent}</CommentBody>
-                            {aiMetrics.length > 0 && (
-                                <CommentMetrics>
-                                    {aiMetrics.map((metric) => (
-                                        <Badge key={`${comment.id}-${metric}`}>{metric}</Badge>
-                                    ))}
-                                </CommentMetrics>
-                            )}
-                        </>
+                        <CommentBody>{displayContent}</CommentBody>
                     )}
 
                     {replyTargetId === comment.id && (
@@ -3035,7 +2947,7 @@ function Tribunal() {
                                     <CommentList>
                                         {visibleComments.map((comment) => renderComment(comment))}
                                     </CommentList>
-                                ) : (
+                                ) : pinnedAiComment ? null : (
                                     <EmptyState>댓글이 없습니다.</EmptyState>
                                 )}
                             </SectionCard>

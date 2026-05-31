@@ -1,0 +1,11 @@
+{
+  "items": [
+    { "name": "언더커버 파일럿 요원 스킨", "chance": 15, "equip": true },
+    { "name": "미등록 실험체 파파라치 스킨", "chance": 15, "equip": true },
+    { "name": "망가진 크로스백 테두리", "chance": 15, "equip": true },
+    { "name": "위험한 만조 테두리", "chance": 15, "equip": true },
+    { "name": "사고뭉치의 반창고", "chance": 15, "equip": true },
+    { "name": "수장된 희망", "chance": 15, "equip": true },
+    { "name": "폐기된 촬영 기록", "chance": 10, "equip": true }
+  ]
+}

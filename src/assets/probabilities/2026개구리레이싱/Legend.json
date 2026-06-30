@@ -1,0 +1,44 @@
+{
+  "items": [
+    {
+      "name": "해상 연구원 과학자 스킨",
+      "chance": 14,
+      "equip": true
+    },
+    {
+      "name": "해변의 감시자 형사 스킨",
+      "chance": 14,
+      "equip": true
+    },
+    {
+      "name": "바다 물음표",
+      "chance": 8,
+      "equip": true
+    },
+    {
+      "name": "노을 바다와 문어 테두리",
+      "chance": 14,
+      "equip": true
+    },
+    {
+      "name": "해변의 미모사 테두리",
+      "chance": 14,
+      "equip": true
+    },
+    {
+      "name": "트로피컬 웨이브",
+      "chance": 14,
+      "equip": true
+    },
+    {
+      "name": "웰컴 투 파라다이스",
+      "chance": 14,
+      "equip": true
+    },
+    {
+      "name": "예언자의 찬란한 여름",
+      "chance": 8,
+      "equip": true
+    }
+  ]
+}

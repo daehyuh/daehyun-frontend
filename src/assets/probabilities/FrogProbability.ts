@@ -1,7 +1,7 @@
-import json150 from './2025개구리/150.json';
-import json750 from './2025개구리/750.json';
-import json2500R from './2025개구리/2500R.json';
-import jsonLegend from './2025개구리/Legend.json';
+import json150 from './2026개구리레이싱/150.json';
+import json750 from './2026개구리레이싱/750.json';
+import json2500R from './2026개구리레이싱/2500R.json';
+import jsonLegend from './2026개구리레이싱/Legend.json';
 import GradeProbability from "@/constant/GradeProbability";
 import JsonProbability from "@/constant/JsonProbability";
 

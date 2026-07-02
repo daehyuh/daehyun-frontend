@@ -43,18 +43,10 @@ const calcCost = () => {
         const needTier5 = Math.max(6 - tier.tier5, 0);
         const needTier4 = Math.max(needTier5 * 5 - tier.tier4, 0);
         const needTier3 = Math.max(needTier4 * 4 - tier.tier3, 0);
-        
-
-        console.log('needTier3:', needTier3, 'needTier4:', needTier4, 'needTier5:', needTier5);
-        
-        // const costOf3To4 = Math.ceil((needTier3) / 4) * 100000 * sale;
-
-        const costOf3To4 = Math.ceil((120 - (tier.tier4*4 + tier.tier5*20)) / 4 * 100000 * sale);
-        const costOf4To5 = Math.ceil(30 - (tier.tier5*5)) / 5  * 500000 * sale;
+        const costOf3To4 = needTier4 * 100000 * sale;
+        const costOf4To5 = needTier5 * 500000 * sale;
         const defaultCost = 1000000 * sale;
         const totalCost = costOf3To4 + costOf4To5 + defaultCost;
-
-        console.log('costOf3To4:', costOf3To4, 'costOf4To5:', costOf4To5, 'defaultCost:', defaultCost, 'totalCost:', totalCost);
 
         setCost({
             needCard: needTier3,
@@ -64,14 +56,11 @@ const calcCost = () => {
         });
     } else {
         const needTier4 = Math.max(5 - tier.tier4, 0);
-        const needTier3 = Math.max(20 - tier.tier4 * 4, 0);
-        
-
-        const costOf3To4 = Math.ceil((20 - (tier.tier4*4)) / 4 * 100000 * sale);
+        const needTier3 = Math.max(needTier4 * 4 - tier.tier3, 0);
+        const costOf3To4 = needTier4 * 100000 * sale;
         const defaultCost = 500000 * sale;
         const totalCost = costOf3To4 + defaultCost;
-        console.log('needTier3:', needTier3, 'needTier4:', needTier4);
-        console.log('costOf3To4:', costOf3To4, 'defaultCost:', defaultCost, 'totalCost:', totalCost);
+
         setCost({
             needCard: needTier3,
             costOf3To4 : costOf3To4,

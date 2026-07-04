@@ -16,14 +16,22 @@ type UserProfile = {
     NICKNAME?: string;
 };
 
-type UserProfileResponse = {
-    user: UserProfile;
-    record?: {
-        NICKNAME?: string;
-        nickname?: string;
-    };
+type NicknameCarrier = {
     nickname?: string;
     NICKNAME?: string;
+    accountNickname?: string;
+    linkedNickname?: string;
+    mafiaNickname?: string;
+    gameNickname?: string;
+};
+
+type UserProfileResponse = NicknameCarrier & {
+    data?: UserProfileResponse;
+    user?: UserProfile;
+    record?: NicknameCarrier;
+    records?: NicknameCarrier[];
+    account?: NicknameCarrier;
+    accounts?: NicknameCarrier[];
     nicknameColor?: string | null;
     nicknameRank?: number | null;
     guildBackgroundColor?: string | null;
@@ -339,17 +347,46 @@ const clearAuthParams = () => {
     window.history.replaceState({}, '', url.toString());
 };
 
-const extractLinkedNickname = (data: UserProfileResponse): string =>
-    [
-        data.record?.NICKNAME,
-        data.record?.nickname,
-        data.NICKNAME,
-        data.nickname,
-        data.user?.NICKNAME,
-        data.user?.nickname,
-    ]
-        .map((value) => value?.trim())
-        .find((value): value is string => Boolean(value)) ?? '';
+const NICKNAME_KEYS = new Set([
+    'NICKNAME',
+    'nickname',
+    'accountNickname',
+    'linkedNickname',
+    'mafiaNickname',
+    'gameNickname',
+]);
+
+const getTrimmedString = (value: unknown) =>
+    typeof value === 'string' && value.trim().length > 0 ? value.trim() : '';
+
+const findNickname = (value: unknown, seen = new Set<unknown>()): string => {
+    if (!value || typeof value !== 'object' || seen.has(value)) return '';
+
+    seen.add(value);
+    const record = value as Record<string, unknown>;
+
+    for (const key of NICKNAME_KEYS) {
+        const nickname = getTrimmedString(record[key]);
+        if (nickname) return nickname;
+    }
+
+    for (const key of ['data', 'record', 'account', 'accounts', 'records', 'user']) {
+        const child = record[key];
+        if (Array.isArray(child)) {
+            const nickname = child.map((item) => findNickname(item, seen)).find(Boolean);
+            if (nickname) return nickname;
+        } else {
+            const nickname = findNickname(child, seen);
+            if (nickname) return nickname;
+        }
+    }
+
+    return '';
+};
+
+const getProfilePayload = (data: UserProfileResponse) => data.data ?? data;
+
+const extractLinkedNickname = (data: UserProfileResponse): string => findNickname(data);
 
 function AuthSection() {
     const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -399,24 +436,26 @@ function AuthSection() {
             }
 
             const data = await response.json() as UserProfileResponse;
+            const payload = getProfilePayload(data);
+            const user = payload.user ?? data.user ?? null;
             const linkedNickname = extractLinkedNickname(data);
-            setProfile(data.user);
+            setProfile(user);
             setIsVerified(Boolean(linkedNickname));
-            setStatus({tone: 'success', message: `${data.user?.name ?? '로그인한'} 사용자로 연결되었습니다.`});
+            setStatus({tone: 'success', message: `${user?.name ?? '로그인한'} 사용자로 연결되었습니다.`});
 
             setInsightLoading(true);
             setInsightError(null);
-            const nicknameVal = linkedNickname || data.user?.name || "";
+            const nicknameVal = linkedNickname || "연동된 닉네임 없음";
             setInsight({
                 nickname: nicknameVal,
-                nicknameColor: data.nicknameColor ? `#${data.nicknameColor}` : undefined,
-                nicknameRank: data.nicknameRank ?? undefined,
-                guildBackgroundColor: data.guildBackgroundColor ? `#${data.guildBackgroundColor}` : undefined,
-                guildBackgroundRank: data.guildBackgroundRank ?? undefined,
-                todayGames: data.todayTotalCount ?? undefined,
-                todayWinDelta: data.todayWinCount ?? undefined,
-                todayLoseDelta: data.todayLoseCount ?? undefined,
-                isTodayLimit: data.todayLimitExceeded ?? undefined,
+                nicknameColor: payload.nicknameColor ? `#${payload.nicknameColor}` : undefined,
+                nicknameRank: payload.nicknameRank ?? undefined,
+                guildBackgroundColor: payload.guildBackgroundColor ? `#${payload.guildBackgroundColor}` : undefined,
+                guildBackgroundRank: payload.guildBackgroundRank ?? undefined,
+                todayGames: payload.todayTotalCount ?? undefined,
+                todayWinDelta: payload.todayWinCount ?? undefined,
+                todayLoseDelta: payload.todayLoseCount ?? undefined,
+                isTodayLimit: payload.todayLimitExceeded ?? undefined,
             });
         } catch (error) {
             console.error("Error fetching user data:", error);

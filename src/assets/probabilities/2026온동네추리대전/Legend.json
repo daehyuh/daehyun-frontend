@@ -1,0 +1,39 @@
+{
+  "items": [
+    {
+      "name": "승리를 일깨우는 최면술사 스킨",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "퍼레이드 리더 심리학자 스킨",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "치어링 피버 테두리",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "예장용 견장 테두리",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "스타 슬로건",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "퍼레이드 배너",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "별가루 말풍선",
+      "chance": 10,
+      "equip": true
+    }
+  ]
+}

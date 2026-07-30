@@ -4,7 +4,7 @@ import {ContentLayout, Layout, Select, SelectOptionType} from "../../components/
 import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container, Text} from "@/components";
 
-import probability from "@/assets/probabilities/FrogProbability";
+import probability from "@/assets/probabilities/neighborhoodMystery2026Probability";
 
 import GradeProbability from "@/constant/GradeProbability";
 import ProbabilityItem from "@/constant/ProbabilityItem";
@@ -138,15 +138,15 @@ const IconBadge = styled.span`
 `;
 
 function Gacha() {
-    const EVENT_ID = "frog-racing-2026";
+    const EVENT_ID = "neighborhood-mystery-2026";
     const SELECTED_GRADE_COOKIE = `${EVENT_ID}:selectedGrade`;
     const CHECKED_ITEMS_COOKIE = `${EVENT_ID}:checkedItems`;
     const SELECT_GRADES: GachaSelectOptionType[] = [
         {label: '선택해주세요', value: null},
-        {label: '오래된 개굴 상자', value: '2500R'},
-        {label: '튼튼한 개굴 상자', value: '150'},
-        {label: '금빛 개굴 상자', value: '750'},
-        {label: '영롱한 개굴 상자', value: 'Legend'}
+        {label: '브론즈 메달 케이스', value: '2500R'},
+        {label: '실버 메달 케이스', value: '150'},
+        {label: '골드 메달 케이스', value: '750'},
+        {label: '추리왕의 메달 케이스', value: 'Legend'}
     ]
 
     const [selectedGradeValue, setSelectedGradeValue] = useState(SELECT_GRADES[0]);
@@ -278,7 +278,7 @@ function Gacha() {
         <Layout>
             <ContentLayout>
             <div style={{marginBottom: 0}}>
-                <CategoryTitle title={`2026 개구리레이싱 확률 적용`}/>
+                <CategoryTitle title={`2026 온동네 추리대전 확률 적용`}/>
             </div>
                 <SimulationCard fullWidth>
                     <SimulationHeader>

@@ -25,6 +25,17 @@ export type TotalProbability = {
     equip: number
 }
 
+const EVENT_ID = "neighborhood-mystery-2026";
+const SELECTED_GRADE_COOKIE = `${EVENT_ID}:selectedGrade`;
+const CHECKED_ITEMS_COOKIE = `${EVENT_ID}:checkedItems`;
+const SELECT_GRADES: GachaSelectOptionType[] = [
+    {label: '선택해주세요', value: null},
+    {label: '브론즈 메달 케이스', value: '2500R'},
+    {label: '실버 메달 케이스', value: '150'},
+    {label: '골드 메달 케이스', value: '750'},
+    {label: '추리왕의 메달 케이스', value: 'Legend'}
+]
+
 const SimulationCard = styled(Container)`
     gap: ${({theme}) => theme.spacing.md};
     border-radius: ${({theme}) => theme.radii.lg};
@@ -138,17 +149,6 @@ const IconBadge = styled.span`
 `;
 
 function Gacha() {
-    const EVENT_ID = "neighborhood-mystery-2026";
-    const SELECTED_GRADE_COOKIE = `${EVENT_ID}:selectedGrade`;
-    const CHECKED_ITEMS_COOKIE = `${EVENT_ID}:checkedItems`;
-    const SELECT_GRADES: GachaSelectOptionType[] = [
-        {label: '선택해주세요', value: null},
-        {label: '브론즈 메달 케이스', value: '2500R'},
-        {label: '실버 메달 케이스', value: '150'},
-        {label: '골드 메달 케이스', value: '750'},
-        {label: '추리왕의 메달 케이스', value: 'Legend'}
-    ]
-
     const [selectedGradeValue, setSelectedGradeValue] = useState(SELECT_GRADES[0]);
     const [items, setItems] = useState<GachaProbabilityItem[]>([]);
     const [totalProbability, setTotalProbability] = useState<TotalProbability>({
@@ -300,6 +300,8 @@ function Gacha() {
                             type="text"
                             inputMode="numeric"
                             pattern="[0-9]*"
+                            autoComplete="off"
+                            enterKeyHint="done"
                             value={simCountInput}
                             onChange={(e) => setSimCountInput(e.target.value.replace(/[^0-9]/g, ''))}
                             placeholder="1~20"

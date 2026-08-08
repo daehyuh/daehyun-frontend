@@ -12,6 +12,7 @@ type SelectProps <T>  = {
     value: SelectOptionType<T>
     options: SelectOptionType<T>[],
     onChange?: (value: SelectOptionType<T>) => void;
+    isSearchable?: boolean;
 } & StyledSelectProps
 
 type StyledSelectProps = {
@@ -83,11 +84,12 @@ const StyledSelect = styled(ReactSelect)<StyledSelectProps>`
     }
 `
 
-function Select<T>({value, options, onChange, ...styles}: SelectProps<T>) {
+function Select<T>({value, options, onChange, isSearchable = false, ...styles}: SelectProps<T>) {
     return (
         <StyledSelect
             classNamePrefix="Select"
             unstyled={true}
+            isSearchable={isSearchable}
             value={value}
             options={options}
             {...styles}

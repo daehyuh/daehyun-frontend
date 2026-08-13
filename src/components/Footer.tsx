@@ -127,6 +127,7 @@ function Footer() {
 
             <FooterLegal>
                 <span>© 2026 대현닷컴. All rights reserved.</span>
+                <span>대현닷컴은 TEAM42의 허가를 받았습니다.</span>
             </FooterLegal>
         </FooterWrapper>
     );

@@ -290,15 +290,23 @@ function Header({pages, member_pages}: HeaderProps) {
         if (typeof document === 'undefined') return false;
         return document.cookie.includes('accessToken=');
     });
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const memberPages = member_pages.filter(item => !item.hide);
     const primaryPages = pages.filter(item => !item.hide);
     const isTribunalPage = (item: PageType) => item.hrefs.includes('/재판소') || item.hrefs.includes('/tribunal');
     const loginPage = primaryPages.find(item => item.hrefs.includes('/login') || item.hrefs.includes('/인증'));
     const tribunalPage = primaryPages.find(isTribunalPage);
-    const groupedMemberPages = tribunalPage && !memberPages.some(isTribunalPage)
-        ? [tribunalPage, ...memberPages]
-        : memberPages;
+    const adminPage: PageType = {
+        hrefs: ['/admin/users'],
+        title: '유저 관리',
+        page: <></>,
+        requiresAuth: true,
+    };
+    const visibleMemberPages = isAdmin ? [adminPage, ...memberPages] : memberPages;
+    const groupedMemberPages = tribunalPage && !visibleMemberPages.some(isTribunalPage)
+        ? [tribunalPage, ...visibleMemberPages]
+        : visibleMemberPages;
     const memberNavigationPages = loginPage ? [loginPage, ...groupedMemberPages] : groupedMemberPages;
     const generalPages = primaryPages.filter(item => item !== loginPage && item !== tribunalPage);
 
@@ -315,6 +323,41 @@ function Header({pages, member_pages}: HeaderProps) {
         const interval = setInterval(syncToken, 2000);
         return () => clearInterval(interval);
     }, []);
+
+    useEffect(() => {
+        if (!hasToken) {
+            setIsAdmin(false);
+            return;
+        }
+
+        let active = true;
+        const loadRole = async () => {
+            const accessToken = document.cookie
+                .split(';')
+                .map((cookie) => cookie.trim())
+                .find((cookie) => cookie.startsWith('accessToken='))
+                ?.split('=')[1];
+            if (!accessToken) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/User/profile/me`, {
+                    headers: {Authorization: `Bearer ${accessToken}`, Accept: 'application/json'},
+                    credentials: 'include',
+                });
+                if (!response.ok) return;
+                const body = await response.json() as { user?: { role?: string }; data?: { user?: { role?: string } } };
+                const user = body.user ?? body.data?.user;
+                if (active) setIsAdmin(user?.role === 'ROLE_ADMIN');
+            } catch {
+                if (active) setIsAdmin(false);
+            }
+        };
+
+        void loadRole();
+        return () => {
+            active = false;
+        };
+    }, [hasToken]);
 
     useEffect(() => {
         if (typeof document === 'undefined') return;

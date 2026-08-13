@@ -24,6 +24,7 @@ import JobReceiveCalculator from "@/pages/JobReceiveCalculator/JobReceiveCalcula
 import ChannelLive from "@/pages/ChannelLive/ChannelLive";
 import HeroBillboard from "@/components/HeroBillboard";
 import Tribunal from "@/pages/Tribunal/Tribunal";
+import AdminUserManagement from "@/pages/AdminUserManagement/AdminUserManagement";
 
 import styled from 'styled-components';
 import AuthButton from "@/components/AuthButton";
@@ -252,6 +253,7 @@ function App() {
                     <PrimaryColumn>
                         <PageSurface>
                             <Routes>
+                                <Route path="/admin/users" element={<AdminUserManagement/>}/>
                                 <Route path="/tribunal" element={<TribunalLegacyRedirect/>}/>
                                 <Route path="/tribunal/:caseId" element={<TribunalLegacyRedirect/>}/>
                                 <Route path={`${TRIBUNAL_PATH}/:caseId`} element={<Tribunal/>}/>

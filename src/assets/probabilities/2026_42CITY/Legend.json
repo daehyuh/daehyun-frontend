@@ -1,0 +1,39 @@
+{
+  "items": [
+    {
+      "name": "부의 지배자 대부 스킨",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "미다스의 손 마술사 스킨",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "프라이빗 라운지 테두리",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "부의 재생산 테두리",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "리치 아비투스",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "골든 스카이라인",
+      "chance": 15,
+      "equip": true
+    },
+    {
+      "name": "명품 카드 케이스",
+      "chance": 10,
+      "equip": true
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import {PageType} from "@/app/App";
 import HeaderItemLink from "./HeaderItemLink";
 import Logo from "./base/Logo";
 import {startGoogleLogin} from "@/utils/googleLogin";
+import {authChangedEventName, getAccessToken} from '@/auth/authTokens';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE ?? 'https://api.xn--vk1b177d.com';
 
@@ -287,8 +288,7 @@ function Header({pages, member_pages}: HeaderProps) {
     const path = decodeURIComponent(pathname);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [hasToken, setHasToken] = useState<boolean>(() => {
-        if (typeof document === 'undefined') return false;
-        return document.cookie.includes('accessToken=');
+        return Boolean(getAccessToken());
     });
     const [isAdmin, setIsAdmin] = useState(false);
 
@@ -316,12 +316,15 @@ function Header({pages, member_pages}: HeaderProps) {
 
     useEffect(() => {
         const syncToken = () => {
-            if (typeof document === 'undefined') return;
-            setHasToken(document.cookie.includes('accessToken='));
+            setHasToken(Boolean(getAccessToken()));
         };
         syncToken();
+        window.addEventListener(authChangedEventName, syncToken);
         const interval = setInterval(syncToken, 2000);
-        return () => clearInterval(interval);
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener(authChangedEventName, syncToken);
+        };
     }, []);
 
     useEffect(() => {
@@ -332,11 +335,7 @@ function Header({pages, member_pages}: HeaderProps) {
 
         let active = true;
         const loadRole = async () => {
-            const accessToken = document.cookie
-                .split(';')
-                .map((cookie) => cookie.trim())
-                .find((cookie) => cookie.startsWith('accessToken='))
-                ?.split('=')[1];
+            const accessToken = getAccessToken();
             if (!accessToken) return;
 
             try {

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Daehyun.com</string>
+    <string name="title_activity_main">Daehyun.com</string>
+    <string name="package_name">com.daehyun.webview</string>
+    <string name="custom_url_scheme">com.daehyun.webview</string>
+</resources>

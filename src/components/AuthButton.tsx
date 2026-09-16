@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Input from "./base/Input";
 import ToastNotice from "./base/ToastNotice";
 import {startGoogleLogin} from "@/utils/googleLogin";
+import {authChangedEventName, clearAuthTokens, getAccessToken, hydrateAuthTokens, isNativeApp} from '@/auth/authTokens';
 import fetchStatsSummary, {StatsSummaryResponse} from "@/apis/fetchStatsSummary";
 
 type StatusTone = 'info' | 'success' | 'danger';
@@ -330,15 +331,6 @@ const GameDetail = styled(Helper)`
     line-height: 1.7;
 `;
 
-const getAccessToken = (): string | null => {
-    if (typeof document === 'undefined') return null;
-    return document.cookie
-        .split(';')
-        .map((c) => c.trim())
-        .find((c) => c.startsWith('accessToken='))
-        ?.split('=')[1] ?? null;
-};
-
 const clearAuthParams = () => {
     if (typeof window === 'undefined') return;
     const url = new URL(window.location.href);
@@ -409,6 +401,7 @@ function AuthSection() {
     const isLoggedIn = useMemo(() => Boolean(profile) || hasToken, [profile, hasToken]);
 
     const loadProfile = useCallback(async () => {
+        await hydrateAuthTokens();
         const accessToken = getAccessToken();
         setHasToken(Boolean(accessToken));
         if (!accessToken) {
@@ -511,6 +504,14 @@ function AuthSection() {
     }, [loadProfile]);
 
     useEffect(() => {
+        const onAuthChanged = () => {
+            void loadProfile();
+        };
+        window.addEventListener(authChangedEventName, onAuthChanged);
+        return () => window.removeEventListener(authChangedEventName, onAuthChanged);
+    }, [loadProfile]);
+
+    useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const code = params.get("code");
         const state = params.get("state");
@@ -539,6 +540,13 @@ function AuthSection() {
     const handleLogin = () => startGoogleLogin();
 
     const handleLogout = () => {
+        if (isNativeApp()) {
+            void clearAuthTokens().then(() => {
+                setProfile(null);
+                setHasToken(false);
+            });
+            return;
+        }
         window.location.href = `${API_BASE_URL}/core/logout`;
     };
     const formatCount = (value?: number | null) => typeof value === 'number'

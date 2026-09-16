@@ -16,17 +16,9 @@ import type {
     TribunalVoteChoice,
     TribunalVoteSummary,
 } from "@/apis/tribunalTypes";
+import {getAccessToken} from '@/auth/authTokens';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE ?? 'https://api.xn--vk1b177d.com';
-
-const readAccessToken = (): string | null => {
-    if (typeof document === 'undefined') return null;
-    return document.cookie
-        .split(';')
-        .map((cookie) => cookie.trim())
-        .find((cookie) => cookie.startsWith('accessToken='))
-        ?.split('=')[1] ?? null;
-};
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
     typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -149,7 +141,7 @@ const tribunalRequest = async <T>(
         headers.set('Content-Type', 'application/json');
     }
 
-    const accessToken = includeAuth ? readAccessToken() : null;
+    const accessToken = includeAuth ? getAccessToken() : null;
     if (accessToken && !headers.has('Authorization')) {
         headers.set('Authorization', `Bearer ${accessToken}`);
     }

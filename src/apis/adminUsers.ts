@@ -1,3 +1,5 @@
+import {getAccessToken} from '@/auth/authTokens';
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE ?? 'https://api.xn--vk1b177d.com';
 
 export type AdminAccount = {
@@ -54,15 +56,6 @@ export class AdminApiError extends Error {
     }
 }
 
-const readAccessToken = (): string | null => {
-    if (typeof document === 'undefined') return null;
-    return document.cookie
-        .split(';')
-        .map((cookie) => cookie.trim())
-        .find((cookie) => cookie.startsWith('accessToken='))
-        ?.split('=')[1] ?? null;
-};
-
 const readMessage = (body: unknown): string | null => {
     if (typeof body !== 'object' || body === null) return null;
     const value = body as { message?: unknown; error?: unknown; detail?: unknown };
@@ -74,7 +67,7 @@ const readMessage = (body: unknown): string | null => {
 const request = async <T>(path: string, init: RequestInit = {}): Promise<T> => {
     const headers = new Headers(init.headers);
     headers.set('Accept', 'application/json');
-    const accessToken = readAccessToken();
+    const accessToken = getAccessToken();
     if (accessToken) headers.set('Authorization', `Bearer ${accessToken}`);
 
     const response = await fetch(`${API_BASE_URL}${path}`, {

@@ -1,6 +1,7 @@
 import React, {ReactNode, useEffect, useState} from "react";
 import styled from "styled-components";
 import {Text} from "@/components";
+import {authChangedEventName, getAccessToken} from '@/auth/authTokens';
 
 type FeatureGateProps = {
     children: ReactNode;
@@ -65,19 +66,14 @@ const GateButton = styled.button`
     }
 `;
 
-const getAccessToken = (): string | null => {
-    if (typeof document === 'undefined') return null;
-    return document.cookie
-        .split(';')
-        .map((c) => c.trim())
-        .find((c) => c.startsWith('accessToken='))?.split('=')[1] ?? null;
-};
-
 function FeatureGate({children, title, description}: FeatureGateProps) {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => Boolean(getAccessToken()));
 
     useEffect(() => {
-        setIsLoggedIn(Boolean(getAccessToken()));
+        const syncAuth = () => setIsLoggedIn(Boolean(getAccessToken()));
+        syncAuth();
+        window.addEventListener(authChangedEventName, syncAuth);
+        return () => window.removeEventListener(authChangedEventName, syncAuth);
     }, []);
 
     const handleLogin = () => {

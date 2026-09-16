@@ -6,6 +6,7 @@ import {CategoryTitle, ContentLayout, Input, Layout} from "@/components";
 import Spinner from "@/components/base/Spinner";
 import ToastNotice from "@/components/base/ToastNotice";
 import {startGoogleLogin} from "@/utils/googleLogin";
+import {authChangedEventName, getAccessToken} from '@/auth/authTokens';
 import {
     createTribunalCase,
     createTribunalComment,
@@ -226,15 +227,6 @@ const normalizeJobKey = (value: string | null | undefined): string | null => {
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
     typeof value === 'object' && value !== null && !Array.isArray(value);
-
-const readAccessToken = (): string | null => {
-    if (typeof document === 'undefined') return null;
-    return document.cookie
-        .split(';')
-        .map((cookie) => cookie.trim())
-        .find((cookie) => cookie.startsWith('accessToken='))
-        ?.split('=')[1] ?? null;
-};
 
 const decodeJwtPayload = (token: string): Record<string, unknown> | null => {
     const parts = token.split('.');
@@ -1702,7 +1694,7 @@ function Tribunal() {
     const [totalPages, setTotalPages] = useState(0);
     const [totalElements, setTotalElements] = useState(0);
     const [selectedCaseId, setSelectedCaseId] = useState<number | null>(routeCaseId);
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => Boolean(readAccessToken()));
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => Boolean(getAccessToken()));
     const [viewerRole, setViewerRole] = useState<string | null>(null);
     const [listLoading, setListLoading] = useState(true);
     const [detailLoading, setDetailLoading] = useState(false);
@@ -1737,13 +1729,15 @@ function Tribunal() {
     }, [replayPreview, selectedPreviewOrder]);
 
     useEffect(() => {
-        const sync = () => setIsLoggedIn(Boolean(readAccessToken()));
+        const sync = () => setIsLoggedIn(Boolean(getAccessToken()));
         sync();
         const interval = window.setInterval(sync, 2000);
         window.addEventListener('focus', sync);
+        window.addEventListener(authChangedEventName, sync);
         return () => {
             window.clearInterval(interval);
             window.removeEventListener('focus', sync);
+            window.removeEventListener(authChangedEventName, sync);
         };
     }, []);
 
@@ -1753,7 +1747,7 @@ function Tribunal() {
             return;
         }
 
-        const accessToken = readAccessToken();
+        const accessToken = getAccessToken();
         const roleFromToken = extractRoleFromToken(accessToken);
         setViewerRole(roleFromToken);
     }, [isLoggedIn]);

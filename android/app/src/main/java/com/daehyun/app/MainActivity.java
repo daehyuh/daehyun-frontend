@@ -1,4 +1,4 @@
-package com.daehyun.webview;
+package com.daehyun.app;
 
 import com.getcapacitor.BridgeActivity;
 

@@ -32,7 +32,7 @@ backend supports these optional environment variables:
 
 ```text
 GOOGLE_OAUTH_MOBILE_REDIRECT_URI=https://api.xn--vk1b177d.com/login/oauth2/code/google/mobile
-MOBILE_OAUTH_DEEP_LINK=com.daehyun.webview://oauth/callback
+MOBILE_OAUTH_DEEP_LINK=com.daehyun.app://oauth/callback
 ```
 
 For a local backend, set the redirect URI to

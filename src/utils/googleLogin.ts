@@ -43,7 +43,7 @@ const parseTokens = (value: unknown): {accessToken: string; refreshToken: string
 };
 
 export const handleMobileAuthUrl = async (url: string): Promise<boolean> => {
-    if (!isNativeApp() || !url.startsWith('com.daehyun.webview://oauth/callback')) return false;
+    if (!isNativeApp() || !url.startsWith('com.daehyun.app://oauth/callback')) return false;
 
     const callbackUrl = new URL(url);
     const ticket = callbackUrl.searchParams.get('ticket');

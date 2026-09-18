@@ -7,7 +7,7 @@ import theme from './styles/theme';
 import GlobalStyle from './styles/GlobalStyle';
 import {App as CapacitorApp} from '@capacitor/app';
 import {handleMobileAuthUrl} from '@/utils/googleLogin';
-import {hydrateAuthTokens, isNativeApp} from '@/auth/authTokens';
+import {hydrateAuthTokens, isNativeApp, notifyAuthError} from '@/auth/authTokens';
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 
@@ -17,6 +17,7 @@ const bootstrap = async () => {
             await CapacitorApp.addListener('appUrlOpen', ({url}) => {
                 void handleMobileAuthUrl(url).catch((error) => {
                     console.error('Mobile OAuth callback failed.', error);
+                    notifyAuthError(error instanceof Error ? error.message : '구글 로그인에 실패했습니다.');
                 });
             });
 
@@ -24,6 +25,7 @@ const bootstrap = async () => {
             if (launchUrl?.url) {
                 await handleMobileAuthUrl(launchUrl.url).catch((error) => {
                     console.error('Mobile launch URL handling failed.', error);
+                    notifyAuthError(error instanceof Error ? error.message : '구글 로그인에 실패했습니다.');
                 });
             }
         }

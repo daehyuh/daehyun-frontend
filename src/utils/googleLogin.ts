@@ -46,6 +46,14 @@ export const handleMobileAuthUrl = async (url: string): Promise<boolean> => {
     if (!isNativeApp() || !url.startsWith('com.daehyun.app://oauth/callback')) return false;
 
     const callbackUrl = new URL(url);
+    const error = callbackUrl.searchParams.get('error');
+    if (error) {
+        await Browser.close().catch(() => undefined);
+        throw new Error(error === 'oauth_failed'
+            ? '구글 로그인에 실패했습니다. 다시 시도해주세요.'
+            : '구글 로그인 요청이 취소되었습니다.');
+    }
+
     const ticket = callbackUrl.searchParams.get('ticket');
     if (!ticket) throw new Error('Mobile OAuth callback did not contain a ticket.');
 

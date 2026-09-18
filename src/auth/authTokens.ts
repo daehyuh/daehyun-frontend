@@ -3,6 +3,7 @@ import {TokenVault} from 'capacitor-token-vault';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE ?? 'https://api.xn--vk1b177d.com';
 const AUTH_CHANGED_EVENT = 'daehyun:auth-changed';
+const AUTH_ERROR_EVENT = 'daehyun:auth-error';
 
 let accessToken: string | null = null;
 let hydrated = false;
@@ -26,6 +27,12 @@ const readCookieAccessToken = (): string | null => {
 
 const notifyAuthChanged = () => {
     if (typeof window !== 'undefined') window.dispatchEvent(new Event(AUTH_CHANGED_EVENT));
+};
+
+export const notifyAuthError = (message: string) => {
+    if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent(AUTH_ERROR_EVENT, {detail: message}));
+    }
 };
 
 export const getAccessToken = (): string | null =>
@@ -100,3 +107,4 @@ export const hydrateAuthTokens = async (): Promise<void> => {
 };
 
 export const authChangedEventName = AUTH_CHANGED_EVENT;
+export const authErrorEventName = AUTH_ERROR_EVENT;

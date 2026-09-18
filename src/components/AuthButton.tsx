@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Input from "./base/Input";
 import ToastNotice from "./base/ToastNotice";
 import {startGoogleLogin} from "@/utils/googleLogin";
-import {authChangedEventName, clearAuthTokens, getAccessToken, hydrateAuthTokens, isNativeApp} from '@/auth/authTokens';
+import {authChangedEventName, authErrorEventName, clearAuthTokens, getAccessToken, hydrateAuthTokens, isNativeApp} from '@/auth/authTokens';
 import fetchStatsSummary, {StatsSummaryResponse} from "@/apis/fetchStatsSummary";
 
 type StatusTone = 'info' | 'success' | 'danger';
@@ -510,6 +510,20 @@ function AuthSection() {
         window.addEventListener(authChangedEventName, onAuthChanged);
         return () => window.removeEventListener(authChangedEventName, onAuthChanged);
     }, [loadProfile]);
+
+    useEffect(() => {
+        const onAuthError = (event: Event) => {
+            const message = (event as CustomEvent<string>).detail;
+            setStatus({
+                tone: 'danger',
+                message: typeof message === 'string' && message.length > 0
+                    ? message
+                    : '로그인에 실패했습니다. 다시 시도해주세요.'
+            });
+        };
+        window.addEventListener(authErrorEventName, onAuthError);
+        return () => window.removeEventListener(authErrorEventName, onAuthError);
+    }, []);
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);

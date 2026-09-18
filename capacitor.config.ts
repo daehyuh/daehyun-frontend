@@ -4,7 +4,11 @@ const config: CapacitorConfig = {
   appId: 'com.daehyun.app',
   appName: 'Daehyun.com',
   webDir: 'dist',
-  includePlugins: ['capacitor-token-vault'],
+  includePlugins: [
+    '@capacitor/app',
+    '@capacitor/browser',
+    'capacitor-token-vault',
+  ],
   server: {
     androidScheme: 'https',
   },

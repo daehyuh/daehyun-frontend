@@ -12,22 +12,26 @@ import {hydrateAuthTokens, isNativeApp} from '@/auth/authTokens';
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 
 const bootstrap = async () => {
-    if (isNativeApp()) {
-        await CapacitorApp.addListener('appUrlOpen', ({url}) => {
-            void handleMobileAuthUrl(url).catch((error) => {
-                console.error('Mobile OAuth callback failed.', error);
+    try {
+        if (isNativeApp()) {
+            await CapacitorApp.addListener('appUrlOpen', ({url}) => {
+                void handleMobileAuthUrl(url).catch((error) => {
+                    console.error('Mobile OAuth callback failed.', error);
+                });
             });
-        });
 
-        const launchUrl = await CapacitorApp.getLaunchUrl();
-        if (launchUrl?.url) {
-            await handleMobileAuthUrl(launchUrl.url).catch((error) => {
-                console.error('Mobile launch URL handling failed.', error);
-            });
+            const launchUrl = await CapacitorApp.getLaunchUrl();
+            if (launchUrl?.url) {
+                await handleMobileAuthUrl(launchUrl.url).catch((error) => {
+                    console.error('Mobile launch URL handling failed.', error);
+                });
+            }
         }
-    }
 
-    await hydrateAuthTokens();
+        await hydrateAuthTokens();
+    } catch (error) {
+        console.error('App bootstrap failed; rendering without restored session.', error);
+    }
 
     root.render(
         <BrowserRouter>

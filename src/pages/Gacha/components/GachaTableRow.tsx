@@ -4,6 +4,7 @@ import styled from "styled-components";
 import {CheckBox, Container} from "@/components";
 import {GachaProbabilityItem} from "@/pages/Gacha/Gacha";
 import {getItemImageUrl, setFallbackItemImage} from "@/pages/Gacha/utils/itemImage";
+import formatChance from "@/pages/Gacha/utils/formatChance";
 
 type GachaTableRowProps = {
     index: number
@@ -69,7 +70,8 @@ const GachaTableRow = ({
             </Container>
         </td>
         <td>{item.name}</td>
-        <td>{item.chance.toFixed(3)}%</td>
+        <td>{item.minQuantity ?? 1}{(item.maxQuantity ?? item.minQuantity ?? 1) !== (item.minQuantity ?? 1) ? `~${item.maxQuantity}` : ''}</td>
+        <td>{formatChance(item.chance)}%</td>
     </StyledTableRow>
 }
 

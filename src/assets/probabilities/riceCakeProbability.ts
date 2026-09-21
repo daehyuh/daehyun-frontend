@@ -1,7 +1,7 @@
-import json150 from './2025떡치기/150.json';
-import json750 from './2025떡치기/750.json';
-import json2500R from './2025떡치기/2500R.json';
-import jsonLegend from './2025떡치기/Legend.json';
+import json150 from './2026송편/150.json';
+import json750 from './2026송편/750.json';
+import json2500R from './2026송편/2500R.json';
+import jsonLegend from './2026송편/Legend.json';
 import GradeProbability from "@/constant/GradeProbability";
 import JsonProbability from "@/constant/JsonProbability";
 

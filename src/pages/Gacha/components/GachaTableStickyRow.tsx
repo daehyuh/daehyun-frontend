@@ -4,6 +4,7 @@ import styled from "styled-components";
 import {CheckBox, Container} from "@/components";
 import {TotalProbability} from "@/pages/Gacha/Gacha";
 import align from "@components/types/Align";
+import formatChance from "@/pages/Gacha/utils/formatChance";
 
 type GachaTableStickyRowProps = {
     value: boolean
@@ -52,8 +53,8 @@ const GachaTableStickyRow = ({
         <td>
             <strong>전체 체크 박스</strong>
         </td>
-        <td colSpan={2}>
-            장착템 확률 : {totalProbability.equip.toFixed(3)}%
+        <td colSpan={3}>
+            장착템 확률 : {formatChance(totalProbability.equip)}%
         </td>
     </StyledTableRow>
 }

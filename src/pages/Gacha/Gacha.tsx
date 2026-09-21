@@ -4,7 +4,7 @@ import {ContentLayout, Layout, Select, SelectOptionType} from "../../components/
 import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container, Text} from "@/components";
 
-import probability from "@/assets/probabilities/city42Probability";
+import probability from "@/assets/probabilities/riceCakeProbability";
 
 import GradeProbability from "@/constant/GradeProbability";
 import ProbabilityItem from "@/constant/ProbabilityItem";
@@ -13,6 +13,7 @@ import GachaTableRow from "@/pages/Gacha/components/GachaTableRow";
 import GachaTableStickyRow from "@/pages/Gacha/components/GachaTableStickyRow";
 import Button from "@/components/base/Button";
 import {getItemImageUrl, setFallbackItemImage} from "@/pages/Gacha/utils/itemImage";
+import formatChance from "@/pages/Gacha/utils/formatChance";
 
 type GachaSelectOptionType = SelectOptionType<keyof GradeProbability | null>;
 
@@ -25,15 +26,15 @@ export type TotalProbability = {
     equip: number
 }
 
-const EVENT_ID = "2026_42CITY";
+const EVENT_ID = "2026_RICE_CAKE";
 const SELECTED_GRADE_COOKIE = `${EVENT_ID}:selectedGrade`;
 const CHECKED_ITEMS_COOKIE = `${EVENT_ID}:checkedItems`;
 const SELECT_GRADES: GachaSelectOptionType[] = [
     {label: '선택해주세요', value: null},
-    {label: '토지 인수계획서', value: '2500R'},
-    {label: '중급 토지 인수계획서', value: '150'},
-    {label: '고급 토지 인수계획서', value: '750'},
-    {label: '특급 부지 인수계획서', value: 'Legend'}
+    {label: '일꾼의 송편 포장지', value: '150'},
+    {label: '조수의 송편 포장지', value: '750'},
+    {label: '학자의 송편 포장지', value: '2500R'},
+    {label: '헌상용 송편 포장지', value: 'Legend'}
 ]
 
 const SimulationCard = styled(Container)`
@@ -267,7 +268,11 @@ function Gacha() {
                     break;
                 }
             }
-            picks.push(picked ?? candidates[candidates.length - 1]);
+            const selectedItem = picked ?? candidates[candidates.length - 1];
+            const minQuantity = selectedItem.minQuantity ?? 1;
+            const maxQuantity = selectedItem.maxQuantity ?? minQuantity;
+            const quantity = minQuantity + Math.floor(Math.random() * (maxQuantity - minQuantity + 1));
+            picks.push({...selectedItem, quantity});
         }
 
         setSimResults(picks);
@@ -278,7 +283,7 @@ function Gacha() {
         <Layout>
             <ContentLayout>
             <div style={{marginBottom: 0}}>
-                <CategoryTitle title={`2026_42CITY 이벤트 확률 적용`}/>
+                <CategoryTitle title="2026 송편 이벤트 확률 적용"/>
             </div>
                 <SimulationCard fullWidth>
                     <SimulationHeader>
@@ -326,8 +331,8 @@ function Gacha() {
                                         onError={setFallbackItemImage}
                                     />
                                     <div>
-                                        <ResultName>{idx + 1}. {item.name}</ResultName>
-                                        <ResultChance>{item.chance.toFixed(3)}%</ResultChance>
+                                    <ResultName>{idx + 1}. {item.name} x{item.quantity ?? 1}</ResultName>
+                                        <ResultChance>{formatChance(item.chance)}%</ResultChance>
                                     </div>
                                 </ResultItem>
                             ))}
@@ -341,8 +346,8 @@ function Gacha() {
                         onChange={selectChangeHandler}
                         width={'160px'}/>
 
-                    <Table fullWidth headers={['선택', '이미지', '아이템', '확률']}
-                           columnWidths={['15%', '20%', '40%', '10%']} margin={'0 0 50px 0'} borderRadius={'8px'} maxHeight={'1200px'}>
+                    <Table fullWidth headers={['선택', '이미지', '아이템', '수량', '확률']}
+                           columnWidths={['12%', '18%', '38%', '16%', '10%']} margin={'0 0 50px 0'} borderRadius={'8px'} maxHeight={'1200px'}>
                         <tbody>
                         <GachaTableStickyRow totalProbability={totalProbability}
                                              value={items.every(item => !item.equip || item.isChecked)}

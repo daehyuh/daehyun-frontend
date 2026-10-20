@@ -1,0 +1,53 @@
+{
+  "items": [
+    {
+      "name": "버추얼 엔젤 영매 스킨",
+      "chance": 15,
+      "equip": true,
+      "maxQuantity": 1,
+      "minQuantity": 1
+    },
+    {
+      "name": "냥법관 판사 스킨",
+      "chance": 15,
+      "equip": true,
+      "maxQuantity": 1,
+      "minQuantity": 1
+    },
+    {
+      "name": "픽셀 스카이 테두리",
+      "chance": 15,
+      "equip": true,
+      "maxQuantity": 1,
+      "minQuantity": 1
+    },
+    {
+      "name": "레인보우 밈 테두리",
+      "chance": 15,
+      "equip": true,
+      "maxQuantity": 1,
+      "minQuantity": 1
+    },
+    {
+      "name": "엔젤릭 스파클",
+      "chance": 15,
+      "equip": true,
+      "maxQuantity": 1,
+      "minQuantity": 1
+    },
+    {
+      "name": "코기 리부트",
+      "chance": 15,
+      "equip": true,
+      "maxQuantity": 1,
+      "minQuantity": 1
+    },
+    {
+      "name": "픽셀 코기 말풍선",
+      "chance": 10,
+      "equip": true,
+      "maxQuantity": 1,
+      "minQuantity": 1
+    }
+  ]
+}

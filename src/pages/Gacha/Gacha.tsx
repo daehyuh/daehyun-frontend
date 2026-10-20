@@ -4,7 +4,7 @@ import {ContentLayout, Layout, Select, SelectOptionType} from "../../components/
 import {getCookie, setCookie} from "@/hooks/cookie";
 import {CategoryTitle, Container, Text} from "@/components";
 
-import probability from "@/assets/probabilities/riceCakeProbability";
+import probability from "@/assets/probabilities/corGearProbability";
 
 import GradeProbability from "@/constant/GradeProbability";
 import ProbabilityItem from "@/constant/ProbabilityItem";
@@ -26,15 +26,15 @@ export type TotalProbability = {
     equip: number
 }
 
-const EVENT_ID = "2026_RICE_CAKE";
+const EVENT_ID = "2026_CORGEAR";
 const SELECTED_GRADE_COOKIE = `${EVENT_ID}:selectedGrade`;
 const CHECKED_ITEMS_COOKIE = `${EVENT_ID}:checkedItems`;
 const SELECT_GRADES: GachaSelectOptionType[] = [
     {label: '선택해주세요', value: null},
-    {label: '일꾼의 송편 포장지', value: '150'},
-    {label: '조수의 송편 포장지', value: '750'},
-    {label: '학자의 송편 포장지', value: '2500R'},
-    {label: '헌상용 송편 포장지', value: 'Legend'}
+    {label: 'CorGear 미니', value: '2500R'},
+    {label: 'CorGear 라이트', value: '150'},
+    {label: 'CorGear 플러스', value: '750'},
+    {label: 'CorGear 에볼루션', value: 'Legend'}
 ]
 
 const SimulationCard = styled(Container)`
@@ -283,7 +283,7 @@ function Gacha() {
         <Layout>
             <ContentLayout>
             <div style={{marginBottom: 0}}>
-                <CategoryTitle title="2026 송편 이벤트 확률 적용"/>
+                <CategoryTitle title="2026 CorGear 이벤트 확률 적용"/>
             </div>
                 <SimulationCard fullWidth>
                     <SimulationHeader>
